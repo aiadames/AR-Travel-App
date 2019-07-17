@@ -1,13 +1,17 @@
 package com.example.artravel.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.artravel.MainActivity;
 import com.example.artravel.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.artravel.Fragments.CreateFragment;
@@ -18,6 +22,7 @@ import com.example.artravel.Fragments.PassportFragment;
 public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private Button mapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,15 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             // bottomNavigationView.setSelectedItemId(R.id.action_home);
+        });
+
+        mapButton = findViewById(R.id.btnMap);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, PathDetailsActivity.class);
+                startActivity(intent);
+            }
         });
     }
 }

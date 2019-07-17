@@ -10,5 +10,34 @@ public class Path extends ParseObject {
     private static final String KEY_STOP_3 = "stop3";
     private static final String KEY_STOP_4 = "stop4";
     private static final String KEY_STOP_5 = "stop5";
+    private static final String KEY_PATH_NAME = "pathName";
+
+    public Path() {
+
+    }
+
+    public Stop getStop1() {
+        return (Stop)getParseObject(KEY_STOP_1);
+    }
+
+    public Stop getStop2() {
+        return (Stop)getParseObject(KEY_STOP_2);
+    }
+
+    public Stop getStop3() {
+        return (Stop)getParseObject(KEY_STOP_3);
+    }
+
+    public Stop getStop4() {
+        return (Stop)getParseObject(KEY_STOP_4);
+    }
+
+    public Stop getStop5() {
+        return (Stop)getParseObject(KEY_STOP_5);
+    }
+
+    public String getPathName() {
+        return getString(KEY_PATH_NAME);
+    }
 
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ARTravel</string>
     <string name="btnhome">btnHome</string>
+    <string name="google_maps_api_key">AIzaSyDzDP8_LD6kH7QDGWMQjK02JRSaEtfrcDw</string>
 </resources>

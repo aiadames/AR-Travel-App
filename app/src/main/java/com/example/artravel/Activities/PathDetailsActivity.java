@@ -36,6 +36,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseGeoPoint;
 
+import java.util.ArrayList;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -83,18 +85,18 @@ public class PathDetailsActivity extends AppCompatActivity {
                     loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
 
-//
 //                    Path path = new Path();
-//                    Stop stop1 = path.getStop1();
-//                    Stop stop2 = path.getStop2();
-//                    Stop stop3 = path.getStop3();
-//                    Stop stop4 = path.getStop4();
-//                    Stop stop5 = path.getStop5();
 //
-//                    ParseGeoPoint stop1Location = stop1.getStopLocation();
+//                    ArrayList<Stop> stops = new ArrayList<>();
+//                    stops.add(path.getStop1());
+//                    stops.add(path.getStop2());
+//                    stops.add(path.getStop3());
+//                    stops.add(path.getStop4());
+//                    stops.add(path.getStop5());
 //
-//                    map.addMarker(new MarkerOptions()
-//                        .position(new LatLng(stop1Location.getLatitude(), stop1Location.getLongitude())));
+//                    for (int i = 0; i < stops.size(); i++) {
+//                        createStopMarker(stops.get(i));
+//                    }
 
                 }
             });
@@ -385,6 +387,7 @@ public class PathDetailsActivity extends AppCompatActivity {
 
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude())));
+                //.position(new LatLng(37.4216, -122.082)));
     }
 
 }
