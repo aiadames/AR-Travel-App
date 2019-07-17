@@ -18,15 +18,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://jitpack.io"
-            }
-        maven { url "https://maven.google.com" }
+        maven { url "https://jitpack.io" }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-ext {
-    supportLibVersion = '27.1.1'  // variable that can be referenced to keep support libs consistent
 }
