@@ -1,3 +1,4 @@
+
 package com.example.artravel.Activities;
 
 import android.content.Intent;
@@ -75,4 +76,3 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 }
-
