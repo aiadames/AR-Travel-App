@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ARTravel</string>
+    <string name="btnhome">btnHome</string>
 </resources>
