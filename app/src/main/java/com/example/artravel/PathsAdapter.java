@@ -1,7 +1,7 @@
 package com.example.artravel;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Path;
-import com.parse.ParseFile;
+
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -28,9 +30,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     public Context context;
 
     public class PathsViewHolder extends RecyclerView.ViewHolder{
-        public ImageView mPathImage;
-        public TextView mPathTitle;
-        public TextView mPathDescription;
+        private ImageView mPathImage;
+        private TextView mPathTitle;
+        private TextView mPathDescription;
 
         public PathsViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +45,14 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 public void onClick(View view) {
                     Toast.makeText(view.getContext(),"clicked on path", Toast.LENGTH_SHORT).show();
                     Fragment detail = new DetailedPathFragment();
+
+                    int position = getAdapterPosition();
+                    Path path = mPathList.get(position);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Path", Parcels.wrap(path));
+                    detail.setArguments(bundle);
+
                     FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.flContainer, detail)
                             .commit();
@@ -52,7 +62,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             });
         }
         public void bind(Path myPath) {
-            mPathDescription.setText(myPath.getDescription());
+            mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
 
 

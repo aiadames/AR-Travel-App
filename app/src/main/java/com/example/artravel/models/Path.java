@@ -4,6 +4,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+
 @ParseClassName("Path")
 public class Path extends ParseObject {
     private static final String KEY_STOP_1 = "stop1";
@@ -50,19 +51,7 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_NAME);
     }
 
-    public String getImageUrl(){
-        return mImageUrl;
-    }
-
-    public String getPathTitle(){
-        return mPathTitle;
-    }
-
-    public String getPathDescription(){
-        return mPathDescription;
-    }
-
-    public String getDescription() {
+    public String getPathDescription() {
         return getString(KEY_PATH_DESCRIPTION);
     }
 
