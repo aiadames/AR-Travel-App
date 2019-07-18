@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class DetailedPathFragment extends Fragment {
 
     private TextView tvPathName;
     private TextView tvPathDescription;
+    private RatingBar rbPathRating;
     private Path currentPath;
 
     private final static String KEY_LOCATION = "location";
@@ -87,12 +89,14 @@ public class DetailedPathFragment extends Fragment {
 
         tvPathName = view.findViewById(R.id.tvPathName);
         tvPathDescription = view.findViewById(R.id.tvPathDescription);
+        rbPathRating = view.findViewById(R.id.rbPathRating);
 
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
 
         tvPathName.setText(currentPath.getPathName());
         tvPathDescription.setText(currentPath.getPathDescription());
+        rbPathRating.setRating(currentPath.getPathRating());
 
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
