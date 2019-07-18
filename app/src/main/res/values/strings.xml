@@ -2,4 +2,7 @@
     <string name="app_name">ARTravel</string>
     <string name="btnhome">btnHome</string>
     <string name="google_maps_api_key">AIzaSyDzDP8_LD6kH7QDGWMQjK02JRSaEtfrcDw</string>
+    <string name="facebook_app_id">488384535263120</string>
+    <string name="fb_login_protocol_scheme">fb488384535263120</string>
+
 </resources>
