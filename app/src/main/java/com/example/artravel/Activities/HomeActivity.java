@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,13 +25,18 @@ public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private Button mapButton;
+    private TextView tvName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        tvName = findViewById(R.id.tvName);
 
+
+        String name = getIntent().getStringExtra("name");
+        tvName.setText(name);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 

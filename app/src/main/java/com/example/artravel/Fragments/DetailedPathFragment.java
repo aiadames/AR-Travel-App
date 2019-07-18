@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,8 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.PathDetailsActivity;
-//import com.example.artravel.Fragments.DetailedPathFragmentPermissionsDispatcher;
 import com.example.artravel.R;
+import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -45,6 +47,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseGeoPoint;
 
+import org.parceler.Parcels;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -59,6 +63,11 @@ public class DetailedPathFragment extends Fragment {
     Location mCurrentLocation;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
+
+    private TextView tvPathName;
+    private TextView tvPathDescription;
+    private RatingBar rbPathRating;
+    private Path currentPath;
 
     private final static String KEY_LOCATION = "location";
 
@@ -78,6 +87,17 @@ public class DetailedPathFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tvPathName = view.findViewById(R.id.tvPathName);
+        tvPathDescription = view.findViewById(R.id.tvPathDescription);
+        rbPathRating = view.findViewById(R.id.rbPathRating);
+
+        Bundle bundle = this.getArguments();
+        currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
+
+        tvPathName.setText(currentPath.getPathName());
+        tvPathDescription.setText(currentPath.getPathDescription());
+        rbPathRating.setRating(currentPath.getPathRating());
+
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
         }
@@ -94,7 +114,7 @@ public class DetailedPathFragment extends Fragment {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    //loadMap(map);
+                    loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
 
 //                    Path path = new Path();
@@ -118,7 +138,7 @@ public class DetailedPathFragment extends Fragment {
         }
     }
 
-    /*protected void loadMap(GoogleMap googleMap) {
+    protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
             // Map is ready
@@ -128,7 +148,7 @@ public class DetailedPathFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 
 
 
@@ -239,11 +259,11 @@ public class DetailedPathFragment extends Fragment {
 //    }
 
 
-    /*@Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         DetailedPathFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }*/
+    }
 
     @SuppressWarnings({"MissingPermission"})
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -256,7 +276,7 @@ public class DetailedPathFragment extends Fragment {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            onLocationChanged(location);
+                            //onLocationChanged(location);
                         }
                     }
                 })
@@ -325,7 +345,7 @@ public class DetailedPathFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
-        //DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+        DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -342,29 +362,29 @@ public class DetailedPathFragment extends Fragment {
         SettingsClient settingsClient = LocationServices.getSettingsClient(getContext());
         settingsClient.checkLocationSettings(locationSettingsRequest);
         //noinspection MissingPermission
-      //  getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
-       //             @Override
-       //             public void onLocationResult(LocationResult locationResult) {
-       //                 onLocationChanged(locationResult.getLastLocation());
-      //              }
-      //          },
-      //          Looper.myLooper());
+        getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        //onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
     }
 
-    public void onLocationChanged(Location location) {
-        // GPS may be turned off
-        if (location == null) {
-            return;
-        }
-
-        // Report to the UI that the location was updated
-
-        mCurrentLocation = location;
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
+//    public void onLocationChanged(Location location) {
+//        // GPS may be turned off
+//        if (location == null) {
+//            return;
+//        }
+//
+//        // Report to the UI that the location was updated
+//
+//        mCurrentLocation = location;
+//        String msg = "Updated Location: " +
+//                Double.toString(location.getLatitude()) + "," +
+//                Double.toString(location.getLongitude());
+//        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+//    }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
@@ -413,4 +433,5 @@ public class DetailedPathFragment extends Fragment {
                 .fillColor(0x55FF0000)
                 .strokeWidth(4));
     }
+
 }
