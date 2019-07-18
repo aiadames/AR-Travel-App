@@ -19,10 +19,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.PathDetailsActivity;
 import com.example.artravel.R;
+import com.example.artravel.StopsAdapter;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.common.ConnectionResult;
@@ -49,6 +52,8 @@ import com.parse.ParseGeoPoint;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -68,6 +73,8 @@ public class DetailedPathFragment extends Fragment {
     private TextView tvPathDescription;
     private RatingBar rbPathRating;
     private Path currentPath;
+
+    private ArrayList<Stop> stops;
 
     private final static String KEY_LOCATION = "location";
 
@@ -97,6 +104,20 @@ public class DetailedPathFragment extends Fragment {
         tvPathName.setText(currentPath.getPathName());
         tvPathDescription.setText(currentPath.getPathDescription());
         rbPathRating.setRating(currentPath.getPathRating());
+
+        stops = new ArrayList<>();
+
+        RecyclerView rvStops = view.findViewById(R.id.rvStops);
+            stops.add(currentPath.getStop1());
+            stops.add(currentPath.getStop2());
+            stops.add(currentPath.getStop3());
+            stops.add(currentPath.getStop4());
+            stops.add(currentPath.getStop5());
+
+        StopsAdapter adapter = new StopsAdapter(stops);
+        rvStops.setAdapter(adapter);
+        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
