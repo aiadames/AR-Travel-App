@@ -65,14 +65,5 @@ public class HomeActivity extends AppCompatActivity {
             }
             // bottomNavigationView.setSelectedItemId(R.id.action_home);
         });
-
-        mapButton = findViewById(R.id.btnMap);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, PathDetailsActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }
