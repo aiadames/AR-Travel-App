@@ -14,6 +14,7 @@ public class Path extends ParseObject {
     private static final String KEY_STOP_5 = "stop5";
     private static final String KEY_PATH_NAME = "pathName";
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
+    private static final String KEY_PATH_RATING = "pathRating";
 
     private String mImageUrl;
     private String mPathTitle;
@@ -53,6 +54,10 @@ public class Path extends ParseObject {
 
     public String getPathDescription() {
         return getString(KEY_PATH_DESCRIPTION);
+    }
+
+    public int getPathRating() {
+        return getInt(KEY_PATH_RATING);
     }
 
     public static class Query extends ParseQuery<Path> {
