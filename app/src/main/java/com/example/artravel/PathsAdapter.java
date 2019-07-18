@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Path;
+import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -50,6 +51,12 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 }
             });
         }
+        public void bind(Path myPath) {
+            mPathDescription.setText(myPath.getDescription());
+            mPathTitle.setText(myPath.getPathName());
+
+
+        }
     }
 
     public PathsAdapter(List<Path> pathList){
@@ -69,12 +76,14 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     @Override
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
         Path currentPath = mPathList.get(position);
-        holder.mPathTitle.setText(currentPath.getPathTitle());
-        holder.mPathDescription.setText(currentPath.getPathDescription());
+        holder.bind(currentPath);
     }
 
     @Override
     public int getItemCount() {
         return mPathList.size();
     }
+
+
+
 }

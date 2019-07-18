@@ -38,9 +38,6 @@ public class PathsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         setUpRecyclerView();
-        mPaths.add(new Path("https://www.macworld.co.uk/cmsdata/features/3529463/facebook-logo_thumb800.jpg", "yeet", "yeerr"));
-        mPaths.add(new Path("https://www.macworld.co.uk/cmsdata/features/3529463/facebook-logo_thumb800.jpg", "yEEEET", "yeRRR"));
-        mAdapter.notifyDataSetChanged();
         loadTopPaths();
         Toast.makeText(getContext(), "HELLO", Toast.LENGTH_SHORT);
     }
@@ -66,8 +63,8 @@ public class PathsFragment extends Fragment {
             @Override
             public void done(List<Path> objects, ParseException e) {
                 if (e == null) {
-                    //mPaths.addAll(objects);
-                    //mAdapter.notifyDataSetChanged();
+                    mPaths.addAll(objects);
+                    mAdapter.notifyDataSetChanged();
 
                     for (int i = 0; i < objects.size(); i++) {
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getDescription());
