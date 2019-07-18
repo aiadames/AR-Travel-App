@@ -14,12 +14,9 @@ public class ParseApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-
-//        ParseObject.registerSubclass(Gems.class);
-////        ParseObject.registerSubclass(Path.class);
-////        ParseObject.registerSubclass(Stop.class);
-
-
+        ParseObject.registerSubclass(Path.class);
+        ParseObject.registerSubclass(Stop.class);
+        ParseObject.registerSubclass(Gems.class);
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
                 .applicationId("ar-travel")
                 .clientKey("real-2019")
