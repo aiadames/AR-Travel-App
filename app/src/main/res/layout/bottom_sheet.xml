@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="340dp"
-    android:paddingBottom="100dp"
+    android:layout_height="400dp"
     android:background="@android:color/white"
     android:orientation="vertical"
-    app:behavior_hideable="true"
+    android:paddingBottom="50dp"
+    app:behavior_hideable="false"
     app:behavior_peekHeight="100dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
@@ -24,27 +25,26 @@
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:numStars="5" />
 
     <TextView
         android:id="@+id/tvPathDescription"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/tvPathName"
+        android:layout_marginLeft="10dp"
         android:text="TextView" />
 
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStops"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/tvPathDescription"
-        android:gravity="center"
-        android:text="Path Detailswrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnFwrgh;wrgwrGKSDFLVEWfklewweFLKNwelkfn;wlekNF;lkwenflkwnFGLKwnf;lkwenFL;KwnflknwFLKNwflknwLFKNwl;kfnw;qELFKNL;KqenflkwnF"
-        android:textColor="@android:color/white" />
+        android:layout_marginTop="50dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
