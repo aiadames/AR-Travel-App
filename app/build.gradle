@@ -32,13 +32,11 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:design:${supportLibVersion}"
     implementation "com.android.support:percent:${supportLibVersion}"
     implementation "com.android.support:support-vector-drawable:${supportLibVersion}"
     implementation "com.android.support:animated-vector-drawable:${supportLibVersion}"
-
 
     implementation 'com.parse.bolts:bolts-android:1.4.0'
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.20.0'
@@ -50,4 +48,5 @@ dependencies {
 
     implementation "com.github.hotchemi:permissionsdispatcher:4.1.0"
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
+
 }
