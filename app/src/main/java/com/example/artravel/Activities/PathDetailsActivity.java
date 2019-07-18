@@ -332,7 +332,7 @@ public class PathDetailsActivity extends AppCompatActivity {
 
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
-        //noinspection MissingPermission
+        //noinspection MissingPermission ***************************
         getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
