@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.PathDetailsActivity;
-import com.example.artravel.Fragments.DetailedPathFragmentPermissionsDispatcher;
+//import com.example.artravel.Fragments.DetailedPathFragmentPermissionsDispatcher;
 import com.example.artravel.R;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.common.ConnectionResult;
@@ -94,7 +94,7 @@ public class DetailedPathFragment extends Fragment {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    loadMap(map);
+                    //loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
 
 //                    Path path = new Path();
@@ -118,7 +118,7 @@ public class DetailedPathFragment extends Fragment {
         }
     }
 
-    protected void loadMap(GoogleMap googleMap) {
+    /*protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
             // Map is ready
@@ -128,7 +128,7 @@ public class DetailedPathFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
 
 
@@ -239,11 +239,11 @@ public class DetailedPathFragment extends Fragment {
 //    }
 
 
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         DetailedPathFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
+    }*/
 
     @SuppressWarnings({"MissingPermission"})
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -325,7 +325,7 @@ public class DetailedPathFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
-        DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+        //DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -342,13 +342,13 @@ public class DetailedPathFragment extends Fragment {
         SettingsClient settingsClient = LocationServices.getSettingsClient(getContext());
         settingsClient.checkLocationSettings(locationSettingsRequest);
         //noinspection MissingPermission
-        getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        onLocationChanged(locationResult.getLastLocation());
-                    }
-                },
-                Looper.myLooper());
+      //  getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+       //             @Override
+       //             public void onLocationResult(LocationResult locationResult) {
+       //                 onLocationChanged(locationResult.getLastLocation());
+      //              }
+      //          },
+      //          Looper.myLooper());
     }
 
     public void onLocationChanged(Location location) {
