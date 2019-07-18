@@ -4,7 +4,9 @@ import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
+
 @ParseClassName("Stop")
+
 public class Stop extends ParseObject {
     private static final String KEY_STOP_LOCATION = "stopLocation";
     private static final String KEY_STOP_NAME = "stopName";

@@ -67,7 +67,7 @@ public class PathsFragment extends Fragment {
                     mAdapter.notifyDataSetChanged();
 
                     for (int i = 0; i < objects.size(); i++) {
-                        Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getDescription());
+                        Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
                     }
                 } else{
                     e.printStackTrace();
