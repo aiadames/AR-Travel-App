@@ -1,10 +1,15 @@
 package com.example.artravel;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +26,18 @@ import com.example.artravel.models.Path;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHolder> {
+public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHolder> implements Filterable {
 
 
     private List<Path> mPathList;
+    private List<Path> mPathListFull;
     public Context context;
+
+
+
 
     public class PathsViewHolder extends RecyclerView.ViewHolder{
         private ImageView mPathImage;
@@ -69,8 +79,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         }
     }
 
-    public PathsAdapter(List<Path> pathList){
-        mPathList = pathList;
+    public PathsAdapter(List<Path> pathList, List<Path> pathListFull){
+        this.mPathList = pathList;
+        mPathListFull = pathListFull; // independent list, don't point to same list (mutability prevention)
     }
 
     @NonNull
@@ -93,6 +104,40 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     public int getItemCount() {
         return mPathList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return pathFilter;
+    }
+
+    private Filter pathFilter = new Filter(){
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint){
+            List<Path> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                  filteredList.addAll(mPathListFull);   // add all items
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Path item: mPathListFull){
+                    if (item.getPathName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mPathList.clear();
+            mPathList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
 

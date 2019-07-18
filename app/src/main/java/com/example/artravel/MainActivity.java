@@ -3,6 +3,9 @@ package com.example.artravel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,14 +13,20 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.Activities.SignupActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.LoggingBehavior;
+import com.facebook.Profile;
 import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -25,6 +34,9 @@ import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -53,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         callbackManager = CallbackManager.Factory.create();
-        facebookLoginButton.setReadPermissions(Arrays.asList(EMAIL));
 
-        LoginManager.getInstance().registerCallback(callbackManager,
+
+        /*LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -72,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         // App code
                     }
                 });
-
+*/
 
 
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -117,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkUser(ParseUser currentUser){
 
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
         // if there exists a current user, send intent automatically to main timeline screen for persistence
@@ -161,17 +173,42 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("email"));
             }
         });
-
-
-
 
 
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+
+                final Profile profile = Profile.getCurrentProfile();
+                GraphRequest request = GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object,
+                                                    GraphResponse response) {
+                                if (BuildConfig.DEBUG) {
+                                    FacebookSdk.setIsDebugEnabled(true);
+                                    FacebookSdk
+                                            .addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+
+                                    System.out
+                                            .println("AccessToken.getCurrentAccessToken()"
+                                                    + AccessToken
+                                                    .getCurrentAccessToken()
+                                                    .toString());
+                                    String id = profile.getCurrentProfile().getId();
+                                    String firstName = profile.getCurrentProfile().getFirstName();
+                                    String lastName = profile.getCurrentProfile().getLastName();
+                                    // TODO: set up a new parse backend user via Facebook attributes
+                                    ParseUser user = new ParseUser();
+                                }
+                            }
+                        });
+                intent.putExtra("name",Profile.getCurrentProfile().getFirstName());
                 startActivity(intent);
                 finish();
             }
@@ -195,4 +232,8 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
     }
+
+
+
 }
+
