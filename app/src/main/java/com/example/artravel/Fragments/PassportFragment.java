@@ -18,7 +18,7 @@ import static com.example.artravel.R.layout.fragment_passport;
 
 public class PassportFragment extends Fragment {
 
-    private Button btnTest;
+  //  private Button btnTest;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return (View) inflater.inflate(fragment_passport,container, false);
@@ -27,15 +27,15 @@ public class PassportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnTest = view.findViewById(R.id.btnTest);
-
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast. makeText(getContext(), "Passport Test",Toast.LENGTH_SHORT).show();
-            }
-
-        });
+//        btnTest = view.findViewById(R.id.btnTest);
+//
+//        btnTest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast. makeText(getContext(), "Passport Test",Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
 
 
     }

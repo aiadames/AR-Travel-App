@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new PassportFragment();
                         Toast. makeText(HomeActivity.this, "Passport",Toast.LENGTH_SHORT).show();
                         break;
-                    default:
+                    default:new HomeFragment();
                         break;
                 }
 
