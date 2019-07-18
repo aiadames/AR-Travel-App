@@ -80,7 +80,9 @@ public class PathsFragment extends Fragment {
                     mAdapter.notifyDataSetChanged();
 
                     for (int i = 0; i < objects.size(); i++) {
+
                             Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getDescription());
+
                     }
                 } else {
                     e.printStackTrace();
@@ -88,6 +90,7 @@ public class PathsFragment extends Fragment {
             }
         });
     }
+
 
 
     @Override
@@ -111,3 +114,4 @@ public class PathsFragment extends Fragment {
 
     }
 }
+
