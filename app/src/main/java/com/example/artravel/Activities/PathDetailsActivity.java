@@ -2,6 +2,7 @@ package com.example.artravel.Activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -30,6 +31,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -98,6 +101,7 @@ public class PathDetailsActivity extends AppCompatActivity {
 //                        createStopMarker(stops.get(i));
 //                    }
 
+                    createTestMarker();
                 }
             });
         } else {
@@ -387,7 +391,19 @@ public class PathDetailsActivity extends AppCompatActivity {
 
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude())));
-                //.position(new LatLng(37.4216, -122.082)));
+        //.position(new LatLng(37.4216, -122.082)));
     }
+
+    private void createTestMarker() {
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(37.4216, -122.082)));
+        Circle circle = map.addCircle(new CircleOptions()
+                .center(new LatLng(37.4216, -122.082))
+                .radius(30)
+                .strokeColor(Color.RED)
+                .fillColor(0x55FF0000)
+                .strokeWidth(4));
+    }
+
 
 }
