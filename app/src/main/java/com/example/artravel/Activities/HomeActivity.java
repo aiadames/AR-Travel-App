@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.action_paths:
                         fragment = new PathsFragment();
-                        //Toast. makeText(HomeActivity.this, "home",Toast.LENGTH_SHORT).show();
+                        //Toast. makeText(HomeActivity.this, "paths",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_passport:
                         fragment = new PassportFragment();
