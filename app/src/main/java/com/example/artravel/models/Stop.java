@@ -9,6 +9,7 @@ public class Stop extends ParseObject {
     private static final String KEY_STOP_LOCATION = "stopLocation";
     private static final String KEY_STOP_NAME = "stopName";
     private static final String KEY_STOP_DETAILS = "stopDetails";
+    private static final String KEY_GEM= "gem";
 
     public Stop() {
     }
@@ -21,8 +22,14 @@ public class Stop extends ParseObject {
         return getString(KEY_STOP_NAME);
     }
 
-    public String stopDetails() {
+    public String getStopDetails() {
         return getString(KEY_STOP_DETAILS);
     }
+
+    public Gems getGem() {
+        return (Gems) getParseObject(KEY_GEM);
+    }
+
+
 
 }
