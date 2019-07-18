@@ -6,6 +6,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+
 @ParseClassName("Gems")
 public class Gems extends ParseObject {
     private static final String KEY_GEM_NAME = "gemName";

@@ -4,6 +4,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+
 @ParseClassName("Path")
 public class Path extends ParseObject {
     private static final String KEY_STOP_1 = "stop1";
@@ -13,18 +14,9 @@ public class Path extends ParseObject {
     private static final String KEY_STOP_5 = "stop5";
     private static final String KEY_PATH_NAME = "pathName";
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
-
-    private String mImageUrl;
-    private String mPathTitle;
-    private String mPathDescription;
+    private static final String KEY_PATH_RATING = "pathRating";
 
     public Path() {}
-
-    public Path(String imageUrl, String pathTitle, String pathDescription){
-        mImageUrl = imageUrl;
-        mPathTitle = pathTitle;
-        mPathDescription = pathDescription;
-    }
 
     public Stop getStop1() {
         return (Stop)getParseObject(KEY_STOP_1);
@@ -50,20 +42,16 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_NAME);
     }
 
-    public String getImageUrl(){
-        return mImageUrl;
-    }
-
-    public String getPathTitle(){
-        return mPathTitle;
-    }
-
-    public String getPathDescription(){
-        return mPathDescription;
-    }
 
     public String getDescription() {
         return getString(KEY_PATH_DESCRIPTION);
+
+    public String getPathDescription() {
+        return getString(KEY_PATH_DESCRIPTION);
+    }
+
+    public int getPathRating() {
+        return getInt(KEY_PATH_RATING);
     }
 
     public static class Query extends ParseQuery<Path> {
