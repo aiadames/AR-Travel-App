@@ -42,17 +42,14 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_NAME);
     }
 
-
-    public String getDescription() {
-        return getString(KEY_PATH_DESCRIPTION);
+    public Integer getPathRating(){
+        return getInt(KEY_PATH_RATING);
+    }
 
     public String getPathDescription() {
         return getString(KEY_PATH_DESCRIPTION);
     }
 
-    public int getPathRating() {
-        return getInt(KEY_PATH_RATING);
-    }
 
     public static class Query extends ParseQuery<Path> {
 
