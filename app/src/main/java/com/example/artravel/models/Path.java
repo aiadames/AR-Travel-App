@@ -14,17 +14,7 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_NAME = "pathName";
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
 
-    private String mImageUrl;
-    private String mPathTitle;
-    private String mPathDescription;
-
     public Path() {}
-
-    public Path(String imageUrl, String pathTitle, String pathDescription){
-        mImageUrl = imageUrl;
-        mPathTitle = pathTitle;
-        mPathDescription = pathDescription;
-    }
 
     public Stop getStop1() {
         return (Stop)getParseObject(KEY_STOP_1);
@@ -48,18 +38,6 @@ public class Path extends ParseObject {
 
     public String getPathName() {
         return getString(KEY_PATH_NAME);
-    }
-
-    public String getImageUrl(){
-        return mImageUrl;
-    }
-
-    public String getPathTitle(){
-        return mPathTitle;
-    }
-
-    public String getPathDescription(){
-        return mPathDescription;
     }
 
     public String getDescription() {
