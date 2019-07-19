@@ -16,7 +16,17 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
     private static final String KEY_PATH_RATING = "pathRating";
 
+    private String mImageUrl;
+    private String mPathTitle;
+    private String mPathDescription;
+
     public Path() {}
+
+    public Path(String imageUrl, String pathTitle, String pathDescription){
+        mImageUrl = imageUrl;
+        mPathTitle = pathTitle;
+        mPathDescription = pathDescription;
+    }
 
     public Stop getStop1() {
         return (Stop)getParseObject(KEY_STOP_1);
@@ -42,17 +52,14 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_NAME);
     }
 
-
-    public String getDescription() {
-        return getString(KEY_PATH_DESCRIPTION);}
+    public Integer getPathRating(){
+        return getInt(KEY_PATH_RATING);
+    }
 
     public String getPathDescription() {
         return getString(KEY_PATH_DESCRIPTION);
     }
 
-    public int getPathRating() {
-        return getInt(KEY_PATH_RATING);
-    }
 
     public static class Query extends ParseQuery<Path> {
 
@@ -61,7 +68,7 @@ public class Path extends ParseObject {
         }
 
         public Query getTop() {
-            setLimit(20);
+            setLimit(10);
             return this;
         }
 
@@ -70,6 +77,4 @@ public class Path extends ParseObject {
             return this;
         }
     }
-
-
 }

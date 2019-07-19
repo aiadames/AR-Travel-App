@@ -6,24 +6,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.R;
 import com.example.artravel.models.Stop;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 
+import java.util.Collections;
 import java.util.List;
 
 public class StopsAdapter extends
-        RecyclerView.Adapter<StopsAdapter.ViewHolder> {
+        RecyclerView.Adapter<StopsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Stop> mStops;
+    public Context context;
 
-    public StopsAdapter(List<Stop> stops) {
+    public StopsAdapter(List<Stop> stops, Context context) {
         mStops = stops;
+        this.context= context;
     }
 
 
@@ -52,11 +59,33 @@ public class StopsAdapter extends
             Log.e("StopsAdapter", "Something has gone terribly wrong with Parse", e);
         }
         holder.tvStopName.setText(stopName);
+
+        ParseFile image = stop.getStopImage();
+        if (image != null) {
+            Glide.with(context)
+                    .load(image.getUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.ivStopImage);
+        }
     }
 
     @Override
     public int getItemCount() {
         return mStops.size();
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mStops, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mStops, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -65,6 +94,7 @@ public class StopsAdapter extends
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView tvStopName;
+        public ImageView ivStopImage;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -74,6 +104,7 @@ public class StopsAdapter extends
             super(itemView);
 
             tvStopName = itemView.findViewById(R.id.tvStopName);
+            ivStopImage = itemView.findViewById(R.id.ivStopImage);
         }
     }
 }

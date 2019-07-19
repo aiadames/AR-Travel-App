@@ -1,6 +1,7 @@
 package com.example.artravel.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
@@ -12,6 +13,7 @@ public class Stop extends ParseObject {
     private static final String KEY_STOP_NAME = "stopName";
     private static final String KEY_STOP_DETAILS = "stopDetails";
     private static final String KEY_GEM= "gem";
+    private static final String KEY_STOP_IMAGE = "stopImage";
 
     public Stop() {
     }
@@ -30,6 +32,10 @@ public class Stop extends ParseObject {
 
     public Gems getGem() {
         return (Gems) getParseObject(KEY_GEM);
+    }
+
+    public ParseFile getStopImage() {
+        return getParseFile(KEY_STOP_IMAGE);
     }
 
 
