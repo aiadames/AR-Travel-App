@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.artravel.R;
 import com.example.artravel.models.Stop;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -103,7 +101,7 @@ public class StopsAdapter extends
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            tvStopName = itemView.findViewById(R.id.tvStopName);
+            tvStopName = itemView.findViewById(R.id.tvPathName);
             ivStopImage = itemView.findViewById(R.id.ivStopImage);
         }
     }

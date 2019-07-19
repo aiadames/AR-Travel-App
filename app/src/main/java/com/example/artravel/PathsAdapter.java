@@ -53,7 +53,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(),"clicked on path", Toast.LENGTH_SHORT).show();
                     Fragment detail = new DetailedPathFragment();
 
                     int position = getAdapterPosition();
