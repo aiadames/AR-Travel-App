@@ -32,11 +32,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        tvName = findViewById(R.id.tvName);
-
-
-        String name = getIntent().getStringExtra("name");
-        tvName.setText(name);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 

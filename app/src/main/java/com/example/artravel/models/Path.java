@@ -58,7 +58,7 @@ public class Path extends ParseObject {
         }
 
         public Query getTop() {
-            setLimit(20);
+            setLimit(10);
             return this;
         }
 
@@ -67,6 +67,4 @@ public class Path extends ParseObject {
             return this;
         }
     }
-
-
 }
