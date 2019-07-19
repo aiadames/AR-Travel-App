@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 
 import org.parceler.Parcels;
@@ -74,6 +77,7 @@ public class DetailedPathFragment extends Fragment {
     private TextView tvPathName;
     private TextView tvPathDescription;
     private RatingBar rbPathRating;
+    private Button btnStartPath;
     private Path currentPath;
 
     private ArrayList<Stop> stops;
@@ -99,6 +103,7 @@ public class DetailedPathFragment extends Fragment {
         tvPathName = view.findViewById(R.id.tvPathName);
         tvPathDescription = view.findViewById(R.id.tvPathDescription);
         rbPathRating = view.findViewById(R.id.rbPathRating);
+        btnStartPath = view.findViewById(R.id.btnStartPath);
 
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
@@ -116,7 +121,7 @@ public class DetailedPathFragment extends Fragment {
             stops.add(currentPath.getStop4());
             stops.add(currentPath.getStop5());
 
-        StopsAdapter adapter = new StopsAdapter(stops);
+        StopsAdapter adapter = new StopsAdapter(stops, getContext());
         rvStops.setAdapter(adapter);
         rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -155,6 +160,13 @@ public class DetailedPathFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
+
+        btnStartPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("DetailedPathFragment", stops.get(0).getStopName());
+            }
+        });
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -164,6 +176,19 @@ public class DetailedPathFragment extends Fragment {
             Toast.makeText(getContext(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             DetailedPathFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+
+            Stop stop1 = currentPath.getStop1();
+            ParseGeoPoint stop1Location = null;
+            try {
+                stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            LatLng latLng = new LatLng(stop1Location.getLatitude(), stop1Location.getLongitude());
+//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+//            map.animateCamera(cameraUpdate);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -438,7 +463,10 @@ public class DetailedPathFragment extends Fragment {
         ParseGeoPoint stopLocation = stop.getStopLocation();
 
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude())));
+                .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
+                .title(stop.getStopName())
+                .snippet(stop.getStopDetails())
+        );
         map.addCircle(new CircleOptions()
                 .center(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
                 .radius(30)
