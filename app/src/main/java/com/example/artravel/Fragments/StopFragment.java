@@ -90,6 +90,12 @@ public class StopFragment extends Fragment {
     private TextView tvStopDetails;
     private TextView tvPathName;
     private Button btnNextStop;
+    private Button btnStopInfo;
+    private TextView tvStopDistance;
+
+
+    private double distanceToStop;
+
 
     @Nullable
     @Override
@@ -111,11 +117,12 @@ public class StopFragment extends Fragment {
         tvStopDetails = view.findViewById(R.id.tvStopDetails);
         tvPathName = view.findViewById(R.id.tvPathName);
         btnNextStop = view.findViewById(R.id.btnNextStop);
+        tvStopDistance = view.findViewById(R.id.tvStopDistance);
+        btnStopInfo = view.findViewById(R.id.btnStopInfo);
 
         tvStopName.setText(currentStop.getStopName());
         tvStopDetails.setText(currentStop.getStopDetails());
         tvPathName.setText(path.getPathName());
-
 
 //        for (int i = 0; i < stopsList.size(); i++) {
 //            Log.d("StopFragment", stopsList.get(i).getStopName());
@@ -143,8 +150,6 @@ public class StopFragment extends Fragment {
                     for (int i = 0; i < stopsList.size(); i++) {
                         createStopMarker(stopsList.get(i));
                     }
-
-                    //createTestMarker();
                 }
             });
         } else {
@@ -171,6 +176,23 @@ public class StopFragment extends Fragment {
             }
         });
 
+        btnStopInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment stopInfoFragment = new StopInfoFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Stop", Parcels.wrap(currentStop));
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+                bundle.putInt("Stop Index", stopIndex);
+                stopInfoFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment)
+                        .commit();
+            }
+        });
 
 
     }
@@ -188,9 +210,9 @@ public class StopFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            map.setTrafficEnabled(true);
+            map.setBuildingsEnabled(true);
             LatLng latLng = new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude());
-//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
-//            map.animateCamera(cameraUpdate);
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17.5f));
 
         } else {
@@ -200,111 +222,6 @@ public class StopFragment extends Fragment {
 
 
 
-    // Fires when a long press happens on the map
-//    @Override
-//    public void onMapLongClick(final LatLng point) {
-//        Toast.makeText(this, "Long Press", Toast.LENGTH_LONG).show();
-////        // Custom code here...
-//        showAlertDialogForPoint(point);
-//    }
-
-//    private void showAlertDialogForPoint(final LatLng point) {
-//        // inflate message_item.xml view
-//        View messageView = LayoutInflater.from(PathDetailsActivity.this).
-//                inflate(R.layout.message_item, null);
-//        // Create alert dialog builder
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        // set message_item.xml to AlertDialog builder
-//        alertDialogBuilder.setView(messageView);
-//
-//        // Create alert dialog
-//        final AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // Configure dialog button (OK)
-//        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Define color of marker icon
-//                        BitmapDescriptor defaultMarker =
-//                                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-//                        // Extract content from alert dialog
-//                        String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
-//                                getText().toString();
-//                        String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet)).
-//                                getText().toString();
-//                        // Creates and adds marker to the map
-//                        Marker marker = map.addMarker(new MarkerOptions()
-//                                .position(point)
-//                                .title(title)
-//                                .snippet(snippet)
-//                                .icon(defaultMarker));
-//                    }
-//                });
-//
-//        // Configure dialog button (Cancel)
-//        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
-//                });
-//
-//        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Define color of marker icon
-//                        BitmapDescriptor defaultMarker = BitmapDescriptorFactory
-//                                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-//                        // Extract content from alert dialog
-//                        String title = ((EditText) alertDialog.findViewById(R.id.etTitle))
-//                                .getText().toString();
-//                        String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet))
-//                                .getText().toString();
-//                        // Creates and adds marker to the map
-//                        Marker marker = map.addMarker(new MarkerOptions().position(point)
-//                                .title(title).snippet(snippet).icon(defaultMarker));
-//
-//                        // Animate marker using drop effect
-//                        // --> Call the dropPinEffect method here
-//                        dropPinEffect(marker);
-//                    }
-//                });
-//
-//        // Display the dialog
-//        alertDialog.show();
-//    }
-
-//    private void dropPinEffect(final Marker marker) {
-//        // Handler allows us to repeat a code block after a specified delay
-//        final android.os.Handler handler = new android.os.Handler();
-//        final long start = SystemClock.uptimeMillis();
-//        final long duration = 1500;
-//
-//        // Use the bounce interpolator
-//        final android.view.animation.Interpolator interpolator =
-//                new BounceInterpolator();
-//
-//        // Animate marker with a bounce updating its position every 15ms
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                long elapsed = SystemClock.uptimeMillis() - start;
-//                // Calculate t for bounce based on elapsed time
-//                float t = Math.max(
-//                        1 - interpolator.getInterpolation((float) elapsed
-//                                / duration), 0);
-//                // Set the anchor
-//                marker.setAnchor(0.5f, 1.0f + 14 * t);
-//
-//                if (t > 0.0) {
-//                    // Post this event again 15ms from now.
-//                    handler.postDelayed(this, 15);
-//                } else { // done elapsing, show window
-//                    marker.showInfoWindow();
-//                }
-//            }
-//        });
-//    }
 
 
     @Override
@@ -324,7 +241,7 @@ public class StopFragment extends Fragment {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            //onLocationChanged(location);
+                            onLocationChanged(location);
                         }
                     }
                 })
@@ -353,30 +270,30 @@ public class StopFragment extends Fragment {
         super.onStop();
     }
 
-    private boolean isGooglePlayServicesAvailable() {
-        // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
-        // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            // In debug mode, log the status
-            Log.d("Location Updates", "Google Play services is available.");
-            return true;
-        } else {
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                // Create a new DialogFragment for the error dialog
-                PathDetailsActivity.ErrorDialogFragment errorFragment = new PathDetailsActivity.ErrorDialogFragment();
-                errorFragment.setDialog(errorDialog);
-                errorFragment.show(getChildFragmentManager(), "Location Updates");
-            }
-
-            return false;
-        }
-    }
+//    private boolean isGooglePlayServicesAvailable() {
+//        // Check that Google Play services is available
+//        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
+//        // If Google Play services is available
+//        if (ConnectionResult.SUCCESS == resultCode) {
+//            // In debug mode, log the status
+//            Log.d("Location Updates", "Google Play services is available.");
+//            return true;
+//        } else {
+//            // Get the error dialog from Google Play services
+//            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
+//                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
+//
+//            // If Google Play services can provide an error dialog
+//            if (errorDialog != null) {
+//                // Create a new DialogFragment for the error dialog
+//                PathDetailsActivity.ErrorDialogFragment errorFragment = new PathDetailsActivity.ErrorDialogFragment();
+//                errorFragment.setDialog(errorDialog);
+//                errorFragment.show(getChildFragmentManager(), "Location Updates");
+//            }
+//
+//            return false;
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -419,20 +336,22 @@ public class StopFragment extends Fragment {
                 Looper.myLooper());
     }
 
-//    public void onLocationChanged(Location location) {
-//        // GPS may be turned off
-//        if (location == null) {
-//            return;
-//        }
-//
-//        // Report to the UI that the location was updated
-//
-//        mCurrentLocation = location;
-//        String msg = "Updated Location: " +
-//                Double.toString(location.getLatitude()) + "," +
-//                Double.toString(location.getLongitude());
-//        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-//    }
+    public void onLocationChanged(Location location) {
+        // GPS may be turned off
+        if (location == null) {
+            return;
+        }
+
+        // Report to the UI that the location was updated
+
+        mCurrentLocation = location;
+        ParseGeoPoint stopGeoPoint = currentStop.getStopLocation();
+        Location stopLocation = new Location("");
+        stopLocation.setLatitude(stopGeoPoint.getLatitude());
+        stopLocation.setLongitude(stopGeoPoint.getLongitude());
+        distanceToStop = mCurrentLocation.distanceTo(stopLocation);
+        tvStopDistance.setText("Approximately " + Double.toString(Math.round(distanceToStop)) + " m to stop");
+    }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
@@ -471,7 +390,6 @@ public class StopFragment extends Fragment {
                 .title(stop.getStopName())
                 .snippet(stop.getStopDetails())
         );
-
 
         Circle mapCircle = map.addCircle(new CircleOptions()
                 .center(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))

@@ -156,7 +156,6 @@ public class DetailedPathFragment extends Fragment {
                         createStopMarker(stops.get(i));
                     }
 
-                    //createTestMarker();
                 }
             });
         } else {

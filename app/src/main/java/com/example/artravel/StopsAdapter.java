@@ -101,7 +101,7 @@ public class StopsAdapter extends
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            tvStopName = itemView.findViewById(R.id.tvPathName);
+            tvStopName = itemView.findViewById(R.id.tvStopName);
             ivStopImage = itemView.findViewById(R.id.ivStopImage);
         }
     }
