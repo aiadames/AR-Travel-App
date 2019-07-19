@@ -15,10 +15,11 @@ import com.example.artravel.R;
 import com.example.artravel.models.Stop;
 import com.parse.ParseException;
 
+import java.util.Collections;
 import java.util.List;
 
 public class StopsAdapter extends
-        RecyclerView.Adapter<StopsAdapter.ViewHolder> {
+        RecyclerView.Adapter<StopsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Stop> mStops;
 
@@ -57,6 +58,20 @@ public class StopsAdapter extends
     @Override
     public int getItemCount() {
         return mStops.size();
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mStops, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mStops, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     // Provide a direct reference to each of the views within a data item
