@@ -16,7 +16,17 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
     private static final String KEY_PATH_RATING = "pathRating";
 
+    private String mImageUrl;
+    private String mPathTitle;
+    private String mPathDescription;
+
     public Path() {}
+
+    public Path(String imageUrl, String pathTitle, String pathDescription){
+        mImageUrl = imageUrl;
+        mPathTitle = pathTitle;
+        mPathDescription = pathDescription;
+    }
 
     public Stop getStop1() {
         return (Stop)getParseObject(KEY_STOP_1);

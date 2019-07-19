@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:paddingBottom="50dp"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="100dp"
+    app:behavior_peekHeight="150dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TextView
@@ -43,8 +43,16 @@
         android:id="@+id/rvStops"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvPathDescription"
+        android:layout_below="@id/btnStartPath"
         android:layout_marginTop="50dp"
         android:layout_alignParentBottom="true" />
+
+    <Button
+        android:id="@+id/btnStartPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPathDescription"
+        android:layout_centerHorizontal="true"
+        android:text="Start Path" />
 
 </RelativeLayout>

@@ -9,10 +9,16 @@
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="8dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivStopImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            card_view:srcCompat="@android:drawable/ic_menu_gallery" />
 
         <TextView
             android:id="@+id/tvStopName"

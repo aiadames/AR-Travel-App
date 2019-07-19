@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,7 @@ import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.PathDetailsActivity;
 import com.example.artravel.R;
 import com.example.artravel.StopsAdapter;
+import com.example.artravel.StopsItemTouchHelperCallback;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +51,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 
 import org.parceler.Parcels;
@@ -72,6 +77,7 @@ public class DetailedPathFragment extends Fragment {
     private TextView tvPathName;
     private TextView tvPathDescription;
     private RatingBar rbPathRating;
+    private Button btnStartPath;
     private Path currentPath;
 
     private ArrayList<Stop> stops;
@@ -97,6 +103,7 @@ public class DetailedPathFragment extends Fragment {
         tvPathName = view.findViewById(R.id.tvPathName);
         tvPathDescription = view.findViewById(R.id.tvPathDescription);
         rbPathRating = view.findViewById(R.id.rbPathRating);
+        btnStartPath = view.findViewById(R.id.btnStartPath);
 
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
@@ -114,9 +121,14 @@ public class DetailedPathFragment extends Fragment {
             stops.add(currentPath.getStop4());
             stops.add(currentPath.getStop5());
 
-        StopsAdapter adapter = new StopsAdapter(stops);
+        StopsAdapter adapter = new StopsAdapter(stops, getContext());
         rvStops.setAdapter(adapter);
         rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ItemTouchHelper.Callback callback =
+                new StopsItemTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvStops);
 
 
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
@@ -138,25 +150,23 @@ public class DetailedPathFragment extends Fragment {
                     loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
 
-//                    Path path = new Path();
-//
-//                    ArrayList<Stop> stops = new ArrayList<>();
-//                    stops.add(path.getStop1());
-//                    stops.add(path.getStop2());
-//                    stops.add(path.getStop3());
-//                    stops.add(path.getStop4());
-//                    stops.add(path.getStop5());
-//
-//                    for (int i = 0; i < stops.size(); i++) {
-//                        createStopMarker(stops.get(i));
-//                    }
+                    for (int i = 0; i < stops.size(); i++) {
+                        createStopMarker(stops.get(i));
+                    }
 
-                    createTestMarker();
+                    //createTestMarker();
                 }
             });
         } else {
             Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
+
+        btnStartPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("DetailedPathFragment", stops.get(0).getStopName());
+            }
+        });
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -166,6 +176,19 @@ public class DetailedPathFragment extends Fragment {
             Toast.makeText(getContext(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             DetailedPathFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+
+            Stop stop1 = currentPath.getStop1();
+            ParseGeoPoint stop1Location = null;
+            try {
+                stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            LatLng latLng = new LatLng(stop1Location.getLatitude(), stop1Location.getLongitude());
+//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+//            map.animateCamera(cameraUpdate);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -440,19 +463,28 @@ public class DetailedPathFragment extends Fragment {
         ParseGeoPoint stopLocation = stop.getStopLocation();
 
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude())));
-        //.position(new LatLng(37.4216, -122.082)));
-    }
-
-    private void createTestMarker() {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(37.4216, -122.082)));
-        Circle circle = map.addCircle(new CircleOptions()
-                .center(new LatLng(37.4216, -122.082))
+                .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
+                .title(stop.getStopName())
+                .snippet(stop.getStopDetails())
+        );
+        map.addCircle(new CircleOptions()
+                .center(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
                 .radius(30)
                 .strokeColor(Color.RED)
                 .fillColor(0x55FF0000)
                 .strokeWidth(4));
     }
+
+//
+//    private void createTestMarker() {
+//        map.addMarker(new MarkerOptions()
+//                .position(new LatLng(37.4216, -122.082)));
+//        map.addCircle(new CircleOptions()
+//                .center(new LatLng(37.4216, -122.082))
+//                .radius(30)
+//                .strokeColor(Color.RED)
+//                .fillColor(0x55FF0000)
+//                .strokeWidth(4));
+//    }
 
 }
