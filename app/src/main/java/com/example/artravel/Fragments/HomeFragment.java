@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.artravel.R;
 import com.parse.ParseUser;
 
@@ -20,6 +23,9 @@ import static com.example.artravel.R.layout.fragment_home;
 public class HomeFragment extends Fragment {
 
     private Button btnTest;
+    private TextView tvName;
+    private ImageView ivProfile;
+    private TextView tvEmail;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return (View) inflater.inflate(fragment_home,container, false);
@@ -29,6 +35,17 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnTest = view.findViewById(R.id.btnTest);
+   //     tvEmail = view.findViewById(R.id.tvEmail);
+     //   tvName = view.findViewById(R.id.tvName);
+       // ivProfile = view.findViewById(R.id.ivProfile);
+
+       // ParseUser user = ParseUser.getCurrentUser();
+    //    tvName.setText(user.getUsername());
+      ///  tvEmail.setText(user.getEmail());
+       // Glide.with(getContext()).load(user.getString("profilePicture")).into(ivProfile);
+
+
+
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override

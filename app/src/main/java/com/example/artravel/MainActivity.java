@@ -1,7 +1,12 @@
 package com.example.artravel;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,12 +37,18 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +59,13 @@ public class MainActivity extends AppCompatActivity {
     private Button signUpButton;
     private Button continueNoLoginButton;
     private LoginButton facebookLoginButton;
+    private String id,firstName, lastName, email,gender,birthday;
+    private URL profilePic;
     private CallbackManager callbackManager;
+    FacebookCallback<LoginResult> mFacebookCallback;
+    boolean isLoggedInFB;
+
+
     private static final String EMAIL = "email";
 
     @Override
@@ -66,82 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
+        checkUser(ParseUser.getCurrentUser(), false);
 
-        /*LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        // App code
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
-*/
-
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        checkUser(currentUser);
-
-    }
-
-
-
-
-    /*public void setUpBackground(){
-        ConstraintLayout constraintLayout = findViewById(R.id.layout);
-        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(2000);
-        animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
-    }*/
-
-
-
-    private void login(String username, String password) {
-        // don't want to login on main thread, will clog up UI
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e == null){
-                    Log.d("LoginActivity", "Login successful");
-                    final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else{
-                    Log.e("LoginActivity", "Login failure");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-
-
-
-
-    public void checkUser(ParseUser currentUser){
-
-        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-        // if there exists a current user, send intent automatically to main timeline screen for persistence
-        if (currentUser != null) {
-            final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (isLoggedIn == true) {
-            final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
         // else, leave on login screen, grab user input if tried to login with username and password
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,60 +112,132 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        facebookLoginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("public_profile"));
-                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this,Arrays.asList("email"));
-            }
-        });
 
 
-        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+
+
+
+
+        mFacebookCallback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                AccessToken accessToken = loginResult.getAccessToken();
+                isLoggedInFB = accessToken != null && !accessToken.isExpired();
+                if (isLoggedInFB) {
+                    Profile profile = Profile.getCurrentProfile();
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(
+                                        JSONObject object,
+                                        GraphResponse response) {
+                                    // Application code
+                                    try {
+                                        id = object.getString("id");
+                                        profilePic = new URL("https://graph.facebook.com/" + id + "/picture?width=500&height=500");
+                                        firstName = object.getString("first_name");
+                                        lastName = object.getString("last_name");
+                                        email = object.getString("email");
+                                        gender = object.getString("gender");
+                                        birthday = object.getString("birthday");
 
-                final Profile profile = Profile.getCurrentProfile();
-                GraphRequest request = GraphRequest.newMeRequest(
-                        AccessToken.getCurrentAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object,
-                                                    GraphResponse response) {
-                                if (BuildConfig.DEBUG) {
-                                    FacebookSdk.setIsDebugEnabled(true);
-                                    FacebookSdk
-                                            .addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-
-                                    System.out
-                                            .println("AccessToken.getCurrentAccessToken()"
-                                                    + AccessToken
-                                                    .getCurrentAccessToken()
-                                                    .toString());
-                                    String id = profile.getCurrentProfile().getId();
-                                    String firstName = profile.getCurrentProfile().getFirstName();
-                                    String lastName = profile.getCurrentProfile().getLastName();
-                                    // TODO: set up a new parse backend user via Facebook attributes
-                                    ParseUser user = new ParseUser();
+                                        //do something with the data here
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                                    checkUser(ParseUser.getCurrentUser(), isLoggedInFB);
+                                    startActivity(intent);
+                                    finish();
                                 }
-                            }
-                        });
-                intent.putExtra("name",Profile.getCurrentProfile().getFirstName());
-                startActivity(intent);
-                finish();
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id, first_name, last_name, email, gender, birthday");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+
+
+                }
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(getApplicationContext(), "heyeyey", Toast.LENGTH_SHORT);
+
             }
 
             @Override
-            public void onError(FacebookException exception) {
-                Toast.makeText(getApplicationContext(), "ERROROROROR", Toast.LENGTH_SHORT);
+            public void onError(FacebookException e) {
+
+            }
+        };
+
+        facebookLoginButton.setReadPermissions("email");
+        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions((Activity) v.getContext(),Arrays.asList( "email"));
             }
         });
+        facebookLoginButton.registerCallback(callbackManager, mFacebookCallback);
+    }
+
+    private void login(String username, String password) {
+        // don't want to login on main thread, will clog up UI
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e == null){
+                    Log.d("LoginActivity", "Login successful");
+                    final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else{
+                    Log.e("LoginActivity", "Login failure");
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+
+
+
+    public void checkUser(ParseUser currentUser, boolean isLoggedInFB){
+        // if there exists a current user, send intent automatically to main timeline screen for persistence
+        if (currentUser != null) {
+            final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (currentUser == null && isLoggedInFB == true) {
+            try{
+            login(firstName+lastName, "1234");
+            }
+            catch(Exception e){
+                ParseUser user = new ParseUser();
+                user.setUsername(firstName + lastName);
+                user.setPassword("1234");
+                user.setEmail(email);
+                user.put("profilePicture", profilePic.toString());
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Log.e("LoginActivity", "Login failure");
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
     }
 
 
@@ -231,6 +246,21 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+
+    private void getKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo("com.example.artravel",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        }
+        catch (PackageManager.NameNotFoundException e) { }
+        catch (NoSuchAlgorithmException e) { }
     }
 
 
