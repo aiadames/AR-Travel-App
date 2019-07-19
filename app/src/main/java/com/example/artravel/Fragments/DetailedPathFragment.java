@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.PathDetailsActivity;
 import com.example.artravel.R;
 import com.example.artravel.StopsAdapter;
+import com.example.artravel.StopsItemTouchHelperCallback;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.common.ConnectionResult;
@@ -118,6 +120,11 @@ public class DetailedPathFragment extends Fragment {
         rvStops.setAdapter(adapter);
         rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        ItemTouchHelper.Callback callback =
+                new StopsItemTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(rvStops);
+
 
         if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
             throw new IllegalStateException("You forgot to supply a Google Maps API key");
@@ -138,20 +145,11 @@ public class DetailedPathFragment extends Fragment {
                     loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
 
-//                    Path path = new Path();
-//
-//                    ArrayList<Stop> stops = new ArrayList<>();
-//                    stops.add(path.getStop1());
-//                    stops.add(path.getStop2());
-//                    stops.add(path.getStop3());
-//                    stops.add(path.getStop4());
-//                    stops.add(path.getStop5());
-//
-//                    for (int i = 0; i < stops.size(); i++) {
-//                        createStopMarker(stops.get(i));
-//                    }
+                    for (int i = 0; i < stops.size(); i++) {
+                        createStopMarker(stops.get(i));
+                    }
 
-                    createTestMarker();
+                    //createTestMarker();
                 }
             });
         } else {
@@ -441,18 +439,24 @@ public class DetailedPathFragment extends Fragment {
 
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude())));
-        //.position(new LatLng(37.4216, -122.082)));
-    }
-
-    private void createTestMarker() {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(37.4216, -122.082)));
-        Circle circle = map.addCircle(new CircleOptions()
-                .center(new LatLng(37.4216, -122.082))
+        map.addCircle(new CircleOptions()
+                .center(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
                 .radius(30)
                 .strokeColor(Color.RED)
                 .fillColor(0x55FF0000)
                 .strokeWidth(4));
     }
+
+//
+//    private void createTestMarker() {
+//        map.addMarker(new MarkerOptions()
+//                .position(new LatLng(37.4216, -122.082)));
+//        map.addCircle(new CircleOptions()
+//                .center(new LatLng(37.4216, -122.082))
+//                .radius(30)
+//                .strokeColor(Color.RED)
+//                .fillColor(0x55FF0000)
+//                .strokeWidth(4));
+//    }
 
 }
