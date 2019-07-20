@@ -69,5 +69,8 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
 
+    implementation 'com.github.hotchemi:permissionsdispatcher:3.1.0'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
+
 
 }
