@@ -37,6 +37,8 @@ public class StopInfoFragment extends Fragment {
     private TextView tvInfoParagraph;
     private Button btnInfoNextStop;
 
+    private static final int NUM_STOPS = 5;
+
 
     @Nullable
     @Override
@@ -53,22 +55,8 @@ public class StopInfoFragment extends Fragment {
         tvInfoParagraph = view.findViewById(R.id.tvInfoParagraph);
         btnInfoNextStop = view.findViewById(R.id.btnInfoNextStop);
 
-        Bundle bundle = this.getArguments();
-        stop = Parcels.unwrap(bundle.getParcelable("Stop"));
-        path = Parcels.unwrap(bundle.getParcelable("Path"));
-        stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
-        stopIndex = bundle.getInt("Stop Index");
-
-
-        tvInfoStopTitle.setText(stop.getStopName());
-        tvInfoParagraph.setText(stop.getInfoParagraph());
-
-        ParseFile image = stop.getStopImage();
-        if (image != null) {
-            Glide.with(this)
-                    .load(image.getUrl())
-                    .into(ivInfoStopImage);
-        }
+        initializeBundleArguments();
+        initializeViews();
 
         btnInfoNextStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +67,7 @@ public class StopInfoFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Path", Parcels.wrap(path));
                 bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-                if (stopIndex < 4) {
+                if (stopIndex < NUM_STOPS - 1) {
                     stopIndex++;
                 }
                 bundle.putInt("Stop Index", stopIndex);
@@ -91,6 +79,26 @@ public class StopInfoFragment extends Fragment {
             }
         });
 
-
     }
+
+    private void initializeViews() {
+        tvInfoStopTitle.setText(stop.getStopName());
+        tvInfoParagraph.setText(stop.getInfoParagraph());
+
+        ParseFile image = stop.getStopImage();
+        if (image != null) {
+            Glide.with(this)
+                    .load(image.getUrl())
+                    .into(ivInfoStopImage);
+        }
+    }
+
+    private void initializeBundleArguments() {
+        Bundle bundle = this.getArguments();
+        stop = Parcels.unwrap(bundle.getParcelable("Stop"));
+        path = Parcels.unwrap(bundle.getParcelable("Path"));
+        stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
+        stopIndex = bundle.getInt("Stop Index");
+    }
+
 }

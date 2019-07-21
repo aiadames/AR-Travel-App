@@ -31,7 +31,6 @@ public class StopsAdapter extends
         this.context= context;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,12 +49,7 @@ public class StopsAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Stop stop = mStops.get(position);
 
-        String stopName = "";
-        try {
-            stopName = stop.fetchIfNeeded().getString("stopName");
-        } catch (ParseException e) {
-            Log.e("StopsAdapter", "Something has gone terribly wrong with Parse", e);
-        }
+        String stopName = getNameOfStop(stop);
         holder.tvStopName.setText(stopName);
 
         ParseFile image = stop.getStopImage();
@@ -100,9 +94,19 @@ public class StopsAdapter extends
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-
             tvStopName = itemView.findViewById(R.id.tvStopName);
             ivStopImage = itemView.findViewById(R.id.ivStopImage);
         }
     }
+
+    private String getNameOfStop(Stop stop) {
+        String stopName = "";
+        try {
+            stopName = stop.fetchIfNeeded().getString("stopName");
+        } catch (ParseException e) {
+            Log.e("StopsAdapter", "Unable to query stop name from Parse", e);
+        }
+        return stopName;
+    }
+
 }
