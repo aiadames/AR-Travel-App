@@ -34,8 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/tvStopDetails"
+        android:layout_below="@id/tvStopDistance"
         android:text="TextView"
         android:textStyle="italic" />
 
@@ -44,7 +43,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPathName"
-        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="70dp"
         android:text="Go to next stop" />
+
+    <TextView
+        android:id="@+id/tvStopDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvStopDetails"
+        android:layout_marginLeft="10dp"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/btnStopInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btnNextStop"
+        android:layout_alignTop="@id/btnNextStop"
+        android:layout_marginLeft="30dp"
+        android:text="Stop Info" />
 
 </RelativeLayout>

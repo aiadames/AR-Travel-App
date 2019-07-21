@@ -2,6 +2,8 @@ package com.example.artravel.Fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -47,6 +49,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,6 +73,11 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 @RuntimePermissions
 public class DetailedPathFragment extends Fragment {
 
+    private ArrayList<Stop> stops;
+    private Stop stop1;
+    private double stop1Latitude;
+    private double stop1Longitude;
+
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private LocationRequest mLocationRequest;
@@ -82,9 +91,11 @@ public class DetailedPathFragment extends Fragment {
     private Button btnStartPath;
     private Path currentPath;
 
-    private ArrayList<Stop> stops;
-
     private final static String KEY_LOCATION = "location";
+    private static final int MARKER_HEIGHT = 100;
+    private static final int MARKER_WIDTH = 100;
+    private static final int STOP_RADIUS = 30;
+    private static final float ZOOM_LEVEL = 14.0f;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -106,22 +117,18 @@ public class DetailedPathFragment extends Fragment {
         tvPathDescription = view.findViewById(R.id.tvPathDescription);
         rbPathRating = view.findViewById(R.id.rbPathRating);
         btnStartPath = view.findViewById(R.id.btnStartPath);
+        RecyclerView rvStops = view.findViewById(R.id.rvStops);
 
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
 
-        tvPathName.setText(currentPath.getPathName());
-        tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(currentPath.getPathRating());
+        initializeViews();
 
-        stops = new ArrayList<>();
-
-        RecyclerView rvStops = view.findViewById(R.id.rvStops);
-            stops.add(currentPath.getStop1());
-            stops.add(currentPath.getStop2());
-            stops.add(currentPath.getStop3());
-            stops.add(currentPath.getStop4());
-            stops.add(currentPath.getStop5());
+        stops = createStopsList();
+        stop1 = currentPath.getStop1();
+        ParseGeoPoint stop1Location = getLocationOfStop1();
+        stop1Latitude = stop1Location.getLatitude();
+        stop1Longitude = stop1Location.getLongitude();
 
         StopsAdapter adapter = new StopsAdapter(stops, getContext());
         rvStops.setAdapter(adapter);
@@ -132,36 +139,7 @@ public class DetailedPathFragment extends Fragment {
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvStops);
 
-
-        if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
-            throw new IllegalStateException("You forgot to supply a Google Maps API key");
-        }
-
-        if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
-            // Since KEY_LOCATION was found in the Bundle, we can be sure that mCurrentLocation
-            // is not null.
-            mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-        }
-
-        mapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    loadMap(map);
-                    map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
-
-                    for (int i = 0; i < stops.size(); i++) {
-                        createStopMarker(stops.get(i));
-                    }
-
-                    //createTestMarker();
-                }
-            });
-        } else {
-            Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
-        }
+        setUpMapFragment(savedInstanceState);
 
         btnStartPath.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,131 +166,13 @@ public class DetailedPathFragment extends Fragment {
             DetailedPathFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
 
-            Stop stop1 = currentPath.getStop1();
-            ParseGeoPoint stop1Location = null;
-            try {
-                stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            LatLng latLng = new LatLng(stop1Location.getLatitude(), stop1Location.getLongitude());
-//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
-//            map.animateCamera(cameraUpdate);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14.0f));
+            LatLng latLng = new LatLng(stop1Latitude, stop1Longitude);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,ZOOM_LEVEL));
 
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-    // Fires when a long press happens on the map
-//    @Override
-//    public void onMapLongClick(final LatLng point) {
-//        Toast.makeText(this, "Long Press", Toast.LENGTH_LONG).show();
-////        // Custom code here...
-//        showAlertDialogForPoint(point);
-//    }
-
-//    private void showAlertDialogForPoint(final LatLng point) {
-//        // inflate message_item.xml view
-//        View messageView = LayoutInflater.from(PathDetailsActivity.this).
-//                inflate(R.layout.message_item, null);
-//        // Create alert dialog builder
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        // set message_item.xml to AlertDialog builder
-//        alertDialogBuilder.setView(messageView);
-//
-//        // Create alert dialog
-//        final AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        // Configure dialog button (OK)
-//        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Define color of marker icon
-//                        BitmapDescriptor defaultMarker =
-//                                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-//                        // Extract content from alert dialog
-//                        String title = ((EditText) alertDialog.findViewById(R.id.etTitle)).
-//                                getText().toString();
-//                        String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet)).
-//                                getText().toString();
-//                        // Creates and adds marker to the map
-//                        Marker marker = map.addMarker(new MarkerOptions()
-//                                .position(point)
-//                                .title(title)
-//                                .snippet(snippet)
-//                                .icon(defaultMarker));
-//                    }
-//                });
-//
-//        // Configure dialog button (Cancel)
-//        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
-//                });
-//
-//        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Define color of marker icon
-//                        BitmapDescriptor defaultMarker = BitmapDescriptorFactory
-//                                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-//                        // Extract content from alert dialog
-//                        String title = ((EditText) alertDialog.findViewById(R.id.etTitle))
-//                                .getText().toString();
-//                        String snippet = ((EditText) alertDialog.findViewById(R.id.etSnippet))
-//                                .getText().toString();
-//                        // Creates and adds marker to the map
-//                        Marker marker = map.addMarker(new MarkerOptions().position(point)
-//                                .title(title).snippet(snippet).icon(defaultMarker));
-//
-//                        // Animate marker using drop effect
-//                        // --> Call the dropPinEffect method here
-//                        dropPinEffect(marker);
-//                    }
-//                });
-//
-//        // Display the dialog
-//        alertDialog.show();
-//    }
-
-//    private void dropPinEffect(final Marker marker) {
-//        // Handler allows us to repeat a code block after a specified delay
-//        final android.os.Handler handler = new android.os.Handler();
-//        final long start = SystemClock.uptimeMillis();
-//        final long duration = 1500;
-//
-//        // Use the bounce interpolator
-//        final android.view.animation.Interpolator interpolator =
-//                new BounceInterpolator();
-//
-//        // Animate marker with a bounce updating its position every 15ms
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                long elapsed = SystemClock.uptimeMillis() - start;
-//                // Calculate t for bounce based on elapsed time
-//                float t = Math.max(
-//                        1 - interpolator.getInterpolation((float) elapsed
-//                                / duration), 0);
-//                // Set the anchor
-//                marker.setAnchor(0.5f, 1.0f + 14 * t);
-//
-//                if (t > 0.0) {
-//                    // Post this event again 15ms from now.
-//                    handler.postDelayed(this, 15);
-//                } else { // done elapsing, show window
-//                    marker.showInfoWindow();
-//                }
-//            }
-//        });
-//    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -331,7 +191,6 @@ public class DetailedPathFragment extends Fragment {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            //onLocationChanged(location);
                         }
                     }
                 })
@@ -392,11 +251,9 @@ public class DetailedPathFragment extends Fragment {
         // Display the connection status
 
         if (mCurrentLocation != null) {
-            Toast.makeText(getContext(), "GPS location was found!", Toast.LENGTH_SHORT).show();
-            LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+            LatLng latLng = new LatLng(stop1Latitude, stop1Longitude);
 
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-            map.animateCamera(cameraUpdate);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
         } else {
             //Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
@@ -426,76 +283,99 @@ public class DetailedPathFragment extends Fragment {
                 Looper.myLooper());
     }
 
-//    public void onLocationChanged(Location location) {
-//        // GPS may be turned off
-//        if (location == null) {
-//            return;
-//        }
-//
-//        // Report to the UI that the location was updated
-//
-//        mCurrentLocation = location;
-//        String msg = "Updated Location: " +
-//                Double.toString(location.getLatitude()) + "," +
-//                Double.toString(location.getLongitude());
-//        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-//    }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    // Define a DialogFragment that displays the error dialog
-    public static class ErrorDialogFragment extends DialogFragment {
+    private void createStopMarker(Stop stop) {
+        ParseGeoPoint stopLocation = stop.getStopLocation();
+        double stopLatitude = stopLocation.getLatitude();
+        double stopLongitude = stopLocation.getLongitude();
+        BitmapDescriptor smallMarkerIcon = createMarkerIcon();
 
-        // Global field to contain the error dialog
-        private Dialog mDialog;
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(stopLatitude, stopLongitude))
+                .title(stop.getStopName())
+                .snippet(stop.getStopDetails())
+                .icon(smallMarkerIcon)
+        );
+        createStopCircle(stopLatitude, stopLongitude);
+    }
 
-        // Default constructor. Sets the dialog field to null
-        public ErrorDialogFragment() {
-            super();
-            mDialog = null;
+    private void initializeViews() {
+        tvPathName.setText(currentPath.getPathName());
+        tvPathDescription.setText(currentPath.getPathDescription());
+        rbPathRating.setRating(currentPath.getPathRating());
+    }
+
+    private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
+        if (TextUtils.isEmpty(getResources().getString(R.string.google_maps_api_key))) {
+            throw new IllegalStateException("You forgot to supply a Google Maps API key");
         }
 
-        // Set the dialog to display
-        public void setDialog(Dialog dialog) {
-            mDialog = dialog;
+        if (savedInstanceState != null && savedInstanceState.keySet().contains(KEY_LOCATION)) {
+            // Since KEY_LOCATION was found in the Bundle, we can be sure that mCurrentLocation
+            // is not null.
+            mCurrentLocation = savedInstanceState.getParcelable(KEY_LOCATION);
         }
 
-        // Return a Dialog to the DialogFragment.
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return mDialog;
+        mapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap map) {
+                    map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                    loadMap(map);
+                    map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
+                    for (int i = 0; i < stops.size(); i++) {
+                        createStopMarker(stops.get(i));
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(getContext(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void createStopMarker(Stop stop) {
-        ParseGeoPoint stopLocation = stop.getStopLocation();
+    private ArrayList<Stop> createStopsList() {
+        stops = new ArrayList<>();
+        stops.add(currentPath.getStop1());
+        stops.add(currentPath.getStop2());
+        stops.add(currentPath.getStop3());
+        stops.add(currentPath.getStop4());
+        stops.add(currentPath.getStop5());
+        return stops;
+    }
 
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
-                .title(stop.getStopName())
-                .snippet(stop.getStopDetails())
-        );
-        map.addCircle(new CircleOptions()
-                .center(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
-                .radius(30)
-                .strokeColor(Color.RED)
-                .fillColor(0x55FF0000)
+    private Circle createStopCircle(double stopLatitude, double stopLongitude) {
+        return map.addCircle(new CircleOptions()
+                .center(new LatLng(stopLatitude, stopLongitude))
+                .radius(STOP_RADIUS)
+                .strokeColor(Color.MAGENTA)
+                .fillColor(0x55EB1465)
                 .strokeWidth(4));
     }
 
-//
-//    private void createTestMarker() {
-//        map.addMarker(new MarkerOptions()
-//                .position(new LatLng(37.4216, -122.082)));
-//        map.addCircle(new CircleOptions()
-//                .center(new LatLng(37.4216, -122.082))
-//                .radius(30)
-//                .strokeColor(Color.RED)
-//                .fillColor(0x55FF0000)
-//                .strokeWidth(4));
-//    }
+    private BitmapDescriptor createMarkerIcon() {
+        int height = MARKER_HEIGHT;
+        int width = MARKER_WIDTH;
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.gem);;
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        return BitmapDescriptorFactory.fromBitmap(smallMarker);
+    }
+
+    private ParseGeoPoint getLocationOfStop1() {
+        ParseGeoPoint stop1Location = null;
+        try {
+            stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return stop1Location;
+    }
+
+
 
 }
