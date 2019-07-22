@@ -65,7 +65,7 @@ private ImageView gemImage;
 
         gemName = view.findViewById(R.id.tvdetailName);
         gemDescription = view.findViewById(R.id.tvdetailDescr);
-        gemImage = view.findViewById(R.id.ivImage);
+        gemImage = view.findViewById(R.id.ivProfileImag1);
     }
 
 }

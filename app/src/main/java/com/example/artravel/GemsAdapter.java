@@ -1,9 +1,7 @@
 package com.example.artravel;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.Transition;
-import androidx.transition.TransitionInflater;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.GemDetail;
-import com.example.artravel.Fragments.PassportFragment;
 import com.example.artravel.models.Gems;
 import com.parse.ParseFile;
 
@@ -50,7 +44,7 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
 
         public GemsViewHolder(View itemView) {
             super(itemView);
-            gemImage = itemView.findViewById(R.id.ivImage);
+            gemImage = itemView.findViewById(R.id.ivProfileImag1);
             gemName = itemView.findViewById(R.id.tvName);
             itemView.setOnClickListener(this);
 
