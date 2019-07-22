@@ -33,6 +33,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
 

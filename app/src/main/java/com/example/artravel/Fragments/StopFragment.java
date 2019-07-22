@@ -2,9 +2,14 @@ package com.example.artravel.Fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -14,7 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RatingBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,19 +29,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
-import com.example.artravel.Activities.PathDetailsActivity;
+import com.example.artravel.Activities.StreetViewActivity;
 import com.example.artravel.R;
-import com.example.artravel.StopsAdapter;
-import com.example.artravel.StopsItemTouchHelperCallback;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -54,10 +52,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.parse.Parse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 
@@ -65,18 +64,21 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 @RuntimePermissions
-public class DetailedPathFragment extends Fragment {
+public class StopFragment extends Fragment {
 
-    private ArrayList<Stop> stops;
-    private Stop stop1;
-    private double stop1Latitude;
-    private double stop1Longitude;
+    private Path path;
+    private ArrayList<Stop> stopsList;
+    private int stopIndex;
+    private Stop currentStop;
+    private double stopLatitude;
+    private double stopLongitude;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -85,17 +87,12 @@ public class DetailedPathFragment extends Fragment {
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
-    private TextView tvPathName;
-    private TextView tvPathDescription;
-    private RatingBar rbPathRating;
-    private Button btnStartPath;
-    private Path currentPath;
-
-    private final static String KEY_LOCATION = "location";
+    private static final String KEY_LOCATION = "location";
+    private static final int NUM_STOPS = 5;
     private static final int MARKER_HEIGHT = 100;
     private static final int MARKER_WIDTH = 100;
     private static final int STOP_RADIUS = 30;
-    private static final float ZOOM_LEVEL = 14.0f;
+    private static final float ZOOM_LEVEL = 17.5f;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -103,53 +100,56 @@ public class DetailedPathFragment extends Fragment {
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
+    private TextView tvStopName;
+    private TextView tvStopDetails;
+    private TextView tvPathName;
+    private TextView tvStopDistance;
+    private Button btnNextStop;
+    private Button btnStopInfo;
+    private FloatingActionButton btnStreetView;
+
+    private double distanceToStop;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detailed_path, container, false);
+        return inflater.inflate(R.layout.fragment_stop, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initializeBundleArguments();
 
+        tvStopName = view.findViewById(R.id.tvStopName);
+        tvStopDetails = view.findViewById(R.id.tvStopDetails);
         tvPathName = view.findViewById(R.id.tvPathName);
-        tvPathDescription = view.findViewById(R.id.tvPathDescription);
-        rbPathRating = view.findViewById(R.id.rbPathRating);
-        btnStartPath = view.findViewById(R.id.btnStartPath);
-        RecyclerView rvStops = view.findViewById(R.id.rvStops);
-
-        Bundle bundle = this.getArguments();
-        currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
+        btnNextStop = view.findViewById(R.id.btnNextStop);
+        tvStopDistance = view.findViewById(R.id.tvStopDistance);
+        btnStopInfo = view.findViewById(R.id.btnStopInfo);
+        btnStreetView = view.findViewById(R.id.btnStreetView);
 
         initializeViews();
-
-        stops = createStopsList();
-        stop1 = currentPath.getStop1();
-        ParseGeoPoint stop1Location = getLocationOfStop1();
-        stop1Latitude = stop1Location.getLatitude();
-        stop1Longitude = stop1Location.getLongitude();
-
-        StopsAdapter adapter = new StopsAdapter(stops, getContext());
-        rvStops.setAdapter(adapter);
-        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        ItemTouchHelper.Callback callback =
-                new StopsItemTouchHelperCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(rvStops);
-
         setUpMapFragment(savedInstanceState);
 
-        btnStartPath.setOnClickListener(new View.OnClickListener() {
+
+        ParseGeoPoint stopLocation = getLocationOfStop(currentStop);
+        stopLatitude = stopLocation.getLatitude();
+        stopLongitude = stopLocation.getLongitude();
+
+
+        btnNextStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment stopFragment = new StopFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("Path", Parcels.wrap(currentPath));
-                bundle.putParcelable("Stops Array", Parcels.wrap(stops));
-                bundle.putInt("Stop Index", 0);
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+                if (stopIndex < NUM_STOPS - 1) {
+                    stopIndex++;
+                }
+                bundle.putInt("Stop Index", stopIndex);
                 stopFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
@@ -157,18 +157,34 @@ public class DetailedPathFragment extends Fragment {
                         .commit();
             }
         });
+
+        btnStopInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToStopInfoFragment();
+            }
+        });
+
+        btnStreetView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), StreetViewActivity.class);
+                intent.putExtra("Stop Latitude", stopLatitude);
+                intent.putExtra("Stop Longitude", stopLongitude);
+                startActivity(intent);
+            }
+        });
+
     }
 
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
             // Map is ready
-            DetailedPathFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
-            DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
-
-            LatLng latLng = new LatLng(stop1Latitude, stop1Longitude);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,ZOOM_LEVEL));
-
+            StopFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
+            StopFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+            LatLng latLng = new LatLng(stopLatitude, stopLongitude);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
@@ -177,20 +193,20 @@ public class DetailedPathFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        DetailedPathFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        StopFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @SuppressWarnings({"MissingPermission"})
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void getMyLocation() {
         map.setMyLocationEnabled(true);
-
         FusedLocationProviderClient locationClient = getFusedLocationProviderClient(getContext());
         locationClient.getLastLocation()
                 .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
+                            onLocationChanged(location);
                         }
                     }
                 })
@@ -219,45 +235,18 @@ public class DetailedPathFragment extends Fragment {
         super.onStop();
     }
 
-    private boolean isGooglePlayServicesAvailable() {
-        // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
-        // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            // In debug mode, log the status
-            Log.d("Location Updates", "Google Play services is available.");
-            return true;
-        } else {
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                // Create a new DialogFragment for the error dialog
-                PathDetailsActivity.ErrorDialogFragment errorFragment = new PathDetailsActivity.ErrorDialogFragment();
-                errorFragment.setDialog(errorDialog);
-                errorFragment.show(getChildFragmentManager(), "Location Updates");
-            }
-
-            return false;
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
 
         // Display the connection status
-
         if (mCurrentLocation != null) {
-            LatLng latLng = new LatLng(stop1Latitude, stop1Longitude);
-
+            LatLng latLng = new LatLng(stopLatitude, stopLongitude);
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
         } else {
-            //Toast.makeText(getContext(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "Current location was null, enable GPS!", Toast.LENGTH_SHORT).show();
         }
-        DetailedPathFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+        StopFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
@@ -277,12 +266,30 @@ public class DetailedPathFragment extends Fragment {
         getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-                        //onLocationChanged(locationResult.getLastLocation());
+                        onLocationChanged(locationResult.getLastLocation());
                     }
                 },
                 Looper.myLooper());
     }
 
+    public void onLocationChanged(Location location) {
+        // GPS may be turned off
+        if (location == null) {
+            return;
+        }
+        // Update distance
+        mCurrentLocation = location;
+        Location stopLocation = new Location("");
+        stopLocation.setLatitude(stopLatitude);
+        stopLocation.setLongitude(stopLongitude);
+        Log.e("StopFragment", location.getLatitude() + " " + location.getLongitude());
+        distanceToStop = mCurrentLocation.distanceTo(stopLocation);
+
+        if (distanceToStop < STOP_RADIUS) {
+            switchToStopInfoFragment();
+        }
+        tvStopDistance.setText("Approximately " + Math.round(distanceToStop) + " m to " + currentStop.getStopName());
+    }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
@@ -290,24 +297,48 @@ public class DetailedPathFragment extends Fragment {
     }
 
     private void createStopMarker(Stop stop) {
-        ParseGeoPoint stopLocation = stop.getStopLocation();
-        double stopLatitude = stopLocation.getLatitude();
-        double stopLongitude = stopLocation.getLongitude();
-        BitmapDescriptor smallMarkerIcon = createMarkerIcon();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gem);;
+        BitmapDescriptor smallMarkerIcon = createSmallBitmapIcon(bitmap);
 
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(stopLatitude, stopLongitude))
+        ParseGeoPoint stopLocation = getLocationOfStop(stop);
+
+        Marker mapMarker = map.addMarker(new MarkerOptions()
+                .position(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
                 .title(stop.getStopName())
                 .snippet(stop.getStopDetails())
                 .icon(smallMarkerIcon)
         );
-        createStopCircle(stopLatitude, stopLongitude);
+
+        Circle mapCircle = createStopCircle(stopLocation);
+
+        if (stop.equals(currentStop)) {
+            Bitmap stopBitmap = changeBitmapColor(bitmap, Color.CYAN);
+            BitmapDescriptor stopMarkerIcon = createSmallBitmapIcon(stopBitmap);
+            mapMarker.setIcon(stopMarkerIcon);
+            mapCircle.setFillColor(0x302171de);
+            mapCircle.setStrokeColor(Color.BLUE);
+        }
+    }
+
+    private void switchToStopInfoFragment() {
+        Fragment stopInfoFragment = new StopInfoFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Stop", Parcels.wrap(currentStop));
+        bundle.putParcelable("Path", Parcels.wrap(path));
+        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+        bundle.putInt("Stop Index", stopIndex);
+        stopInfoFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment)
+                .commit();
     }
 
     private void initializeViews() {
-        tvPathName.setText(currentPath.getPathName());
-        tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(currentPath.getPathRating());
+        tvStopName.setText(currentStop.getStopName());
+        tvStopDetails.setText(currentStop.getStopDetails());
+        tvPathName.setText(path.getPathName());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
@@ -329,8 +360,9 @@ public class DetailedPathFragment extends Fragment {
                     map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                     loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
-                    for (int i = 0; i < stops.size(); i++) {
-                        createStopMarker(stops.get(i));
+
+                    for (int i = 0; i < stopsList.size(); i++) {
+                        createStopMarker(stopsList.get(i));
                     }
                 }
             });
@@ -339,43 +371,48 @@ public class DetailedPathFragment extends Fragment {
         }
     }
 
-    private ArrayList<Stop> createStopsList() {
-        stops = new ArrayList<>();
-        stops.add(currentPath.getStop1());
-        stops.add(currentPath.getStop2());
-        stops.add(currentPath.getStop3());
-        stops.add(currentPath.getStop4());
-        stops.add(currentPath.getStop5());
-        return stops;
+    private void initializeBundleArguments() {
+        Bundle bundle = this.getArguments();
+        path = Parcels.unwrap(bundle.getParcelable("Path"));
+        stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
+        stopIndex = bundle.getInt("Stop Index");
+        currentStop = stopsList.get(stopIndex);
     }
 
-    private Circle createStopCircle(double stopLatitude, double stopLongitude) {
+    private ParseGeoPoint getLocationOfStop(Stop stop) {
+        ParseGeoPoint stopLocation = null;
+        try {
+            stopLocation = stop.fetchIfNeeded().getParseGeoPoint("stopLocation");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return stopLocation;
+    }
+
+
+    public static Bitmap changeBitmapColor(Bitmap sourceBitmap, int color) {
+        Bitmap resultBitmap = sourceBitmap.copy(sourceBitmap.getConfig(),true);
+        Paint paint = new Paint();
+        ColorFilter filter = new LightingColorFilter(color, 1);
+        paint.setColorFilter(filter);
+        Canvas canvas = new Canvas(resultBitmap);
+        canvas.drawBitmap(resultBitmap, 0, 0, paint);
+        return resultBitmap;
+    }
+
+    private BitmapDescriptor createSmallBitmapIcon(Bitmap bitmap) {
+        int height = MARKER_HEIGHT;
+        int width = MARKER_WIDTH;
+        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        return BitmapDescriptorFactory.fromBitmap(smallMarker);
+    }
+
+    private Circle createStopCircle(ParseGeoPoint stopLocation) {
         return map.addCircle(new CircleOptions()
-                .center(new LatLng(stopLatitude, stopLongitude))
+                .center(new LatLng(stopLocation.getLatitude(), stopLocation.getLongitude()))
                 .radius(STOP_RADIUS)
                 .strokeColor(Color.MAGENTA)
                 .fillColor(0x55EB1465)
                 .strokeWidth(4));
     }
-
-    private BitmapDescriptor createMarkerIcon() {
-        int height = MARKER_HEIGHT;
-        int width = MARKER_WIDTH;
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.gem);;
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-        return BitmapDescriptorFactory.fromBitmap(smallMarker);
-    }
-
-    private ParseGeoPoint getLocationOfStop1() {
-        ParseGeoPoint stop1Location = null;
-        try {
-            stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return stop1Location;
-    }
-
-
-
 }
