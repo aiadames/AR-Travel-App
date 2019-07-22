@@ -37,6 +37,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
 import com.facebook.login.Login;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -93,8 +94,9 @@ public class ProfileFragment extends Fragment {
 
         currentUser = ParseUser.getCurrentUser();
         currentUser.getUsername();
+        ParseFile image = (ParseFile) currentUser.get("image");
         Glide.with(getContext())
-                .load(currentUser.get("image"))
+                .load(image.getUrl())
                 .apply(requestOptions).into(ibProfile);
         tvName.setText(currentUser.getUsername());
 
@@ -159,7 +161,7 @@ public class ProfileFragment extends Fragment {
             filePath = data.getData();
             try{
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
-                Uri myImage = getImageUri(getContext(),bitmap);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500,false);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
@@ -193,7 +195,10 @@ public class ProfileFragment extends Fragment {
                         Log.e("YEET", "Success");
                     }
                 });
-                ibProfile.setImageBitmap(bitmap);
+
+
+               Glide.with(getContext()).load(file.getUrl()).into(ibProfile);
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
