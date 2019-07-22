@@ -16,6 +16,9 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -107,6 +110,7 @@ public class StopFragment extends Fragment {
     private Button btnNextStop;
     private Button btnStopInfo;
     private FloatingActionButton btnStreetView;
+    private FloatingActionButton btnStopZoom;
 
     private double distanceToStop;
 
@@ -120,6 +124,7 @@ public class StopFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeBundleArguments();
+        setHasOptionsMenu(true);
 
         tvStopName = view.findViewById(R.id.tvStopName);
         tvStopDetails = view.findViewById(R.id.tvStopDetails);
@@ -128,6 +133,7 @@ public class StopFragment extends Fragment {
         tvStopDistance = view.findViewById(R.id.tvStopDistance);
         btnStopInfo = view.findViewById(R.id.btnStopInfo);
         btnStreetView = view.findViewById(R.id.btnStreetView);
+        btnStopZoom = view.findViewById(R.id.btnStopZoom);
 
         initializeViews();
         setUpMapFragment(savedInstanceState);
@@ -172,6 +178,14 @@ public class StopFragment extends Fragment {
                 intent.putExtra("Stop Latitude", stopLatitude);
                 intent.putExtra("Stop Longitude", stopLongitude);
                 startActivity(intent);
+            }
+        });
+
+        btnStopZoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LatLng latLng = new LatLng(stopLatitude, stopLongitude);
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
             }
         });
 
@@ -294,6 +308,30 @@ public class StopFragment extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.stop_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.standardMap:
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                return true;
+            case R.id.satelliteMap:
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                return true;
+            case R.id.hybridMap:
+                map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                return true;
+            default:
+                return true;
+        }
     }
 
     private void createStopMarker(Stop stop) {
