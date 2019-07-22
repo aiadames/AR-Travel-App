@@ -20,8 +20,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Path;
+import com.parse.Parse;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 
 import org.parceler.Parcels;
@@ -73,6 +77,13 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         public void bind(Path myPath) {
             mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
+            ParseFile pathImage = myPath.getPathImage();
+            if (pathImage != null){
+                Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
+        }
+            else{
+            mPathImage.setImageResource(R.drawable.ic_path_placeholder);
+        }
 
 
         }
