@@ -74,7 +74,7 @@ public class StopInfoFragment extends Fragment {
                 stopFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment)
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
                         .commit();
             }
         });

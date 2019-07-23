@@ -79,7 +79,7 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
                 details.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, details)
+                fragmentManager.beginTransaction().replace(R.id.flContainer, details).addToBackStack("Gems")
                         .commit();
             }
         }
