@@ -84,26 +84,26 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
             }
         }
     }
-        @Override
-        public GemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view;
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gem, parent, false);
-            GemsViewHolder viewHolder = new GemsViewHolder(view);
-            return viewHolder;
+    @Override
+    public GemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gem, parent, false);
+        GemsViewHolder viewHolder = new GemsViewHolder(view);
+        return viewHolder;
 
-        }
+    }
 
 
-        @Override
-        public void onBindViewHolder(@NonNull GemsViewHolder holder, int position) {
-            Gems currentGem = gemsList.get(position);
-            holder.bind(currentGem);
-        }
+    @Override
+    public void onBindViewHolder(@NonNull GemsViewHolder holder, int position) {
+        Gems currentGem = gemsList.get(position);
+        holder.bind(currentGem);
+    }
 
-        @Override
-        public int getItemCount() {
-            return gemsList.size();
-        }
+    @Override
+    public int getItemCount() {
+        return gemsList.size();
+    }
 
 
 

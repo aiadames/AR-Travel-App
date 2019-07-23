@@ -14,6 +14,7 @@ public class Stop extends ParseObject {
     private static final String KEY_STOP_DETAILS = "stopDetails";
     private static final String KEY_GEM= "gem";
     private static final String KEY_STOP_IMAGE = "stopImage";
+    private static final String KEY_INFO_PARAGRAPH = "infoParagraph";
 
     public Stop() {
     }
@@ -38,7 +39,8 @@ public class Stop extends ParseObject {
         return getParseFile(KEY_STOP_IMAGE);
     }
 
-
-
+    public String getInfoParagraph() {
+        return getString(KEY_INFO_PARAGRAPH);
+    }
 
 }

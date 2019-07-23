@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/changeMapType"
+        android:title="Change map type"
+        app:showAsAction="never" >
+        <menu>
+            <item
+                android:id="@+id/standardMap"
+                android:title="Standard" />
+            <item
+                android:id="@+id/satelliteMap"
+                android:title="Satellite" />
+            <item
+                android:id="@+id/hybridMap"
+                android:title="Hybrid" />
+        </menu>
+        </item>
+</menu>

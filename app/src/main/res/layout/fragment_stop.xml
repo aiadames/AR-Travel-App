@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <fragment
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <include layout="@layout/stop_bottom_sheet" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/btnStreetView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:src="@drawable/street_view"
+    android:clickable="true"
+    android:focusable="true"
+    android:backgroundTint="@android:color/black"
+    app:layout_anchor="@+id/bottom_sheet"
+    app:layout_anchorGravity="top|end" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnStopZoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/gem_button_icon"
+        android:tint="@android:color/holo_blue_light"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabCustomSize="40dp"
+        android:backgroundTint="@color/cardview_light_background"
+        app:backgroundTint="@android:color/darker_gray"
+        app:layout_anchor="@id/map"
+        app:layout_anchorGravity="top|end" />
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

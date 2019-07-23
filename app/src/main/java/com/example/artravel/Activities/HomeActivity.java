@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.artravel.MainActivity;
 import com.example.artravel.R;
@@ -36,6 +37,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment initialize;
+        initialize = new HomeFragment();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, initialize).commit();
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

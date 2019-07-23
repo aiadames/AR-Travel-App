@@ -9,10 +9,20 @@
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:protectionLevel="dangerous" />
 
+    <permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:protectionLevel="dangerous"/>
+    <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:protectionLevel="dangerous"/>
+
+
+
+
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.example.artravel.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
@@ -28,10 +38,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.StreetViewActivity"></activity>
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
-        <activity android:name=".Activities.PathDetailsActivity"></activity>
+        <activity android:name=".Activities.PathDetailsActivity" />
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".MainActivity">
@@ -42,7 +55,9 @@
             </intent-filter>
         </activity>
 
-        <uses-library android:required="true" android:name="com.google.android.maps" />
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -50,26 +65,26 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-            <activity android:name="com.facebook.FacebookActivity"
-                android:configChanges=
-                    "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                android:label="@string/app_name" />
-            <activity
-                android:name="com.facebook.CustomTabActivity"
-                android:exported="true">
-                <intent-filter>
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data android:scheme="@string/fb_login_protocol_scheme" />
-                </intent-filter>
-            </activity>
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
