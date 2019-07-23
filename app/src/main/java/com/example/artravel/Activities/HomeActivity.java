@@ -25,8 +25,7 @@ import com.example.artravel.Fragments.PassportFragment;
 public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private Button mapButton;
-    private TextView tvName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +63,14 @@ public class HomeActivity extends AppCompatActivity {
                         //Toast. makeText(HomeActivity.this, "home",Toast.LENGTH_SHORT).show();
                         break;
                     default:
+                        // shouldn't we be making a new HomeFragment here as the default?
                         break;
                 }
 
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                // will move this later above as home fragment not complete and will not launch other fragments, cannot add to back stack? or is it needed?
+                // set HomeActivity as default first backstack item for time being
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
+
                 return true;
             }
             // bottomNavigationView.setSelectedItemId(R.id.action_home);

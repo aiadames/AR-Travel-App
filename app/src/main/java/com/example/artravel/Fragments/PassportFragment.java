@@ -67,6 +67,12 @@ public class PassportFragment extends Fragment{
         return (View) inflater.inflate(fragment_passport, container, false);
     }
 
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -113,8 +119,9 @@ public class PassportFragment extends Fragment{
             case R.id.action_settings:
                 Fragment profile = new ProfileFragment();
 
-                FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, profile)
+
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, profile).addToBackStack("Passport")
                         .commit();
 
                 return true;

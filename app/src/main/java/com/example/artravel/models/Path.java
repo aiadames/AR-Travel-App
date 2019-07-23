@@ -1,6 +1,7 @@
 package com.example.artravel.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -15,6 +16,7 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_NAME = "pathName";
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
     private static final String KEY_PATH_RATING = "pathRating";
+    private static final String KEY_PATH_IMAGE = "pathImage";
 
     private String mImageUrl;
     private String mPathTitle;
@@ -60,6 +62,10 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_DESCRIPTION);
     }
 
+    public ParseFile getPathImage(){
+        return getParseFile(KEY_PATH_IMAGE);
+    }
+
 
     public static class Query extends ParseQuery<Path> {
 
@@ -68,7 +74,7 @@ public class Path extends ParseObject {
         }
 
         public Query getTop() {
-            setLimit(10);
+            setLimit(20);
             return this;
         }
 

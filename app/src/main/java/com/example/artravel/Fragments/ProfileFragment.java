@@ -101,8 +101,6 @@ public class ProfileFragment extends Fragment {
         tvName.setText(currentUser.getUsername());
 
 
-
-
         ibProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
