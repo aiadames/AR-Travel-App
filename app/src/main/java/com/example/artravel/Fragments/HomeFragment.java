@@ -35,16 +35,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnTest = view.findViewById(R.id.btnTest);
-   //     tvEmail = view.findViewById(R.id.tvEmail);
-     //   tvName = view.findViewById(R.id.tvName);
-       // ivProfile = view.findViewById(R.id.ivProfile);
-
-       // ParseUser user = ParseUser.getCurrentUser();
-    //    tvName.setText(user.getUsername());
-      ///  tvEmail.setText(user.getEmail());
-       // Glide.with(getContext()).load(user.getString("profilePicture")).into(ivProfile);
-
-
 
 
         btnTest.setOnClickListener(new View.OnClickListener() {

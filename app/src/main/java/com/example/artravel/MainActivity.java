@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -39,12 +41,15 @@ import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -59,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
     private Button signUpButton;
     private Button continueNoLoginButton;
     private LoginButton facebookLoginButton;
-    private String id,firstName, lastName, email,gender,birthday;
-    private URL profilePic;
+    private String id, firstName, lastName, email,gender,birthday;
     private CallbackManager callbackManager;
     FacebookCallback<LoginResult> mFacebookCallback;
-    boolean isLoggedInFB;
+    private boolean isLoggedInFB;
+    private URL profilePic;
 
 
     private static final String EMAIL = "email";
@@ -136,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                                     // Application code
                                     try {
                                         id = object.getString("id");
-                                        profilePic = new URL("https://graph.facebook.com/" + id + "/picture?width=500&height=500");
+                                        profilePic =  new URL("https://graph.facebook.com/" + id + "/picture?width=500&height=500");
                                         firstName = object.getString("first_name");
                                         lastName = object.getString("last_name");
                                         email = object.getString("email");
@@ -146,9 +151,10 @@ public class MainActivity extends AppCompatActivity {
                                         //do something with the data here
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                    } catch (MalformedURLException e) {
-                                        e.printStackTrace();
+                                    } catch (MalformedURLException f){
+                                        f.printStackTrace();
                                     }
+
                                     Intent intent = new Intent(MainActivity.this,HomeActivity.class);
                                     checkUser(ParseUser.getCurrentUser(), isLoggedInFB);
                                     startActivity(intent);
@@ -156,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                     Bundle parameters = new Bundle();
-                    parameters.putString("fields", "id, first_name, last_name, email, gender, birthday");
+                    parameters.putString("fields", "id, picture, first_name, last_name, email, gender, birthday");
                     request.setParameters(parameters);
                     request.executeAsync();
 
@@ -215,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else if (currentUser == null && isLoggedInFB == true) {
             try{
-            login(firstName+lastName, "1234");
+                login(firstName+lastName, "1234");
             }
             catch(Exception e){
                 ParseUser user = new ParseUser();
@@ -227,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
+                            Log.d("LoginActivity", "Login successful");
                             final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
@@ -263,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         catch (NoSuchAlgorithmException e) { }
     }
 
-
-
 }
+
+
 

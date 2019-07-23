@@ -146,6 +146,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathList.clear();
             mPathList.addAll((List) filterResults.values);
             notifyDataSetChanged();
+
         }
     };
 

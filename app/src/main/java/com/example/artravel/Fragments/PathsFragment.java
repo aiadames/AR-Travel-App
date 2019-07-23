@@ -69,7 +69,11 @@ public class PathsFragment extends Fragment {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                // Add whatever code is needed to append new items to the bottom of the list
-                loadEndless();
+                if (mAdapter.getFilter() == null) {
+                    loadEndless();
+                } else{
+                    Log.d("Filter On", "Filter is on, do not query for more paths");
+                }
             }
         };
         mRecyclerViewPaths.addOnScrollListener(scrollListener);
@@ -77,7 +81,6 @@ public class PathsFragment extends Fragment {
     }
 
     protected void loadTopPaths() {
-
         final Path.Query pathsQuery = new Path.Query();
         pathsQuery.getTop();
         pathsQuery.addDescendingOrder(Path.KEY_CREATED_AT);
