@@ -24,8 +24,7 @@ import com.example.artravel.Fragments.PassportFragment;
 public class HomeActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private Button mapButton;
-    private TextView tvName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
