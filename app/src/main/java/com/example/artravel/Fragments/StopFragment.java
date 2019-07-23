@@ -164,7 +164,7 @@ public class StopFragment extends Fragment {
                 stopFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
                         .commit();
             }
         });
@@ -396,8 +396,7 @@ public class StopFragment extends Fragment {
         stopInfoFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment)
-                .commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).addToBackStack("Stop").commit();
     }
 
     private void initializeViews() {
