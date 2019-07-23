@@ -117,13 +117,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
         mFacebookCallback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {

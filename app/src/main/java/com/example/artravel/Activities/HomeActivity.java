@@ -36,6 +36,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment initialize;
+        initialize = new HomeFragment();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, initialize).commit();
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
