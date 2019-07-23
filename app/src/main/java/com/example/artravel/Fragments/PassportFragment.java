@@ -108,7 +108,7 @@ public class PassportFragment extends Fragment {
                 Fragment profile = new ProfileFragment();
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, profile)
+                fragmentManager.beginTransaction().replace(R.id.flContainer, profile).addToBackStack("Passport")
                         .commit();
 
                 return true;

@@ -67,7 +67,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                     detail.setArguments(bundle);
 
                     FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, detail)
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
                             .commit();
 
 

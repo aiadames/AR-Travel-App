@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.artravel.MainActivity;
 import com.example.artravel.R;
@@ -59,10 +60,14 @@ public class HomeActivity extends AppCompatActivity {
                         //Toast. makeText(HomeActivity.this, "home",Toast.LENGTH_SHORT).show();
                         break;
                     default:
+                        // shouldn't we be making a new HomeFragment here as the default?
                         break;
                 }
 
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                // will move this later above as home fragment not complete and will not launch other fragments, cannot add to back stack? or is it needed?
+                // set HomeActivity as default first backstack item for time being
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
+
                 return true;
             }
             // bottomNavigationView.setSelectedItemId(R.id.action_home);
