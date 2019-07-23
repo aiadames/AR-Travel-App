@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.StreetViewActivity;
@@ -114,6 +115,10 @@ public class StopFragment extends Fragment {
 
     private double distanceToStop;
 
+
+    /*
+     * Method that inflates the fragment_stop XML layout file for the Stop fragment.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -159,7 +164,7 @@ public class StopFragment extends Fragment {
                 stopFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment)
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .commit();
             }
         });
@@ -191,6 +196,10 @@ public class StopFragment extends Fragment {
 
     }
 
+    /*
+     * Method that loads the GoogleMap into the map fragment. It zooms into the stop's location
+     * when it is initialized.
+     */
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
         if (map != null) {
@@ -286,6 +295,10 @@ public class StopFragment extends Fragment {
                 Looper.myLooper());
     }
 
+    /*
+     * Method that is called when the GPS location is first found and when it is found to change during the regular
+     * updates. It calculates the distance of the user's location to the stop.
+     */
     public void onLocationChanged(Location location) {
         // GPS may be turned off
         if (location == null) {
@@ -299,6 +312,7 @@ public class StopFragment extends Fragment {
         Log.e("StopFragment", location.getLatitude() + " " + location.getLongitude());
         distanceToStop = mCurrentLocation.distanceTo(stopLocation);
 
+        // Switch to stop information fragment when user is within the specified radius of the stop
         if (distanceToStop < STOP_RADIUS) {
             switchToStopInfoFragment();
         }
@@ -310,6 +324,10 @@ public class StopFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    /*
+     * Method that inflates the XML layout file for the stop fragment menu, which allows the user
+     * to view settings for the map type.
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -317,6 +335,10 @@ public class StopFragment extends Fragment {
         inflater.inflate(R.menu.stop_fragment_menu, menu);
     }
 
+    /*
+     * Method that is called when an item is selected from the menu in the stop fragment.
+     * The switch statement is used to identify which menu item was selected.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -334,6 +356,11 @@ public class StopFragment extends Fragment {
         }
     }
 
+
+    /*
+     * Method to create a stop marker for the Stop that is passed in as an argument. It places
+     * a gem marker at that position and a circle representing the area containing the gem.
+     */
     private void createStopMarker(Stop stop) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.gem);;
         BitmapDescriptor smallMarkerIcon = createSmallBitmapIcon(bitmap);

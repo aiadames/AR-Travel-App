@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvStopDetails"
         android:layout_marginLeft="10dp"
-        android:text="TextView" />
+        android:text="Loading distance ..." />
 
     <Button
         android:id="@+id/btnStopInfo"
