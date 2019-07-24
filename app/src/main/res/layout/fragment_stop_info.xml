@@ -59,6 +59,12 @@
         android:id="@+id/btnInfoNextStop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:text="Continue to next stop" />
+
+    <Button
+        android:id="@+id/btnQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Answer question" />
 </LinearLayout>
