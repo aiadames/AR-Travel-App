@@ -12,7 +12,7 @@ public class Stop extends ParseObject {
     private static final String KEY_STOP_LOCATION = "stopLocation";
     private static final String KEY_STOP_NAME = "stopName";
     private static final String KEY_STOP_DETAILS = "stopDetails";
-    private static final String KEY_GEM= "gem";
+    private static final String KEY_GEM= "stopGem";
     private static final String KEY_STOP_IMAGE = "stopImage";
     private static final String KEY_INFO_PARAGRAPH = "infoParagraph";
 
