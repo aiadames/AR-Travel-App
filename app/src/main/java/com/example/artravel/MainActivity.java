@@ -59,7 +59,7 @@ import java.util.Arrays;
 
 import javax.security.auth.login.LoginException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText usernameInput;
     private EditText passwordInput;
@@ -98,8 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (ParseUser.getCurrentUser() != null){
             checkUser(ParseUser.getCurrentUser(), false);
+        } else if (AccessToken.getCurrentAccessToken() != null){
+            // just set user id
+            Log.d("Login Activity", "Access token valid, already logged in via Facebook");
+            checkUser(ParseUser.getCurrentUser(), true);
         }
-
 
 
         callbackManager = CallbackManager.Factory.create();
@@ -112,12 +115,19 @@ public class MainActivity extends AppCompatActivity {
         facebookLoginButton = (LoginButton) findViewById(R.id.login_button);
 
 
+        loginButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
+        continueNoLoginButton.setOnClickListener(this);
+
+
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                String accesstoken = loginResult.getAccessToken().getToken();
+                Log.d("fb", "request");
+
+              //  Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+              //   String accesstoken = loginResult.getAccessToken().getToken();
 
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
@@ -127,14 +137,12 @@ public class MainActivity extends AppCompatActivity {
                         getData(object);
                     }
                 });
-
-
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,email,first_name,last_name");
                 request.setParameters(parameters);
                 request.executeAsync();
+                Log.d("fb", "request user log in now");
                 checkUser(ParseUser.getCurrentUser(), true);
-
             }
 
             @Override
@@ -147,45 +155,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        // if already logged in
-        if(AccessToken.getCurrentAccessToken() != null){
-            // just set user id
-            Log.d("logIN", "already logged in");
-            checkUser(ParseUser.getCurrentUser(), true);
-
-        }
-
-
-        // else, leave on login screen, grab user input if tried to login with username and password
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                username = usernameInput.getText().toString();
-                password = passwordInput.getText().toString();
-                checkUser(ParseUser.getCurrentUser(), false);
-            }
-        });
-
-        // else, take to new create an account activity where can put in info
-        signUpButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        continueNoLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-    // retrieving FB data
+
+
+    // retrieving FB data in graph request
     private void getData(JSONObject object) {
         try{
             profilePic = new URL("https://graph.facebook.com/"+object.getString("id")+"/picture?width=500&height=500");
@@ -201,30 +175,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-   /* private void login(String username, String password) {
-        // don't want to login on main thread, will clog up UI
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e == null){
-                    Log.d("LoginActivity", "Login successful");
-                    final Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Log.d("LoginActivity", "Login failure");
-                    e.printStackTrace();
-                    return;
-
-                }
-            }
-        });
-
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.bLogin:
+                // leave on login screen, grab user input if trying to login with username and password
+                username = usernameInput.getText().toString();
+                password = passwordInput.getText().toString();
+                checkUser(ParseUser.getCurrentUser(), false);
+                break;
+            case R.id.bSignUp:
+                // else, take to new create an account activity where can put in info
+                Intent signUpIntent = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(signUpIntent);
+                break;
+            case R.id.bContinueNoLogin:
+                Intent noLoginIntent = new Intent(MainActivity.this,HomeActivity.class);
+                startActivity(noLoginIntent);
+                break;
+        }
     }
-*/
-
-
-
 
     public void checkUser(ParseUser currentUser, boolean isLoggedInFB) {
         // if there exists a current user, send intent automatically to main timeline screen for persistence
@@ -233,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else if (currentUser == null && isLoggedInFB == true) {
-            // login(firstName+lastName, "1234");
             ParseUser.logInInBackground(firstName + lastName, "1234", new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
@@ -242,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
                         final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
-                    } else {
+                    } else if (e != null) {
+                        Log.d("fb", "create new account on parse");
                         ParseUser newUser = new ParseUser();
                         newUser.setUsername(firstName + lastName);
                         newUser.setPassword("1234");
