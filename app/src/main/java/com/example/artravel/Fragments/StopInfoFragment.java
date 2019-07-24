@@ -40,6 +40,7 @@ public class StopInfoFragment extends Fragment {
     private ImageView ivInfoStopImage;
     private TextView tvInfoParagraph;
     private Button btnInfoNextStop;
+    private Button btnAnswerQuestion;
 
     private static final int NUM_STOPS = 5;
 
@@ -54,38 +55,18 @@ public class StopInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-
-
-
         tvInfoStopTitle = view.findViewById(R.id.tvInfoStopTitle);
         ivInfoStopImage = view.findViewById(R.id.ivInfoStopImage);
         tvInfoParagraph = view.findViewById(R.id.tvInfoParagraph);
         btnInfoNextStop = view.findViewById(R.id.btnInfoNextStop);
+        btnAnswerQuestion = view.findViewById(R.id.btnQuestion);
 
         initializeBundleArguments();
         initializeViews();
 
 
-        // testing my multiple choice retrieved
-        ArrayList<String> myList;
-        String answer;
-        String question;
-        myList = stop.getStopMultipleChoice();
-        answer =stop.getStopAnswer();
-        question = stop.getStopQuestion();
-        Integer size = myList.size();
-        Log.d("Yeet",size.toString());
-        Log.d("Yeet", answer);
-        Log.d("Yeet", question);
 
 
-        // add gems to relation of specific user for passport use
-        ParseUser user = ParseUser.getCurrentUser();
-        ParseRelation<Gems> relation = user.getRelation("collectedGems");
-        relation.add(stop.getGem());
-        user.saveInBackground();
 
         btnInfoNextStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,13 +83,50 @@ public class StopInfoFragment extends Fragment {
                 bundle.putInt("Stop Index", stopIndex);
                 stopFragment.setArguments(bundle);
 
-
-
-
-
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
                         .commit();
+            }
+        });
+
+        btnAnswerQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // testing my multiple choice retrieved
+                ArrayList<String> myList;
+                String answer;
+                String question;
+                myList = stop.getStopMultipleChoice();
+                answer =stop.getStopAnswer();
+                question = stop.getStopQuestion();
+                Integer size = myList.size();
+                Log.d("Yeet",size.toString());
+                Log.d("Yeet", answer);
+                Log.d("Yeet", question);
+
+
+                Fragment questionFragment = new QuestionFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Stop", Parcels.wrap(stop));
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+                bundle.putInt("Stop Index", stopIndex);
+                questionFragment.setArguments(bundle);
+
+
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop Info")
+                        .commit();
+
+
+                // add gems to relation of specific user for passport use
+                ParseUser user = ParseUser.getCurrentUser();
+                ParseRelation<Gems> relation = user.getRelation("collectedGems");
+                relation.add(stop.getGem());
+                user.saveInBackground();
+
+
             }
         });
 
