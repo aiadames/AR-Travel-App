@@ -11,11 +11,11 @@
         android:layout_width="196dp"
         android:layout_height="39dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,4 +106,17 @@
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/btnChoice4"
         app:layout_constraintTop_toBottomOf="@+id/tvChoice3" />
+
+    <TextView
+        android:id="@+id/tvAttemptsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="Attempts Left: 3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

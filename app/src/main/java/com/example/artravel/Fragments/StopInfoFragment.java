@@ -92,19 +92,6 @@ public class StopInfoFragment extends Fragment {
         btnAnswerQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // testing my multiple choice retrieved
-                ArrayList<String> myList;
-                String answer;
-                String question;
-                myList = stop.getStopMultipleChoice();
-                answer =stop.getStopAnswer();
-                question = stop.getStopQuestion();
-                Integer size = myList.size();
-                Log.d("Yeet",size.toString());
-                Log.d("Yeet", answer);
-                Log.d("Yeet", question);
-
-
                 Fragment questionFragment = new QuestionFragment();
 
                 Bundle bundle = new Bundle();
@@ -120,11 +107,6 @@ public class StopInfoFragment extends Fragment {
                         .commit();
 
 
-                // add gems to relation of specific user for passport use
-                ParseUser user = ParseUser.getCurrentUser();
-                ParseRelation<Gems> relation = user.getRelation("collectedGems");
-                relation.add(stop.getGem());
-                user.saveInBackground();
 
 
             }
