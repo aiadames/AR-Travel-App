@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -72,20 +73,32 @@ public class StopInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Fragment stopFragment = new StopFragment();
+                Fragment gemLocationFragment = new GemLocationFragment();
 
                 Bundle bundle = new Bundle();
+                bundle.putParcelable("Stop", Parcels.wrap(stop));
                 bundle.putParcelable("Path", Parcels.wrap(path));
                 bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-                if (stopIndex < NUM_STOPS - 1) {
-                    stopIndex++;
-                }
-                bundle.putInt("Stop Index", stopIndex);
-                stopFragment.setArguments(bundle);
+                bundle.putInt("Stop Index", 0);
+                gemLocationFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
-                        .commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
+
+//                Fragment stopFragment = new StopFragment();
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("Path", Parcels.wrap(path));
+//                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+//                if (stopIndex < NUM_STOPS - 1) {
+//                    stopIndex++;
+//                }
+//                bundle.putInt("Stop Index", stopIndex);
+//                stopFragment.setArguments(bundle);
+//
+//                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
+//                        .commit();
             }
         });
 
