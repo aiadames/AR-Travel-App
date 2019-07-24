@@ -8,13 +8,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.artravel.R;
+import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -26,6 +30,7 @@ public class QuestionFragment extends Fragment {
     private TextView tvChoice2;
     private TextView tvChoice3;
     private TextView tvChoice4;
+    private TextView tvUserAttemptsLeft;
     private Button btnChoice1;
     private Button btnChoice2;
     private Button btnChoice3;
@@ -34,6 +39,9 @@ public class QuestionFragment extends Fragment {
     private Path path;
     private String stopAnswer;
     String myCorrectButton;
+    private int userAttemptsLeft;
+    private boolean recievesGem;
+    private boolean answeredQuestion;
 
     @Nullable
     @Override
@@ -54,60 +62,86 @@ public class QuestionFragment extends Fragment {
         tvChoice2 = view.findViewById(R.id.tvChoice2);
         tvChoice3 = view.findViewById(R.id.tvChoice3);
         tvChoice4 = view.findViewById(R.id.tvChoice4);
+        tvUserAttemptsLeft = view.findViewById(R.id.tvAttemptsLeft);
 
-
+        userAttemptsLeft = 3;
+        recievesGem = false;
+        answeredQuestion = false;
         initializeBundleArguments();
         initializeViews();
 
         stopAnswer = stop.getStopAnswer();
 
 
-        btnChoice1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+        while (userAttemptsLeft >= 0 && answeredQuestion == false) {
+
+
+            btnChoice1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                        answeredQuestion = true;
+                    } else {
+                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                        userAttemptsLeft -= 1;
+                    }
                 }
-            }
-        });
+            });
 
-
-        btnChoice2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+            btnChoice2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                        answeredQuestion = true;
+                    } else {
+                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                        userAttemptsLeft -= 1;
+                    }
                 }
-            }
-        });
+            });
 
 
-        btnChoice3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+            btnChoice3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                        answeredQuestion = true;
+
+                    } else {
+                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                        userAttemptsLeft -= 1;
+                    }
                 }
-            }
-        });
+            });
 
-        btnChoice4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+            btnChoice4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                        answeredQuestion = true;
+                    } else {
+                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+
+
+                    }
                 }
-            }
-        });
+            });
 
+            userAttemptsLeft -= 1;
+
+        }
+
+        doneAnswering();
+
+        // add gems to relation of specific user for passport use
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<Gems> relation = user.getRelation("collectedGems");
+        relation.add(stop.getGem());
+        user.saveInBackground();
 
     }
 
@@ -126,6 +160,15 @@ public class QuestionFragment extends Fragment {
         Bundle bundle = this.getArguments();
         stop = Parcels.unwrap(bundle.getParcelable("Stop"));
         path = Parcels.unwrap(bundle.getParcelable("Path"));
+    }
+
+    private void doneAnswering(){
+        if(answeredQuestion && userAttemptsLeft >=0){
+            recievesGem = true;
+            Toast.makeText(getContext(), "congrats, you get a gem!", Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(getContext(), "sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
