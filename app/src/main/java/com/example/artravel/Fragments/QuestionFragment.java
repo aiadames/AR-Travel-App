@@ -79,48 +79,35 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
 
     // for each button click if the corresponding text answer matches the Stop object answer
-    // if so, change value of answered question to true and change button background color to green
-    @Override
+    // if so, call helper method correctAnswer to display corresponding changes, else call falseAnswer
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnChoice1:
                 if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                    btnChoice1.setBackgroundResource(R.color.green);
-                    answeredQuestion = true;
+                    correctAnswer(btnChoice1);
                 } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                    userAttemptsLeft -= 1;
+                    falseAnswer();
                 }
                 break;
             case R.id.btnChoice2:
                 if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                    btnChoice2.setBackgroundResource(R.color.green);
-                    answeredQuestion = true;
+                    correctAnswer(btnChoice2);
                 } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                    userAttemptsLeft -= 1;
+                    falseAnswer();
                 }
                 break;
             case R.id.btnChoice3:
                 if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                    btnChoice3.setBackgroundResource(R.color.green);
-                    answeredQuestion = true;
+                    correctAnswer(btnChoice3);
                 } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                    userAttemptsLeft -= 1;
+                    falseAnswer();
                 }
                 break;
             case R.id.btnChoice4:
                 if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                    btnChoice4.setBackgroundResource(R.color.green);
-                    answeredQuestion = true;
+                    correctAnswer(btnChoice4);
                 } else {
-                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                    userAttemptsLeft -= 1;
+                    falseAnswer();
                 }
                 break;
 
@@ -189,6 +176,19 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         answeredQuestion = false;
         userAttemptsLeft = 3;
         recievesGem = false;
+    }
+
+
+    // change value of answered question to true and change button background color to green
+    public void correctAnswer(Button button){
+        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+        button.setBackgroundResource(R.color.green);
+        answeredQuestion = true;
+    }
+    // change value of attempts by 1
+    public void falseAnswer(){
+        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+        userAttemptsLeft -= 1;
     }
 
 
