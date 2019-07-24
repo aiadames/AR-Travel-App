@@ -1,6 +1,7 @@
 package com.example.artravel.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,12 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.R;
+import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.parse.ParseFile;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -50,6 +54,11 @@ public class StopInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
+
+
+
         tvInfoStopTitle = view.findViewById(R.id.tvInfoStopTitle);
         ivInfoStopImage = view.findViewById(R.id.ivInfoStopImage);
         tvInfoParagraph = view.findViewById(R.id.tvInfoParagraph);
@@ -57,6 +66,26 @@ public class StopInfoFragment extends Fragment {
 
         initializeBundleArguments();
         initializeViews();
+
+
+        // testing my multiple choice retrieved
+        ArrayList<String> myList;
+        String answer;
+        String question;
+        myList = stop.getStopMultipleChoice();
+        answer =stop.getStopAnswer();
+        question = stop.getStopQuestion();
+        Integer size = myList.size();
+        Log.d("Yeet",size.toString());
+        Log.d("Yeet", answer);
+        Log.d("Yeet", question);
+
+
+        // add gems to relation of specific user for passport use
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<Gems> relation = user.getRelation("collectedGems");
+        relation.add(stop.getGem());
+        user.saveInBackground();
 
         btnInfoNextStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +101,10 @@ public class StopInfoFragment extends Fragment {
                 }
                 bundle.putInt("Stop Index", stopIndex);
                 stopFragment.setArguments(bundle);
+
+
+
+
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
@@ -99,6 +132,7 @@ public class StopInfoFragment extends Fragment {
         path = Parcels.unwrap(bundle.getParcelable("Path"));
         stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
         stopIndex = bundle.getInt("Stop Index");
+
     }
 
 }

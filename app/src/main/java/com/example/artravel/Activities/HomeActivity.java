@@ -75,5 +75,18 @@ public class HomeActivity extends AppCompatActivity {
             }
             // bottomNavigationView.setSelectedItemId(R.id.action_home);
         });
+
+
+
     }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }
