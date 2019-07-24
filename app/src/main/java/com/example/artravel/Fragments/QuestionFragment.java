@@ -22,7 +22,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment implements View.OnClickListener {
 
 
     private TextView stopQuestion;
@@ -39,7 +39,9 @@ public class QuestionFragment extends Fragment {
     private Path path;
     private String stopAnswer;
     String myCorrectButton;
-    private int userAttemptsLeft;
+
+
+    private Integer userAttemptsLeft;
     private boolean recievesGem;
     private boolean answeredQuestion;
 
@@ -64,89 +66,79 @@ public class QuestionFragment extends Fragment {
         tvChoice4 = view.findViewById(R.id.tvChoice4);
         tvUserAttemptsLeft = view.findViewById(R.id.tvAttemptsLeft);
 
-        userAttemptsLeft = 3;
-        recievesGem = false;
-        answeredQuestion = false;
-        initializeBundleArguments();
+        // setting up OnClickListener override method for switch statement
+        btnChoice1.setOnClickListener(this);
+        btnChoice2.setOnClickListener(this);
+        btnChoice3.setOnClickListener(this);
+        btnChoice4.setOnClickListener(this);
+
+        initializeValues();
         initializeViews();
-
-        stopAnswer = stop.getStopAnswer();
-
-
-        while (userAttemptsLeft >= 0 && answeredQuestion == false) {
-
-
-            btnChoice1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                        answeredQuestion = true;
-                    } else {
-                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                        userAttemptsLeft -= 1;
-                    }
-                }
-            });
-
-            btnChoice2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                        answeredQuestion = true;
-                    } else {
-                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                        userAttemptsLeft -= 1;
-                    }
-                }
-            });
-
-
-            btnChoice3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                        answeredQuestion = true;
-
-                    } else {
-                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-                        userAttemptsLeft -= 1;
-                    }
-                }
-            });
-
-            btnChoice4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
-                        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                        answeredQuestion = true;
-                    } else {
-                        Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                }
-            });
-
-            userAttemptsLeft -= 1;
-
-        }
-
-        doneAnswering();
-
-        // add gems to relation of specific user for passport use
-        ParseUser user = ParseUser.getCurrentUser();
-        ParseRelation<Gems> relation = user.getRelation("collectedGems");
-        relation.add(stop.getGem());
-        user.saveInBackground();
 
     }
 
+
+    // for each button click if the corresponding text answer matches the Stop object answer
+    // if so, change value of answered question to true and change button background color to green
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnChoice1:
+                if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                    btnChoice1.setBackgroundResource(R.color.green);
+                    answeredQuestion = true;
+                } else {
+                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                    userAttemptsLeft -= 1;
+                }
+                break;
+            case R.id.btnChoice2:
+                if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                    btnChoice2.setBackgroundResource(R.color.green);
+                    answeredQuestion = true;
+                } else {
+                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                    userAttemptsLeft -= 1;
+                }
+                break;
+            case R.id.btnChoice3:
+                if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                    btnChoice3.setBackgroundResource(R.color.green);
+                    answeredQuestion = true;
+                } else {
+                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                    userAttemptsLeft -= 1;
+                }
+                break;
+            case R.id.btnChoice4:
+                if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                    Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                    btnChoice4.setBackgroundResource(R.color.green);
+                    answeredQuestion = true;
+                } else {
+                    Toast.makeText(getContext(), "Wrong!", Toast.LENGTH_SHORT).show();
+                    userAttemptsLeft -= 1;
+                }
+                break;
+
+        }
+
+        // update the user on how many attempts they have via the text view display
+        // additionally, check if has answered question or if user attempts are depleted
+        updateTextView(userAttemptsLeft);
+        if (userAttemptsLeft == 0 || answeredQuestion == true){
+            doneAnswering();
+        }
+    }
+
+
+    // set displays of all mutliple choice answers, attempts left, and question to answer
     private void initializeViews() {
         stopQuestion.setText(stop.getStopQuestion());
+        tvUserAttemptsLeft.setText("Attempts Left: " + userAttemptsLeft.toString());
         tvChoice1.setText(stop.getStopMultipleChoice().get(0));
         tvChoice2.setText(stop.getStopMultipleChoice().get(1));
         tvChoice3.setText(stop.getStopMultipleChoice().get(2));
@@ -156,19 +148,47 @@ public class QuestionFragment extends Fragment {
 
     }
 
-    private void initializeBundleArguments() {
+    // unwrap bundle to get Stop and Path object for data user, also set up all  initial
+    // values for this run of the fragment such as the user attempts, if question answered, and if gets gem
+    private void initializeValues() {
         Bundle bundle = this.getArguments();
         stop = Parcels.unwrap(bundle.getParcelable("Stop"));
         path = Parcels.unwrap(bundle.getParcelable("Path"));
+        userAttemptsLeft = 3;
+        recievesGem = false;
+        answeredQuestion = false;
+        stopAnswer = stop.getStopAnswer();
+
     }
 
     private void doneAnswering(){
         if(answeredQuestion && userAttemptsLeft >=0){
-            recievesGem = true;
+            // launch camera if we implement AR recognition will go here
             Toast.makeText(getContext(), "congrats, you get a gem!", Toast.LENGTH_SHORT).show();
+            // add gems to relation of specific user for passport use
+            ParseUser user = ParseUser.getCurrentUser();
+            ParseRelation<Gems> relation = user.getRelation("collectedGems");
+            relation.add(stop.getGem());
+            user.saveInBackground();
         } else{
             Toast.makeText(getContext(), "sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
         }
+
+        // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
+        resetValues();
+        // send intent to next stop
+    }
+
+
+
+    public void updateTextView(Integer userAttemptsLeft) {
+        tvUserAttemptsLeft.setText("Attempts Left: " + userAttemptsLeft.toString());
+    }
+
+    public void resetValues(){
+        answeredQuestion = false;
+        userAttemptsLeft = 3;
+        recievesGem = false;
     }
 
 
