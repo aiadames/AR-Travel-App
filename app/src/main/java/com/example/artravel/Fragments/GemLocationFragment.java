@@ -176,18 +176,17 @@ public class GemLocationFragment extends Fragment {
     }
 
     private void switchToQuestionFragment() {
-        Fragment stopInfoFragment = new StopInfoFragment();
+        Fragment questionFragment = new QuestionFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("Stop", Parcels.wrap(stop));
         bundle.putParcelable("Path", Parcels.wrap(path));
         bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
         bundle.putInt("Stop Index", stopIndex);
-        stopInfoFragment.setArguments(bundle);
+        questionFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        //TODO -- change this to question fragment
-        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).addToBackStack("Stop").commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop").commit();
     }
 
 
