@@ -43,6 +43,8 @@
             android:name=".Activities.passportSceneform"
             android:label="@string/title_activity_passport_sceneform"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activities.ARImageActivity">
+        </activity>
         <activity android:name=".Activities.StreetViewActivity" />
 
         <uses-library
@@ -52,7 +54,7 @@
         <activity android:name=".Activities.PathDetailsActivity" />
         <activity
             android:name=".Activities.HomeActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

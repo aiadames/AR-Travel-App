@@ -67,7 +67,9 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
@@ -101,7 +103,7 @@ public class DetailedPathFragment extends Fragment {
     private static final int MARKER_HEIGHT = 100;
     private static final int MARKER_WIDTH = 100;
     private static final int STOP_RADIUS = 30;
-    private static final float ZOOM_LEVEL = 14.0f;
+    private static final float ZOOM_LEVEL = 13.0f;
 
     boolean inProgress = false;
 
@@ -127,74 +129,98 @@ public class DetailedPathFragment extends Fragment {
         btnStartPath = view.findViewById(R.id.btnStartPath);
         RecyclerView rvStops = view.findViewById(R.id.rvStops);
 
-        btnStartPath.setVisibility(View.VISIBLE);
-
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
 
         initializeViews();
 
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if (currentUser != null) {
-//            ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
-//            relation.getQuery().findInBackground(new FindCallback<Path>() {
-//                @Override
-//                public void done(List<Path> objects, ParseException e) {
-//                    if (e != null) {
-//                        e.printStackTrace();
-//                    } else {
-//                        Log.e("DetailedPathFragment", "Success!");
-//                        for (int i = 0; i < objects.size(); i++) {
-//                            if (objects.get(i).getObjectId().equals(currentPath.getObjectId())) {
-//                                btnStartPath.setText("Resume path");
-//                                inProgress = true;
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
+            relation.getQuery().findInBackground(new FindCallback<Path>() {
+                @Override
+                public void done(List<Path> objects, ParseException e) {
+                    if (e != null) {
+                        e.printStackTrace();
+                    } else {
+                        Log.e("DetailedPathFragment", "Success!");
+                        for (int i = 0; i < objects.size(); i++) {
+                            if (objects.get(i).getObjectId().equals(currentPath.getObjectId())) {
+                                btnStartPath.setText("Resume path");
+                                inProgress = true;
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         stops = createStopsList();
-        stop1 = currentPath.getStop1();
-        ParseGeoPoint stop1Location = getLocationOfStop1();
-        stop1Latitude = stop1Location.getLatitude();
-        stop1Longitude = stop1Location.getLongitude();
+//        stop1 = currentPath.getStop1();
+//        ParseGeoPoint stop1Location = getLocationOfStop1();
+//        stop1Latitude = stop1Location.getLatitude();
+//        stop1Longitude = stop1Location.getLongitude();
 
 
-//        ArrayList<Stop> newStops = new ArrayList<>();
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if (currentUser != null) {
-//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-//            relation.getQuery().findInBackground(new FindCallback<Stop>() {
-//                @Override
-//                public void done(List<Stop> objects, ParseException e) {
-//                    if (e != null) {
-//                        e.printStackTrace();
-//                    } else {
-//                        for (int i = 0; i < objects.size(); i++) {
-//                            for (int j = 0; j < stops.size(); j++) {
-//                                if (stops.get(j).getObjectId().equals(objects.get(i).getObjectId())) {
-//                                    Log.e("DetailedPathFragment", objects.get(i).getStopName());
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
+        // REPLACE THIS CODE WITH CODE BELOW IF YOU WANT ALL STOPS TO SHOW - OTHERWISE SHOWS ONLY STOPS THAT HAVEN'T BEEN VISITED
+        // Can modify this code to display already visited stops differently
+        ArrayList<Stop> newStops = new ArrayList<>();
+        newStops.addAll(stops);
+        if (currentUser != null) {
+            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+            relation.getQuery().findInBackground(new FindCallback<Stop>() {
+                @Override
+                public void done(List<Stop> objects, ParseException e) {
+                    if (e != null) {
+                        e.printStackTrace();
+                    } else {
+                        for (int i = 0; i < stops.size(); i++) {
+                            for (int j = 0; j < objects.size(); j++) {
+                                if (stops.get(i).getObjectId().equals(objects.get(j).getObjectId())) {
+                                    newStops.remove(stops.get(i));
+                                }
+                            }
+                        }
+                    }
 
+                    stops = newStops;
+                    if (stops.size() >= 1) {
+                        stop1 = stops.get(0);
+                    }
+                    else {
+                        stop1 = currentPath.getStop1();
+                    }
+                    ParseGeoPoint stop1Location = getLocationOfStop(stop1);
+                    stop1Latitude = stop1Location.getLatitude();
+                    stop1Longitude = stop1Location.getLongitude();
 
-        StopsAdapter adapter = new StopsAdapter(stops, getContext());
-        rvStops.setAdapter(adapter);
-        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
+                    StopsAdapter adapter = new StopsAdapter(stops, getContext());
+                    rvStops.setAdapter(adapter);
+                    rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ItemTouchHelper.Callback callback =
-                new StopsItemTouchHelperCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(rvStops);
+                    ItemTouchHelper.Callback callback =
+                            new StopsItemTouchHelperCallback(adapter);
+                    ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+                    touchHelper.attachToRecyclerView(rvStops);
 
-        setUpMapFragment(savedInstanceState);
+                    setUpMapFragment(savedInstanceState);
+                }
+            });
+        }
+//
+//        stops = newStops;
+//
+//
+//        StopsAdapter adapter = new StopsAdapter(stops, getContext());
+//        rvStops.setAdapter(adapter);
+//        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+//        ItemTouchHelper.Callback callback =
+//                new StopsItemTouchHelperCallback(adapter);
+//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+//        touchHelper.attachToRecyclerView(rvStops);
+//        setUpMapFragment(savedInstanceState);
 
         btnStartPath.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,7 +398,7 @@ public class DetailedPathFragment extends Fragment {
     private void initializeViews() {
         tvPathName.setText(currentPath.getPathName());
         tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(currentPath.getPathRating());
+        rbPathRating.setRating(getPathRatingAvg());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
@@ -431,16 +457,37 @@ public class DetailedPathFragment extends Fragment {
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
 
-    private ParseGeoPoint getLocationOfStop1() {
-        ParseGeoPoint stop1Location = null;
+    private ParseGeoPoint getLocationOfStop(Stop stop) {
+        ParseGeoPoint stopLocation = null;
         try {
-            stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
+            stopLocation = stop.fetchIfNeeded().getParseGeoPoint("stopLocation");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return stop1Location;
+        return stopLocation;
     }
 
 
-
+    public Float getPathRatingAvg(){
+        double sum;
+        int size = currentPath.getPathRatings().size();
+        ArrayList<Double> myArrayList = new ArrayList<>();
+        myArrayList = currentPath.getPathRatings();
+        sum = 0.0;
+        for (int i = 0; i < size; i++){
+            Object num = myArrayList.get(i);
+            Log.d("yer", num.getClass().toString());
+            double myFloat;
+            if (num.getClass().equals(Integer.class)){
+                 myFloat = (double)((Integer)num);
+            } else {
+                 myFloat = (double)(num);
+            }
+            sum = (sum + myFloat);
+        }
+        return (float)(sum/size);
+    }
 }
+
+
+

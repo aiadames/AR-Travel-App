@@ -21,6 +21,7 @@ public class Stop extends ParseObject {
     private static final String KEY_MULTIPLE_CHOICE = "stopMultipleChoice";
     private static final String KEY_STOP_ANSWER = "stopAnswer";
     private static final String KEY_STOP_QUESTION = "stopQuestion";
+    private static final String KEY_STOP_DETAILS_IMAGE = "stopDetailsImage";
 
 
     public Stop() {
@@ -56,9 +57,14 @@ public class Stop extends ParseObject {
     public String getStopAnswer(){
         return getString(KEY_STOP_ANSWER);
     }
+
+
     public String getStopQuestion(){
         return getString(KEY_STOP_QUESTION);
     }
 
+    public ParseFile getStopDetailsImage() {
+        return getParseFile(KEY_STOP_DETAILS_IMAGE);
+    }
 
 }

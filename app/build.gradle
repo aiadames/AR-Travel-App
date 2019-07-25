@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.ar.sceneform.plugin'
 
 
 android {
@@ -98,3 +97,8 @@ sceneform.asset('sampledata/models/trex.fbx',
         'default',
         'sampledata/models/trex.sfa',
         'src/main/res/raw/trex')
+
+sceneform.asset('sampledata/Mesh_BengalTiger.obj',
+        'default',
+        'sampledata/Mesh_BengalTiger.sfa',
+        'src/main/assets/Mesh_BengalTiger')
