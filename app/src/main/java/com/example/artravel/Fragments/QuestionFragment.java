@@ -198,19 +198,24 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
         // send intent to next stop
         Fragment stopFragment = new StopFragment();
+        Fragment doneFragment = new CompletedPathFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("Path", Parcels.wrap(path));
         bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
         if (stopIndex < stopsList.size() - 1) {
             stopIndex++;
+            bundle.putInt("Stop Index", stopIndex);
+            stopFragment.setArguments(bundle);
+            FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                    .commit();
+        } else if (stopIndex == stopsList.size() - 1){
+            doneFragment.setArguments(bundle);
+            FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                    .commit();
         }
-        bundle.putInt("Stop Index", stopIndex);
-        stopFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
-                .commit();
 
     }
 
