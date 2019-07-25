@@ -20,6 +20,7 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_RATING = "pathRating";
     private static final String KEY_PATH_IMAGE = "pathImage";
     private static final String KEY_PATH_ALL_RATINGS = "pathRatings";
+    private static final String KEY_PATH_GEM = "pathGem";
 
     private String mImageUrl;
     private String mPathTitle;
@@ -75,6 +76,10 @@ public class Path extends ParseObject {
 
     public ArrayList<Double> getPathRatings() {
         return (ArrayList<Double>) get(KEY_PATH_ALL_RATINGS);
+    }
+
+    public Gems getPathGem() {
+        return (Gems)getParseObject(KEY_PATH_GEM);
     }
 
 
