@@ -1,5 +1,6 @@
 package com.example.artravel;
 
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,15 +26,17 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+//this adapter is the same as the one used in passport with a few changes
+//the onclick listener puts the object into sceneform
+//the xml file for the gem cardview is different
 
-public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder> {
+public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHolder> {
     private List<Gems> gemsList;
     public Context context;
 
     public ImageView gemImage;
-    public TextView gemName;
 
-    public GemsAdapter(List<Gems> gemsListNew, Context context) {
+    public arGemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
         this.context= context;
     }
@@ -45,19 +47,17 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
         public GemsViewHolder(View itemView) {
             super(itemView);
             gemImage = itemView.findViewById(R.id.ivArGemImage);
-            gemName = itemView.findViewById(R.id.tvName);
             itemView.setOnClickListener(this);
 
         }
 
         public void bind(Gems myGem) {
-            gemName.setText(myGem.getName());
 
             ParseFile image = myGem.getImage();
             if (image != null) {
                 Glide.with(context)
                         .load(image.getUrl())
-                        .apply(RequestOptions.circleCropTransform())
+                        //.apply(RequestOptions.circleCropTransform())
                         .into(gemImage);
             }
         }
@@ -87,7 +87,7 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
     @Override
     public GemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gem, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ar_gem, parent, false);
         GemsViewHolder viewHolder = new GemsViewHolder(view);
         return viewHolder;
 

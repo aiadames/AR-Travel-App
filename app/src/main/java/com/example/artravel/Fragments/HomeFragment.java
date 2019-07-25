@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.Activities.HomeActivity;
+import com.example.artravel.Activities.passportSceneform;
 import com.example.artravel.MainActivity;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
@@ -27,6 +28,7 @@ import static com.example.artravel.R.layout.fragment_home;
 public class HomeFragment extends Fragment {
 
     private Button btnTest;
+    private Button launchAr;
     private TextView tvName;
     private ImageView ivProfile;
     private TextView tvEmail;
@@ -39,7 +41,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnTest = view.findViewById(R.id.btnTest);
-
+        launchAr = view.findViewById(R.id.arTest);
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +54,15 @@ public class HomeFragment extends Fragment {
 
         });
 
+        launchAr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Ar = new Intent(getActivity(), passportSceneform.class);
+                startActivity(Ar);
+                Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
     }
 }

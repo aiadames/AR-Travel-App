@@ -38,7 +38,7 @@ android:orientation="vertical" >
                     android:layout_marginRight="2dp">
 
                     <ImageView
-                        android:id="@+id/ivProfileImag1"
+                        android:id="@+id/ivArGemImage"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="8dp"

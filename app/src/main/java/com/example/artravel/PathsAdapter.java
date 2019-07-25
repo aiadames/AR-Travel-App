@@ -150,10 +150,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
         final Path currentPath = mPathList.get(position);
 
-//        int checker = 0;
-//
-//        relation_Check(currentPath);
-//        Toast.makeText(context, "SIZE"+ relation_Paths.size(),Toast.LENGTH_SHORT).show();
+
         holder.bind(currentPath);
 
     }

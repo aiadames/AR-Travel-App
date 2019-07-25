@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 
 android {
@@ -34,6 +35,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -85,3 +87,14 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.8.0"
 
 }
+
+
+sceneform.asset('sampledata/models/animatedhuman.obj',
+        'default',
+        'sampledata/models/animatedhuman.sfa',
+        'src/main/res/raw/animatedhuman')
+
+sceneform.asset('sampledata/models/trex.fbx',
+        'default',
+        'sampledata/models/trex.sfa',
+        'src/main/res/raw/trex')
