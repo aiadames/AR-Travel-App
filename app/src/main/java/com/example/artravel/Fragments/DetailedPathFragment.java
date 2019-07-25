@@ -58,13 +58,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -85,6 +89,7 @@ public class DetailedPathFragment extends Fragment {
     Location mCurrentLocation;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
+    private LocationCallback mLocationCallback;
 
     private TextView tvPathName;
     private TextView tvPathDescription;
@@ -97,6 +102,8 @@ public class DetailedPathFragment extends Fragment {
     private static final int MARKER_WIDTH = 100;
     private static final int STOP_RADIUS = 30;
     private static final float ZOOM_LEVEL = 14.0f;
+
+    boolean inProgress = false;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -120,16 +127,63 @@ public class DetailedPathFragment extends Fragment {
         btnStartPath = view.findViewById(R.id.btnStartPath);
         RecyclerView rvStops = view.findViewById(R.id.rvStops);
 
+        btnStartPath.setVisibility(View.VISIBLE);
+
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
 
         initializeViews();
+
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
+//            relation.getQuery().findInBackground(new FindCallback<Path>() {
+//                @Override
+//                public void done(List<Path> objects, ParseException e) {
+//                    if (e != null) {
+//                        e.printStackTrace();
+//                    } else {
+//                        Log.e("DetailedPathFragment", "Success!");
+//                        for (int i = 0; i < objects.size(); i++) {
+//                            if (objects.get(i).getObjectId().equals(currentPath.getObjectId())) {
+//                                btnStartPath.setText("Resume path");
+//                                inProgress = true;
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//        }
 
         stops = createStopsList();
         stop1 = currentPath.getStop1();
         ParseGeoPoint stop1Location = getLocationOfStop1();
         stop1Latitude = stop1Location.getLatitude();
         stop1Longitude = stop1Location.getLongitude();
+
+
+//        ArrayList<Stop> newStops = new ArrayList<>();
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+//            relation.getQuery().findInBackground(new FindCallback<Stop>() {
+//                @Override
+//                public void done(List<Stop> objects, ParseException e) {
+//                    if (e != null) {
+//                        e.printStackTrace();
+//                    } else {
+//                        for (int i = 0; i < objects.size(); i++) {
+//                            for (int j = 0; j < stops.size(); j++) {
+//                                if (stops.get(j).getObjectId().equals(objects.get(i).getObjectId())) {
+//                                    Log.e("DetailedPathFragment", objects.get(i).getStopName());
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//        }
+
 
         StopsAdapter adapter = new StopsAdapter(stops, getContext());
         rvStops.setAdapter(adapter);
@@ -145,6 +199,13 @@ public class DetailedPathFragment extends Fragment {
         btnStartPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
+                    relation.add(currentPath);
+                    currentUser.saveInBackground();
+                }
+
                 Fragment stopFragment = new StopFragment();
 
                 Bundle bundle = new Bundle();
@@ -244,9 +305,11 @@ public class DetailedPathFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        startLocationUpdates();
 
         // Display the connection status
 
@@ -274,12 +337,14 @@ public class DetailedPathFragment extends Fragment {
         SettingsClient settingsClient = LocationServices.getSettingsClient(getContext());
         settingsClient.checkLocationSettings(locationSettingsRequest);
         //noinspection MissingPermission
-        getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        //onLocationChanged(locationResult.getLastLocation());
-                    }
-                },
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                //onLocationChanged(locationResult.getLastLocation());
+            }
+        };
+        getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, mLocationCallback,
                 Looper.myLooper());
     }
 

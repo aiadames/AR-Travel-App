@@ -1,6 +1,7 @@
 package com.example.artravel.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.R;
+import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.parse.ParseFile;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -36,6 +41,7 @@ public class StopInfoFragment extends Fragment {
     private ImageView ivInfoStopImage;
     private TextView tvInfoParagraph;
     private Button btnInfoNextStop;
+    private Button btnAnswerQuestion;
 
     private static final int NUM_STOPS = 5;
 
@@ -54,6 +60,7 @@ public class StopInfoFragment extends Fragment {
         ivInfoStopImage = view.findViewById(R.id.ivInfoStopImage);
         tvInfoParagraph = view.findViewById(R.id.tvInfoParagraph);
         btnInfoNextStop = view.findViewById(R.id.btnInfoNextStop);
+        btnAnswerQuestion = view.findViewById(R.id.btnQuestion);
 
         initializeBundleArguments();
         initializeViews();
@@ -62,20 +69,56 @@ public class StopInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Fragment stopFragment = new StopFragment();
+                Fragment gemLocationFragment = new GemLocationFragment();
 
                 Bundle bundle = new Bundle();
+                bundle.putParcelable("Stop", Parcels.wrap(stop));
                 bundle.putParcelable("Path", Parcels.wrap(path));
                 bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-                if (stopIndex < NUM_STOPS - 1) {
-                    stopIndex++;
-                }
                 bundle.putInt("Stop Index", stopIndex);
-                stopFragment.setArguments(bundle);
+                gemLocationFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
+                fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop Info").commit();
+
+
+//                Fragment stopFragment = new StopFragment();
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("Path", Parcels.wrap(path));
+//                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+//                if (stopIndex < NUM_STOPS - 1) {
+//                    stopIndex++;
+//                }
+//                bundle.putInt("Stop Index", stopIndex);
+//                stopFragment.setArguments(bundle);
+//
+//                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Stop Info")
+//                        .commit();
+            }
+        });
+
+        btnAnswerQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment questionFragment = new QuestionFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Stop", Parcels.wrap(stop));
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+                bundle.putInt("Stop Index", stopIndex);
+                questionFragment.setArguments(bundle);
+
+
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop Info")
                         .commit();
+
+
+
+
             }
         });
 
@@ -99,6 +142,7 @@ public class StopInfoFragment extends Fragment {
         path = Parcels.unwrap(bundle.getParcelable("Path"));
         stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
         stopIndex = bundle.getInt("Stop Index");
+
     }
 
 }

@@ -63,6 +63,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -152,6 +154,12 @@ public class StopFragment extends Fragment {
         btnNextStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+                    relation.add(currentStop);
+                    currentUser.saveInBackground();
+                }
                 Fragment stopFragment = new StopFragment();
 
                 Bundle bundle = new Bundle();
@@ -309,11 +317,9 @@ public class StopFragment extends Fragment {
         Location stopLocation = new Location("");
         stopLocation.setLatitude(stopLatitude);
         stopLocation.setLongitude(stopLongitude);
-        Log.e("StopFragment", location.getLatitude() + " " + location.getLongitude());
         distanceToStop = mCurrentLocation.distanceTo(stopLocation);
-
         // Switch to stop information fragment when user is within the specified radius of the stop
-        if (distanceToStop < STOP_RADIUS) {
+        if (Math.round(distanceToStop) < STOP_RADIUS) {
             switchToStopInfoFragment();
         }
         tvStopDistance.setText("Approximately " + Math.round(distanceToStop) + " m to " + currentStop.getStopName());
@@ -386,6 +392,13 @@ public class StopFragment extends Fragment {
     }
 
     private void switchToStopInfoFragment() {
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+//            relation.add(currentStop);
+//            currentUser.saveInBackground();
+//        }
+
         Fragment stopInfoFragment = new StopInfoFragment();
 
         Bundle bundle = new Bundle();
