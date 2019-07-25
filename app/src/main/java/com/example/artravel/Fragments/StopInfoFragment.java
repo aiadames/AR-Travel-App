@@ -65,10 +65,6 @@ public class StopInfoFragment extends Fragment {
         initializeBundleArguments();
         initializeViews();
 
-
-
-
-
         btnInfoNextStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,11 +75,12 @@ public class StopInfoFragment extends Fragment {
                 bundle.putParcelable("Stop", Parcels.wrap(stop));
                 bundle.putParcelable("Path", Parcels.wrap(path));
                 bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-                bundle.putInt("Stop Index", 0);
+                bundle.putInt("Stop Index", stopIndex);
                 gemLocationFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop Info").commit();
+
 
 //                Fragment stopFragment = new StopFragment();
 //
