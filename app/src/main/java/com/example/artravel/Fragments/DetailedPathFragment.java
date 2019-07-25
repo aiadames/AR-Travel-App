@@ -68,6 +68,7 @@ import com.parse.ParseUser;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
@@ -127,33 +128,32 @@ public class DetailedPathFragment extends Fragment {
         btnStartPath = view.findViewById(R.id.btnStartPath);
         RecyclerView rvStops = view.findViewById(R.id.rvStops);
 
-        btnStartPath.setVisibility(View.VISIBLE);
-
         Bundle bundle = this.getArguments();
         currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
 
         initializeViews();
 
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if (currentUser != null) {
-//            ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
-//            relation.getQuery().findInBackground(new FindCallback<Path>() {
-//                @Override
-//                public void done(List<Path> objects, ParseException e) {
-//                    if (e != null) {
-//                        e.printStackTrace();
-//                    } else {
-//                        Log.e("DetailedPathFragment", "Success!");
-//                        for (int i = 0; i < objects.size(); i++) {
-//                            if (objects.get(i).getObjectId().equals(currentPath.getObjectId())) {
-//                                btnStartPath.setText("Resume path");
-//                                inProgress = true;
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
+            relation.getQuery().findInBackground(new FindCallback<Path>() {
+                @Override
+                public void done(List<Path> objects, ParseException e) {
+                    if (e != null) {
+                        e.printStackTrace();
+                    } else {
+                        Log.e("DetailedPathFragment", "Success!");
+                        for (int i = 0; i < objects.size(); i++) {
+                            if (objects.get(i).getObjectId().equals(currentPath.getObjectId())) {
+                                btnStartPath.setText("Resume path");
+                                inProgress = true;
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         stops = createStopsList();
         stop1 = currentPath.getStop1();
@@ -162,39 +162,55 @@ public class DetailedPathFragment extends Fragment {
         stop1Longitude = stop1Location.getLongitude();
 
 
-//        ArrayList<Stop> newStops = new ArrayList<>();
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if (currentUser != null) {
-//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-//            relation.getQuery().findInBackground(new FindCallback<Stop>() {
-//                @Override
-//                public void done(List<Stop> objects, ParseException e) {
-//                    if (e != null) {
-//                        e.printStackTrace();
-//                    } else {
-//                        for (int i = 0; i < objects.size(); i++) {
-//                            for (int j = 0; j < stops.size(); j++) {
-//                                if (stops.get(j).getObjectId().equals(objects.get(i).getObjectId())) {
-//                                    Log.e("DetailedPathFragment", objects.get(i).getStopName());
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
+        // REPLACE THIS CODE WITH CODE BELOW IF YOU WANT ALL STOPS TO SHOW - OTHERWISE SHOWS ONLY STOPS THAT HAVEN'T BEEN VISITED
+        // Can modify this code to display already visited stops differently
+        ArrayList<Stop> newStops = new ArrayList<>();
+        newStops.addAll(stops);
+        if (currentUser != null) {
+            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+            relation.getQuery().findInBackground(new FindCallback<Stop>() {
+                @Override
+                public void done(List<Stop> objects, ParseException e) {
+                    if (e != null) {
+                        e.printStackTrace();
+                    } else {
+                        for (int i = 0; i < stops.size(); i++) {
+                            for (int j = 0; j < objects.size(); j++) {
+                                if (stops.get(i).getObjectId().equals(objects.get(j).getObjectId())) {
+                                    newStops.remove(stops.get(i));
+                                }
+                            }
+                        }
+                    }
 
+                    stops = newStops;
 
-        StopsAdapter adapter = new StopsAdapter(stops, getContext());
-        rvStops.setAdapter(adapter);
-        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
+                    StopsAdapter adapter = new StopsAdapter(stops, getContext());
+                    rvStops.setAdapter(adapter);
+                    rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ItemTouchHelper.Callback callback =
-                new StopsItemTouchHelperCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(rvStops);
+                    ItemTouchHelper.Callback callback =
+                            new StopsItemTouchHelperCallback(adapter);
+                    ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+                    touchHelper.attachToRecyclerView(rvStops);
 
-        setUpMapFragment(savedInstanceState);
+                    setUpMapFragment(savedInstanceState);
+                }
+            });
+        }
+//
+//        stops = newStops;
+//
+//
+//        StopsAdapter adapter = new StopsAdapter(stops, getContext());
+//        rvStops.setAdapter(adapter);
+//        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+//        ItemTouchHelper.Callback callback =
+//                new StopsItemTouchHelperCallback(adapter);
+//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+//        touchHelper.attachToRecyclerView(rvStops);
+//        setUpMapFragment(savedInstanceState);
 
         btnStartPath.setOnClickListener(new View.OnClickListener() {
             @Override

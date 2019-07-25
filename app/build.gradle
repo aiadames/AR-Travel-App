@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 
 android {
@@ -85,3 +86,9 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.8.0"
 
 }
+
+
+sceneform.asset('sampledata/Mesh_BengalTiger.obj',
+        'default',
+        'sampledata/Mesh_BengalTiger.sfa',
+        'src/main/assets/Mesh_BengalTiger')

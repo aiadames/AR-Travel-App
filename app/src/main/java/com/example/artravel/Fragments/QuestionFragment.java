@@ -189,7 +189,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         Bundle bundle = new Bundle();
         bundle.putParcelable("Path", Parcels.wrap(path));
         bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-        if (stopIndex < NUM_STOPS - 1) {
+        if (stopIndex < stopsList.size() - 1) {
             stopIndex++;
         }
         bundle.putInt("Stop Index", stopIndex);
