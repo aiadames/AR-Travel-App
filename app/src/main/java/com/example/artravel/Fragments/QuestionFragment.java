@@ -11,7 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
@@ -163,7 +165,17 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
         resetValues();
+
         // send intent to next stop
+   //     Fragment donePath = new CompletedPathFragment();
+
+
+   //     Bundle bundle = new Bundle();
+  //      bundle.putParcelable("Path", Parcels.wrap(path));
+  //      donePath.setArguments(bundle);
+
+  //      FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+  //      fragmentManager.beginTransaction().replace(R.id.flContainer, donePath).addToBackStack("FinalQuestion").commit();
     }
 
 
