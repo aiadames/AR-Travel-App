@@ -65,7 +65,7 @@ public class GemLocationFragment extends Fragment {
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private static final int GEM_RADIUS = 57;
+    private static final int GEM_RADIUS = 58;
     private double distanceToGem;
     private double gemLatitude;
     private double gemLongitude;
@@ -108,7 +108,6 @@ public class GemLocationFragment extends Fragment {
 
         GemLocationFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
 
-
         ParseFile image = currentGem.getGemLocationImage();
         if (image != null) {
             Glide.with(this)
@@ -145,7 +144,6 @@ public class GemLocationFragment extends Fragment {
 
         // Switch to stop information fragment when user is within the specified radius of the stop
         if (Math.round(distanceToGem) < GEM_RADIUS) {
-            getFusedLocationProviderClient(getContext()).removeLocationUpdates(mLocationCallback);
             switchToQuestionFragment();
         }
     }
@@ -189,5 +187,9 @@ public class GemLocationFragment extends Fragment {
         fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop").commit();
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        getFusedLocationProviderClient(getContext()).removeLocationUpdates(mLocationCallback);
+    }
 }

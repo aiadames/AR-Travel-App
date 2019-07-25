@@ -165,7 +165,7 @@ public class StopFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Path", Parcels.wrap(path));
                 bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-                if (stopIndex < NUM_STOPS - 1) {
+                if (stopIndex < stopsList.size() - 1) {
                     stopIndex++;
                 }
                 bundle.putInt("Stop Index", stopIndex);
@@ -392,12 +392,12 @@ public class StopFragment extends Fragment {
     }
 
     private void switchToStopInfoFragment() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-            relation.add(currentStop);
-            currentUser.saveInBackground();
-        }
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+//            relation.add(currentStop);
+//            currentUser.saveInBackground();
+//        }
 
         Fragment stopInfoFragment = new StopInfoFragment();
 

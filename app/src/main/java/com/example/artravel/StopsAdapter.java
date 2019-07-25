@@ -1,6 +1,7 @@
 package com.example.artravel;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.artravel.Fragments.StopDetailsFragment;
+import com.example.artravel.Fragments.StopFragment;
 import com.example.artravel.models.Stop;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +91,7 @@ public class StopsAdapter extends
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView tvStopName;
@@ -96,6 +105,26 @@ public class StopsAdapter extends
             super(itemView);
             tvStopName = itemView.findViewById(R.id.tvStopName);
             ivStopImage = itemView.findViewById(R.id.ivStopImage);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                Stop clickedStop = mStops.get(position);
+                Fragment stopDetailsFragment = new StopDetailsFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Stop", Parcels.wrap(clickedStop));
+                stopDetailsFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopDetailsFragment).addToBackStack("Path Detail")
+                        .commit();
+
+            }
         }
     }
 

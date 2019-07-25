@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import androidx.fragment.app.FragmentTransaction;
+
+
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -23,6 +26,8 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 public class QuestionFragment extends Fragment implements View.OnClickListener {
 
@@ -42,10 +47,14 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private String stopAnswer;
     String myCorrectButton;
 
+    private List<Stop> stopsList;
+    private int stopIndex;
+
 
     private Integer userAttemptsLeft;
     private boolean recievesGem;
     private boolean answeredQuestion;
+    private static final int NUM_STOPS = 5;
 
     @Nullable
     @Override
@@ -112,7 +121,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     falseAnswer();
                 }
                 break;
-
         }
 
         // update the user on how many attempts they have via the text view display
@@ -143,11 +151,13 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         Bundle bundle = this.getArguments();
         stop = Parcels.unwrap(bundle.getParcelable("Stop"));
         path = Parcels.unwrap(bundle.getParcelable("Path"));
+        stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
+        stopIndex = bundle.getInt("Stop Index");
+
         userAttemptsLeft = 3;
         recievesGem = false;
         answeredQuestion = false;
         stopAnswer = stop.getStopAnswer();
-
     }
 
     private void doneAnswering(){
@@ -166,6 +176,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
         resetValues();
 
+
         // send intent to next stop
    //     Fragment donePath = new CompletedPathFragment();
 
@@ -176,6 +187,31 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
   //      FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
   //      fragmentManager.beginTransaction().replace(R.id.flContainer, donePath).addToBackStack("FinalQuestion").commit();
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            ParseRelation<Stop> stopRelation = currentUser.getRelation("visitedStops");
+            stopRelation.add(stop);
+            currentUser.saveInBackground();
+        }
+
+
+        // send intent to next stop
+        Fragment stopFragment = new StopFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Path", Parcels.wrap(path));
+        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+        if (stopIndex < stopsList.size() - 1) {
+            stopIndex++;
+        }
+        bundle.putInt("Stop Index", stopIndex);
+        stopFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                .commit();
+
     }
 
 
