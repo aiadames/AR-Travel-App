@@ -57,6 +57,8 @@ public class Stop extends ParseObject {
     public String getStopAnswer(){
         return getString(KEY_STOP_ANSWER);
     }
+
+
     public String getStopQuestion(){
         return getString(KEY_STOP_QUESTION);
     }

@@ -5,6 +5,8 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+
 
 @ParseClassName("Path")
 public class Path extends ParseObject {
@@ -17,44 +19,49 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
     private static final String KEY_PATH_RATING = "pathRating";
     private static final String KEY_PATH_IMAGE = "pathImage";
+    private static final String KEY_PATH_ALL_RATINGS = "pathRatings";
 
     private String mImageUrl;
     private String mPathTitle;
     private String mPathDescription;
 
-    public Path() {}
+    ArrayList<Float> ratingList;
 
-    public Path(String imageUrl, String pathTitle, String pathDescription){
+
+    public Path() {
+    }
+
+    public Path(String imageUrl, String pathTitle, String pathDescription) {
         mImageUrl = imageUrl;
         mPathTitle = pathTitle;
         mPathDescription = pathDescription;
     }
 
     public Stop getStop1() {
-        return (Stop)getParseObject(KEY_STOP_1);
+        return (Stop) getParseObject(KEY_STOP_1);
     }
 
     public Stop getStop2() {
-        return (Stop)getParseObject(KEY_STOP_2);
+        return (Stop) getParseObject(KEY_STOP_2);
     }
 
     public Stop getStop3() {
-        return (Stop)getParseObject(KEY_STOP_3);
+        return (Stop) getParseObject(KEY_STOP_3);
     }
 
     public Stop getStop4() {
-        return (Stop)getParseObject(KEY_STOP_4);
+        return (Stop) getParseObject(KEY_STOP_4);
     }
 
     public Stop getStop5() {
-        return (Stop)getParseObject(KEY_STOP_5);
+        return (Stop) getParseObject(KEY_STOP_5);
     }
 
     public String getPathName() {
         return getString(KEY_PATH_NAME);
     }
 
-    public Integer getPathRating(){
+    public Integer getPathRating() {
         return getInt(KEY_PATH_RATING);
     }
 
@@ -62,8 +69,21 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_DESCRIPTION);
     }
 
-    public ParseFile getPathImage(){
+    public ParseFile getPathImage() {
         return getParseFile(KEY_PATH_IMAGE);
+    }
+
+    public ArrayList<Double> getPathRatings() {
+        return (ArrayList<Double>) get(KEY_PATH_ALL_RATINGS);
+    }
+
+
+    public void setPathRating(Float newRating) {
+        ArrayList<Double> myAddedRating = new ArrayList<>();
+        myAddedRating = getPathRatings();
+        myAddedRating.add((double)newRating);
+        put(KEY_PATH_ALL_RATINGS, myAddedRating);
+
     }
 
 
@@ -83,4 +103,9 @@ public class Path extends ParseObject {
             return this;
         }
     }
+
+
 }
+
+
+
