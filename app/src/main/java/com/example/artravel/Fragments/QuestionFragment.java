@@ -1,5 +1,6 @@
 package com.example.artravel.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.artravel.Activities.ARImageActivity;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -40,6 +42,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private Button btnChoice2;
     private Button btnChoice3;
     private Button btnChoice4;
+    private Button btnARGem;
     private Stop stop;
     private Path path;
     private String stopAnswer;
@@ -69,6 +72,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         btnChoice2 = view.findViewById(R.id.btnChoice2);
         btnChoice3 = view.findViewById(R.id.btnChoice3);
         btnChoice4 = view.findViewById(R.id.btnChoice4);
+        btnARGem = view.findViewById(R.id.btnARGem);
         tvChoice1 = view.findViewById(R.id.tvChoice1);
         tvChoice2 = view.findViewById(R.id.tvChoice2);
         tvChoice3 = view.findViewById(R.id.tvChoice3);
@@ -80,6 +84,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         btnChoice2.setOnClickListener(this);
         btnChoice3.setOnClickListener(this);
         btnChoice4.setOnClickListener(this);
+        btnARGem.setOnClickListener(this);
 
         initializeValues();
         initializeViews();
@@ -119,6 +124,10 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     falseAnswer();
                 }
                 break;
+            case R.id.btnARGem:
+                Intent intent = new Intent(getActivity(), ARImageActivity.class);
+                intent.putExtra("Gem", Parcels.wrap(stop.getGem()));
+                getActivity().startActivity(intent);
         }
 
         // update the user on how many attempts they have via the text view display
