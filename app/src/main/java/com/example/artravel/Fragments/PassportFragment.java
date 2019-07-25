@@ -1,6 +1,7 @@
 package com.example.artravel.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -58,19 +60,20 @@ public class PassportFragment extends Fragment{
     private TextView gemCount;
     private CardView cardView;
     private Context context;
+    private int numCollected;
     private static final String TAG = "PassportFragment";
-
-    //  private Button btnTest;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return (View) inflater.inflate(fragment_passport, container, false);
+
+        return (View) inflater.inflate(fragment_passport,container, false);
     }
 
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
     }
 
     @Override
@@ -78,39 +81,46 @@ public class PassportFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         setupView(view);
-        queryGems();
         setView(view);
-
-        }
+        queryGems();
+    }
 
 
     private void queryGems() {
 
         ParseQuery<Gems> postQuery = new ParseQuery<Gems>(Gems.class);
-        // postQuery.include(Gems.KEY_USER);
-        postQuery.orderByDescending("createdAt");
-        postQuery.findInBackground(new FindCallback<Gems>() {
+       // postQuery.include(Gems.KEY_USER);
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user == null){
+            Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
+        }
+        else
+            Toast.makeText(getContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
 
-                                       @Override
-                                       public void done(List<Gems> posts, ParseException e) {
-                                           if (e != null) {
-                                               Log.e(TAG, "error in query");
-                                               e.printStackTrace();
-                                               return;
-                                           }
+        ParseRelation<Gems> relation;
+        relation = user.getRelation("collectedGems");
+        relation.getQuery().findInBackground(new FindCallback<Gems>() {
+            @Override
+            public void done(List<Gems> userGems, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "error in query");
+                    e.printStackTrace();
+                    return;
+                }
+                mGems.addAll(userGems);
 
-                                           mGems.addAll(posts);
-                                           adapter.notifyDataSetChanged();
-                                       }
-                                   }
-        );
+               // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+        numCollected = mGems.size();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.passport_menu, menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,32 +129,30 @@ public class PassportFragment extends Fragment{
             case R.id.action_settings:
                 Fragment profile = new ProfileFragment();
 
-
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.flContainer, profile).addToBackStack("Passport")
                         .commit();
-
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
-    private void setupView(View view) {
+    private void setupView(View view){
 
-        mGems = new ArrayList<>();
-        rvGems = view.findViewById(R.id.rvRecyclerView);
-        adapter = new GemsAdapter(mGems, getContext());
+        mGems= new ArrayList<>();
+        rvGems= view.findViewById(R.id.rvRecyclerView);
+        adapter = new GemsAdapter( mGems,getContext());
         rvGems.setAdapter(adapter);
 
-        rvGems.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        rvGems.setLayoutManager(new GridLayoutManager(getContext(),3));
 
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
         profile = view.findViewById(R.id.ivProfileImag1);
         cardView = view.findViewById(R.id.cardView);
+
 
     }
 
@@ -156,8 +164,9 @@ public class PassportFragment extends Fragment{
         if (user == null)
             Toast.makeText(view.getContext(), "user null", Toast.LENGTH_SHORT).show();
 
+        gemCount.setText(("You've collected " + numCollected + " gems this week"));
+
         username.setText(user.getUsername());
-        gemCount.setText(("You've collected " + user.getUsername() + " gems this week"));
 
         ParseFile image = (ParseFile) user.get("image");
         if (image != null) {
