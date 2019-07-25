@@ -8,8 +8,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPaths"
         android:layout_width="416dp"
-        android:layout_height="543dp"
-        android:layout_marginBottom="60dp"
+        android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:padding="4dp"
         android:scrollbars="vertical"

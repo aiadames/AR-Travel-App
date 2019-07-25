@@ -37,6 +37,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -59,12 +60,12 @@ public class PassportFragment extends Fragment{
     private TextView gemCount;
     private CardView cardView;
     private Context context;
+    private int numCollected;
     private static final String TAG = "PassportFragment";
-
-  //  private Button btnTest;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
         return (View) inflater.inflate(fragment_passport,container, false);
     }
 
@@ -72,6 +73,7 @@ public class PassportFragment extends Fragment{
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
     }
 
     @Override
@@ -79,9 +81,8 @@ public class PassportFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         setupView(view);
-        queryGems();
         setView(view);
-
+        queryGems();
     }
 
 
@@ -89,33 +90,37 @@ public class PassportFragment extends Fragment{
 
         ParseQuery<Gems> postQuery = new ParseQuery<Gems>(Gems.class);
        // postQuery.include(Gems.KEY_USER);
-        postQuery.orderByDescending("createdAt");
-        postQuery.findInBackground(new FindCallback<Gems>() {
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user == null){
+            Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
+        }
+        else
+            Toast.makeText(getContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
+
+        ParseRelation<Gems> relation;
+        relation = user.getRelation("collectedGems");
+        relation.getQuery().findInBackground(new FindCallback<Gems>() {
             @Override
-            public void done(List<Gems> posts, ParseException e) {
+            public void done(List<Gems> userGems, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "error in query");
                     e.printStackTrace();
                     return;
                 }
+                mGems.addAll(userGems);
 
-
-                mGems.addAll(posts);
+               // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
 
             }
         });
+        numCollected = mGems.size();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.passport_menu, menu);
     }
-
-
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -127,12 +132,10 @@ public class PassportFragment extends Fragment{
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.flContainer, profile).addToBackStack("Passport")
                         .commit();
-
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -150,6 +153,7 @@ public class PassportFragment extends Fragment{
         profile = view.findViewById(R.id.ivProfileImag1);
         cardView = view.findViewById(R.id.cardView);
 
+
     }
 
     private void setView(View view) {
@@ -160,8 +164,8 @@ public class PassportFragment extends Fragment{
         if (user == null)
             Toast.makeText(view.getContext(), "user null", Toast.LENGTH_SHORT).show();
 
+        gemCount.setText(("You've collected " + numCollected + " gems this week"));
         username.setText(user.getUsername());
-        gemCount.setText(("You've collected " + user.getUsername() + " gems this week"));
 
         ParseFile image = (ParseFile) user.get("image");
         if (image != null) {
