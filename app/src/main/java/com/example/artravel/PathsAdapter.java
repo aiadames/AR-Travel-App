@@ -2,6 +2,7 @@ package com.example.artravel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 
 import android.os.Bundle;
@@ -22,16 +23,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.Fragments.DetailedPathFragment;
+import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHolder> implements Filterable {
 
@@ -39,11 +47,12 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     private List<Path> mPathList;
     private List<Path> mPathListFull;
     public Context context;
+    private int started_check ;
+    private List<Path> relation_Paths;
 
 
 
-
-    public class PathsViewHolder extends RecyclerView.ViewHolder{
+    public class PathsViewHolder extends RecyclerView.ViewHolder {
         private ImageView mPathImage;
         private TextView mPathTitle;
         private TextView mPathDescription;
@@ -66,7 +75,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                     bundle.putParcelable("Path", Parcels.wrap(path));
                     detail.setArguments(bundle);
 
-                    FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
                             .commit();
 
@@ -74,24 +83,23 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 }
             });
         }
+
         public void bind(Path myPath) {
             mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
+
             ParseFile pathImage = myPath.getPathImage();
-            if (pathImage != null){
+            if (pathImage != null) {
                 Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
-        }
-            else{
-            mPathImage.setImageResource(R.drawable.ic_path_placeholder);
-        }
-
-
+            } else {
+                mPathImage.setImageResource(R.drawable.ic_path_placeholder);
+            }
         }
     }
 
     public PathsAdapter(List<Path> pathList, List<Path> pathListFull){
         this.mPathList = pathList;
-        mPathListFull = pathListFull; // independent list, don't point to same list (mutability prevention)
+        mPathListFull = pathListFull;// independent list, don't point to same list (mutability prevention)
     }
 
     @NonNull
@@ -104,10 +112,50 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
     }
 
+//    public void relation_Check(Path currentPath) {
+//
+//        ParseUser user = ParseUser.getCurrentUser();
+//        ParseRelation<Path> relation;
+//        relation = user.getRelation("startedPaths");
+//        //relation_Paths= new ArrayList<>();
+//
+//        relation.getQuery().findInBackground(new FindCallback<Path>() {
+//            @Override
+//            public void done(List<Path> userPaths, ParseException e) {
+//                if (e != null) {
+//                    Toast.makeText(context, "query error", Toast.LENGTH_SHORT).show();
+//                    e.printStackTrace();
+//                    return ;
+//                }
+//                helper(userPaths);
+//                Log.d("Relations", "relation size" + relation_Paths.size());
+//
+//                //Log.d("Relations", "relation size" + relation_Paths.size());
+//
+//            }
+//        });
+
+   //     }
+//    private int helper( List<Path> userPaths){
+//        relation_Paths.clear();
+//        relation_Paths.addAll(userPaths);
+//        return relation_Paths.size();
+//        }
+
+        // Toast.makeText(context, "hello" + started_check + "hrllo", Toast.LENGTH_SHORT).show();
+//started check was added to signal that a path was in the users started paths
+
+
     @Override
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
-        Path currentPath = mPathList.get(position);
+        final Path currentPath = mPathList.get(position);
+
+//        int checker = 0;
+//
+//        relation_Check(currentPath);
+//        Toast.makeText(context, "SIZE"+ relation_Paths.size(),Toast.LENGTH_SHORT).show();
         holder.bind(currentPath);
+
     }
 
     @Override

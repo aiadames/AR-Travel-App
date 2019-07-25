@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.R;
+import com.example.artravel.models.Path;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import static com.example.artravel.R.layout.fragment_home;
