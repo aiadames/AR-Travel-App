@@ -161,6 +161,30 @@ public class DetailedPathFragment extends Fragment {
         stop1Latitude = stop1Location.getLatitude();
         stop1Longitude = stop1Location.getLongitude();
 
+
+//        ArrayList<Stop> newStops = new ArrayList<>();
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+//            relation.getQuery().findInBackground(new FindCallback<Stop>() {
+//                @Override
+//                public void done(List<Stop> objects, ParseException e) {
+//                    if (e != null) {
+//                        e.printStackTrace();
+//                    } else {
+//                        for (int i = 0; i < objects.size(); i++) {
+//                            for (int j = 0; j < stops.size(); j++) {
+//                                if (stops.get(j).getObjectId().equals(objects.get(i).getObjectId())) {
+//                                    Log.e("DetailedPathFragment", objects.get(i).getStopName());
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//        }
+
+
         StopsAdapter adapter = new StopsAdapter(stops, getContext());
         rvStops.setAdapter(adapter);
         rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -281,9 +305,11 @@ public class DetailedPathFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        startLocationUpdates();
 
         // Display the connection status
 

@@ -392,12 +392,12 @@ public class StopFragment extends Fragment {
     }
 
     private void switchToStopInfoFragment() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-            relation.add(currentStop);
-            currentUser.saveInBackground();
-        }
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+//            relation.add(currentStop);
+//            currentUser.saveInBackground();
+//        }
 
         Fragment stopInfoFragment = new StopInfoFragment();
 
