@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.artravel.Activities.HomeActivity;
+import com.example.artravel.MainActivity;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
 import com.parse.ParseObject;
@@ -42,7 +44,10 @@ public class HomeFragment extends Fragment {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast. makeText(getContext(), "Home Test",Toast.LENGTH_SHORT).show();
+                ParseUser.logOut();
+                Intent logout = new Intent(getActivity(), MainActivity.class);
+                startActivity(logout);
+                Toast. makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
             }
 
         });

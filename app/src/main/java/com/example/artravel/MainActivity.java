@@ -41,6 +41,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -190,10 +191,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(signUpIntent);
                 break;
             case R.id.bContinueNoLogin:
+                anonAcct();
                 Intent noLoginIntent = new Intent(MainActivity.this,HomeActivity.class);
                 startActivity(noLoginIntent);
                 break;
         }
+    }
+
+    private void anonAcct() {
+        ParseAnonymousUtils.logIn(new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e != null) {
+                    Log.d("MyApp", "Anonymous login failed.");
+                } else {
+                    Log.d("MyApp", "Anonymous user logged in.");
+                }
+            }
+        });
+        return;
     }
 
     public void checkUser(ParseUser currentUser, boolean isLoggedInFB) {
