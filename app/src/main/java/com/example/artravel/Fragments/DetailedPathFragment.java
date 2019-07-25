@@ -103,7 +103,7 @@ public class DetailedPathFragment extends Fragment {
     private static final int MARKER_HEIGHT = 100;
     private static final int MARKER_WIDTH = 100;
     private static final int STOP_RADIUS = 30;
-    private static final float ZOOM_LEVEL = 14.0f;
+    private static final float ZOOM_LEVEL = 13.0f;
 
     boolean inProgress = false;
 
@@ -157,10 +157,10 @@ public class DetailedPathFragment extends Fragment {
         }
 
         stops = createStopsList();
-        stop1 = currentPath.getStop1();
-        ParseGeoPoint stop1Location = getLocationOfStop1();
-        stop1Latitude = stop1Location.getLatitude();
-        stop1Longitude = stop1Location.getLongitude();
+//        stop1 = currentPath.getStop1();
+//        ParseGeoPoint stop1Location = getLocationOfStop1();
+//        stop1Latitude = stop1Location.getLatitude();
+//        stop1Longitude = stop1Location.getLongitude();
 
 
         // REPLACE THIS CODE WITH CODE BELOW IF YOU WANT ALL STOPS TO SHOW - OTHERWISE SHOWS ONLY STOPS THAT HAVEN'T BEEN VISITED
@@ -185,6 +185,15 @@ public class DetailedPathFragment extends Fragment {
                     }
 
                     stops = newStops;
+                    if (stops.size() >= 1) {
+                        stop1 = stops.get(0);
+                    }
+                    else {
+                        stop1 = currentPath.getStop1();
+                    }
+                    ParseGeoPoint stop1Location = getLocationOfStop(stop1);
+                    stop1Latitude = stop1Location.getLatitude();
+                    stop1Longitude = stop1Location.getLongitude();
 
                     StopsAdapter adapter = new StopsAdapter(stops, getContext());
                     rvStops.setAdapter(adapter);
@@ -448,14 +457,14 @@ public class DetailedPathFragment extends Fragment {
         return BitmapDescriptorFactory.fromBitmap(smallMarker);
     }
 
-    private ParseGeoPoint getLocationOfStop1() {
-        ParseGeoPoint stop1Location = null;
+    private ParseGeoPoint getLocationOfStop(Stop stop) {
+        ParseGeoPoint stopLocation = null;
         try {
-            stop1Location = stop1.fetchIfNeeded().getParseGeoPoint("stopLocation");
+            stopLocation = stop.fetchIfNeeded().getParseGeoPoint("stopLocation");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return stop1Location;
+        return stopLocation;
     }
 
 

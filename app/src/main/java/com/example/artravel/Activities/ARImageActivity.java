@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Movie;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.artravel.Fragments.ARImageFragment;
 import com.example.artravel.R;
+import com.example.artravel.models.Gems;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.AugmentedImageDatabase;
@@ -25,26 +30,41 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 
+import org.parceler.Parcels;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collection;
 
 public class ARImageActivity extends AppCompatActivity {
 
     ArFragment arFragment;
+    Gems gem;
     boolean shouldAddModel = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arimage);
+        gem = (Gems) Parcels.unwrap(getIntent().getParcelableExtra("Gem"));
         arFragment = (ARImageFragment) getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
         arFragment.getPlaneDiscoveryController().hide();
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
     }
 
-    public boolean setupAugmentedImagesDb(Config config, Session session) {
+    public boolean setupAugmentedImagesDb(Config config, Session session) throws ParseException {
         AugmentedImageDatabase augmentedImageDatabase;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.augmented_images_earth);
+
+        ParseFile gemLocationImage = gem.getGemLocationImage();
+        byte[] data = gemLocationImage.getData();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.augmented_images_earth);
         if (bitmap == null) {
             return false;
         }
