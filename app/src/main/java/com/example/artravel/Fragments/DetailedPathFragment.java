@@ -67,6 +67,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -397,7 +398,7 @@ public class DetailedPathFragment extends Fragment {
     private void initializeViews() {
         tvPathName.setText(currentPath.getPathName());
         tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(currentPath.getPathRating());
+        rbPathRating.setRating(getPathRatingAvg());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
@@ -467,5 +468,26 @@ public class DetailedPathFragment extends Fragment {
     }
 
 
-
+    public Float getPathRatingAvg(){
+        double sum;
+        int size = currentPath.getPathRatings().size();
+        ArrayList<Double> myArrayList = new ArrayList<>();
+        myArrayList = currentPath.getPathRatings();
+        sum = 0.0;
+        for (int i = 0; i < size; i++){
+            Object num = myArrayList.get(i);
+            Log.d("yer", num.getClass().toString());
+            double myFloat;
+            if (num.getClass().equals(Integer.class)){
+                 myFloat = (double)((Integer)num);
+            } else {
+                 myFloat = (double)(num);
+            }
+            sum = (sum + myFloat);
+        }
+        return (float)(sum/size);
+    }
 }
+
+
+

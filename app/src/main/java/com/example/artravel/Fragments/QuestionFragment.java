@@ -15,7 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import androidx.fragment.app.FragmentTransaction;
+
 
 import com.example.artravel.Activities.ARImageActivity;
 import com.example.artravel.R;
@@ -184,6 +186,17 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         resetValues();
 
 
+        // send intent to next stop
+   //     Fragment donePath = new CompletedPathFragment();
+
+
+   //     Bundle bundle = new Bundle();
+  //      bundle.putParcelable("Path", Parcels.wrap(path));
+  //      donePath.setArguments(bundle);
+
+  //      FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+  //      fragmentManager.beginTransaction().replace(R.id.flContainer, donePath).addToBackStack("FinalQuestion").commit();
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             ParseRelation<Stop> stopRelation = currentUser.getRelation("visitedStops");
@@ -194,20 +207,24 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
         // send intent to next stop
         Fragment stopFragment = new StopFragment();
+        Fragment doneFragment = new CompletedPathFragment();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("Path", Parcels.wrap(path));
         bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
         if (stopIndex < stopsList.size() - 1) {
             stopIndex++;
+            bundle.putInt("Stop Index", stopIndex);
+            stopFragment.setArguments(bundle);
+            FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                    .commit();
+        } else if (stopIndex == stopsList.size() - 1){
+            doneFragment.setArguments(bundle);
+            FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                    .commit();
         }
-        bundle.putInt("Stop Index", stopIndex);
-        stopFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
-                .commit();
-
 
     }
 
