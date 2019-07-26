@@ -155,6 +155,10 @@ public class DetailedPathFragment extends Fragment {
             });
         }
 
+        if(currentPath.getCompletedPath() == true){
+            btnStartPath.setText("You've completed this path already");
+        }
+
         stops = createStopsList();
 //        stop1 = currentPath.getStop1();
 //        ParseGeoPoint stop1Location = getLocationOfStop1();
@@ -225,22 +229,21 @@ public class DetailedPathFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null) {
+                if (currentUser != null && currentPath.getCompletedPath() == false) {
                     ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
                     relation.add(currentPath);
                     currentUser.saveInBackground();
+                    Fragment stopFragment = new StopFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Path", Parcels.wrap(currentPath));
+                    bundle.putParcelable("Stops Array", Parcels.wrap(stops));
+                    bundle.putInt("Stop Index", 0);
+                    stopFragment.setArguments(bundle);
+                    FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
+                } else if (currentPath.getCompletedPath() == true){
+                    Toast.makeText(getContext(),"you've already completed this path", Toast.LENGTH_LONG).show();
                 }
-
-                Fragment stopFragment = new StopFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("Path", Parcels.wrap(currentPath));
-                bundle.putParcelable("Stops Array", Parcels.wrap(stops));
-                bundle.putInt("Stop Index", 0);
-                stopFragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
             }
         });
     }

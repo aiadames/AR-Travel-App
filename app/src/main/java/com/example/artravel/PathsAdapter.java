@@ -80,24 +80,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("Path", Parcels.wrap(path));
                     detail.setArguments(bundle);
-
-                    /*ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
-                    completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
-                        @Override
-                        public void done(List<Path> objects, ParseException e) {
-                            if (e != null){
-                                e.printStackTrace();
-                            } else {
-                                for (int i = 0; i < objects.size(); i++) {
-                                    if (objects.get(i).getObjectId().equals(path.getObjectId())) {
-
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    */
-
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
                             .commit();
