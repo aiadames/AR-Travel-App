@@ -176,18 +176,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
         resetValues();
 
-
-        // send intent to next stop
-   //     Fragment donePath = new CompletedPathFragment();
-
-
-   //     Bundle bundle = new Bundle();
-  //      bundle.putParcelable("Path", Parcels.wrap(path));
-  //      donePath.setArguments(bundle);
-
-  //      FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-  //      fragmentManager.beginTransaction().replace(R.id.flContainer, donePath).addToBackStack("FinalQuestion").commit();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             ParseRelation<Stop> stopRelation = currentUser.getRelation("visitedStops");
@@ -205,12 +193,22 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
         if (stopIndex < stopsList.size() - 1) {
             stopIndex++;
+            // add gems to relation of specific user for passport use
             bundle.putInt("Stop Index", stopIndex);
             stopFragment.setArguments(bundle);
             FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
                     .commit();
         } else if (stopIndex == stopsList.size() - 1){
+            // query for started paths relation and remove this path
+            // query for completed paths relation and add this path
+            ParseUser user = ParseUser.getCurrentUser();
+            ParseRelation<Path> startedPaths = user.getRelation("startedPaths");
+            startedPaths.remove(path);
+            user.saveInBackground();
+            ParseRelation<Path> completedPaths = user.getRelation("completedPaths");
+            completedPaths.add(path);
+            user.saveInBackground();
             doneFragment.setArguments(bundle);
             FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
