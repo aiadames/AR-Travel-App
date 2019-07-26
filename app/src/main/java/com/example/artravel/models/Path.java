@@ -21,6 +21,8 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_IMAGE = "pathImage";
     private static final String KEY_PATH_ALL_RATINGS = "pathRatings";
     private static final String KEY_PATH_GEM = "pathGem";
+    private boolean pathStarted = false;
+    private boolean pathCompleted = false;
 
     private String mImageUrl;
     private String mPathTitle;
@@ -62,10 +64,6 @@ public class Path extends ParseObject {
         return getString(KEY_PATH_NAME);
     }
 
-    public Integer getPathRating() {
-        return getInt(KEY_PATH_RATING);
-    }
-
     public String getPathDescription() {
         return getString(KEY_PATH_DESCRIPTION);
     }
@@ -89,6 +87,22 @@ public class Path extends ParseObject {
         myAddedRating.add((double)newRating);
         put(KEY_PATH_ALL_RATINGS, myAddedRating);
 
+    }
+
+    public boolean getStartedPath(){
+        return pathStarted;
+    }
+
+    public void setStartedPath(){
+        pathStarted = true;
+    }
+
+    public boolean getCompletedPath(){
+        return pathCompleted;
+    }
+
+    public void setCompletedPath(){
+        pathCompleted = true;
     }
 
 

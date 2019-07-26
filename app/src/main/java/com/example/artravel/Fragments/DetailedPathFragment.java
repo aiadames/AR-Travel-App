@@ -134,7 +134,6 @@ public class DetailedPathFragment extends Fragment {
 
         initializeViews();
 
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             ParseRelation<Path> relation = currentUser.getRelation("startedPaths");

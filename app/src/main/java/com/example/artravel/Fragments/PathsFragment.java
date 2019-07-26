@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,8 @@ import com.example.artravel.models.Path;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +95,58 @@ public class PathsFragment extends Fragment {
                     mPathsFull.addAll(objects);
                     mAdapter.notifyDataSetChanged();
 
+
+
+                    ParseRelation<Path> startedPaths = ParseUser.getCurrentUser().getRelation("startedPaths");
+                    startedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else {
+                                Integer mySize =  mPathsFull.size();
+                                Log.d("test", mySize.toString());
+                                for (int x = 0; x < mPathsFull.size(); x++) {
+                                    Log.d("test",mPathsFull.get(x).getStartedPath()==true ? "1":"0");
+                                    for (int i = 0; i < objects.size(); i++) {
+                                        Log.d("test", "test3");
+                                        if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
+                                            Log.d("yer", mPathsFull.get(x).getPathName());
+                                            Log.d("yer", "found one");
+                                            mPathsFull.get(x).setStartedPath();
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
+                    completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else { ;
+                                for (int x = 0; x < mPathsFull.size(); x++) {
+                                    for (int i = 0; i < objects.size(); i++) {
+                                        Log.d("testCompleted", "test3");
+                                        if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
+                                            Log.d("yer", mPathsFull.get(x).getPathName());
+                                            Log.d("yer", "found one");
+                                            mPathsFull.get(x).setCompletedPath();
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+
+
+
                     for (int i = 0; i < objects.size(); i++) {
 
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
@@ -101,6 +156,9 @@ public class PathsFragment extends Fragment {
                 }
             }
         });
+
+
+
     }
 
 
@@ -147,6 +205,9 @@ public class PathsFragment extends Fragment {
             }
         });
     }
+
+
+
 }
 
 

@@ -9,14 +9,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +53,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     public Context context;
     private int started_check ;
     private List<Path> relation_Paths;
+    ConstraintLayout relativeLayout;
 
 
 
@@ -62,6 +67,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathImage = itemView.findViewById(R.id.ivPathImage);
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,6 +81,23 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                     bundle.putParcelable("Path", Parcels.wrap(path));
                     detail.setArguments(bundle);
 
+                    /*ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
+                    completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else {
+                                for (int i = 0; i < objects.size(); i++) {
+                                    if (objects.get(i).getObjectId().equals(path.getObjectId())) {
+
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    */
+
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
                             .commit();
@@ -86,6 +109,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
         public void bind(Path myPath) {
             mPathDescription.setText(myPath.getPathDescription());
+           // String temp = myPath.getStartedPath() == true ? "true" : "false";
             mPathTitle.setText(myPath.getPathName());
 
             ParseFile pathImage = myPath.getPathImage();
@@ -94,6 +118,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }
+
         }
     }
 
@@ -112,50 +137,23 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
     }
 
-//    public void relation_Check(Path currentPath) {
-//
-//        ParseUser user = ParseUser.getCurrentUser();
-//        ParseRelation<Path> relation;
-//        relation = user.getRelation("startedPaths");
-//        //relation_Paths= new ArrayList<>();
-//
-//        relation.getQuery().findInBackground(new FindCallback<Path>() {
-//            @Override
-//            public void done(List<Path> userPaths, ParseException e) {
-//                if (e != null) {
-//                    Toast.makeText(context, "query error", Toast.LENGTH_SHORT).show();
-//                    e.printStackTrace();
-//                    return ;
-//                }
-//                helper(userPaths);
-//                Log.d("Relations", "relation size" + relation_Paths.size());
-//
-//                //Log.d("Relations", "relation size" + relation_Paths.size());
-//
-//            }
-//        });
-
-   //     }
-//    private int helper( List<Path> userPaths){
-//        relation_Paths.clear();
-//        relation_Paths.addAll(userPaths);
-//        return relation_Paths.size();
-//        }
-
-        // Toast.makeText(context, "hello" + started_check + "hrllo", Toast.LENGTH_SHORT).show();
-//started check was added to signal that a path was in the users started paths
-
 
     @Override
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
         final Path currentPath = mPathList.get(position);
-
-//        int checker = 0;
-//
-//        relation_Check(currentPath);
-//        Toast.makeText(context, "SIZE"+ relation_Paths.size(),Toast.LENGTH_SHORT).show();
+        for (int i = 0; i < mPathListFull.size() ; i++) {
+            Log.d("Testaa", mPathListFull.get(i).getPathName());
+            Log.d("Testaa", mPathListFull.get(i).getStartedPath() ? "true" : "false");
+        }
         holder.bind(currentPath);
+        holder.setIsRecyclable(false);
 
+        if (currentPath.getStartedPath() == true) {
+            Log.d("test", "change color");
+            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.green));
+        }else if (currentPath.getCompletedPath() == true){
+            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorAccent));
+        }
     }
 
     @Override
