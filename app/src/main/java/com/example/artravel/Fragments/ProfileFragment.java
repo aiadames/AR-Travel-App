@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,10 +37,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
+import com.example.artravel.models.Path;
 import com.facebook.login.Login;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -49,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 
 
@@ -61,8 +66,18 @@ public class ProfileFragment extends Fragment {
 
     private ImageButton ibProfile;
     private TextView tvName;
+    private TextView tvWelcome;
     public static final int GET_FROM_GALLERY = 3;
     private ParseUser currentUser;
+
+
+    private TextView tvUsername;
+    private TextView tvUserName;
+    private TextView tvEmail;
+    private TextView tvUserEmail;
+    private TextView tvCompletedPaths;
+    private Button btnViewCompleted;
+
 
 
     public static final int STORAGE_PERMISSION_CODE = 123;
@@ -86,25 +101,71 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         requestStoragePermission();
-        ibProfile = getView().findViewById(R.id.ivProfile);
-        tvName = getView().findViewById(R.id.tvName);
+        ibProfile = view.findViewById(R.id.ivProfile);
+        tvName = view.findViewById(R.id.tvName);
+        tvWelcome = view.findViewById(R.id.tvWelcome);
+
+        tvUserEmail = view.findViewById(R.id.tvUserEmail);
+        tvUserName = view.findViewById(R.id.tvUserName);
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvEmail = view.findViewById(R.id.tvEmail);
+        tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
+        btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
+
+
+
 
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(275)).format(DecodeFormat.PREFER_ARGB_8888);
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(300
+        )).format(DecodeFormat.PREFER_ARGB_8888);
 
         currentUser = ParseUser.getCurrentUser();
         currentUser.getUsername();
         ParseFile image = (ParseFile) currentUser.get("image");
-        Glide.with(getContext())
-                .load(image.getUrl())
-                .apply(requestOptions).into(ibProfile);
-        tvName.setText(currentUser.getUsername());
+        if (image != null){
+            Glide.with(getContext())
+                    .load(image.getUrl())
+                    .apply(requestOptions).into(ibProfile);
+        } else{
+            ibProfile.setImageResource(R.drawable.ic_profile);
+        }
+
+        String yer = (String) currentUser.get("firstName");
+        tvName.setText(yer);
+
+        tvUserName.setText("@"+currentUser.getUsername());
+        tvUserEmail.setText(currentUser.getEmail());
+
+        ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
+        completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+            @Override
+            public void done(List<Path> objects, ParseException e) {
+                if (e != null){
+                    e.printStackTrace();
+                } else {
+                    if (objects.size() == 1){
+                        tvCompletedPaths.setText("You have completed " + objects.size() + " path!");
+                    } else{
+                        tvCompletedPaths.setText("You have completed " + objects.size() + " paths!");
+                    }
+
+                }
+            }
+        });
+
 
 
         ibProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showFileChooser();
+            }
+        });
+
+        btnViewCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "viewing completed paths", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -181,6 +242,8 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
+
+
                 currentUser.put("image", file);
                 currentUser.saveInBackground(new SaveCallback() {
                     @Override
@@ -191,11 +254,21 @@ public class ProfileFragment extends Fragment {
                             return;
                         }
                         Log.e("YEET", "Success");
+                        ParseFile image = (ParseFile) currentUser.get("image");
+                        if (image != null){
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(275)).format(DecodeFormat.PREFER_ARGB_8888);
+                            Glide.with(getContext())
+                                    .load(image.getUrl()).apply(requestOptions).into(ibProfile);
+                        } else{
+                            ibProfile.setImageResource(R.drawable.ic_profile);
+                        }
+
                     }
                 });
 
 
-               Glide.with(getContext()).load(file.getUrl()).into(ibProfile);
+             //   Glide.with(getContext()).load(file.getUrl()).into(ibProfile);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

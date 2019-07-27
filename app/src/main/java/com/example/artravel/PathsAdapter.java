@@ -132,9 +132,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
         if (currentPath.getStartedPath() == true) {
             Log.d("test", "change color");
-            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.green));
+            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.inProgressBlue));
         }else if (currentPath.getCompletedPath() == true){
-            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorAccent));
+            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.grey));
         }
     }
 
