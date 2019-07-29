@@ -165,7 +165,7 @@ public class HomeFragment extends Fragment {
                 ParseUser.logOut();
                 Intent logout = new Intent(getActivity(), MainActivity.class);
                 startActivity(logout);
-                Toast. makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
             }
 
         });

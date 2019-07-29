@@ -105,6 +105,34 @@ public class Path extends ParseObject {
         pathCompleted = true;
     }
 
+    public void setPathName(String pathName) {
+        put(KEY_PATH_NAME, pathName);
+    }
+
+    public void setPathDescription(String pathDescription) {
+        put(KEY_PATH_DESCRIPTION, pathDescription);
+    }
+
+    public void setStop1(Stop stop1) {
+        put(KEY_STOP_1, stop1);
+    }
+
+    public void setStop2(Stop stop2) {
+        put(KEY_STOP_2, stop2);
+    }
+
+    public void setStop3(Stop stop3) {
+        put(KEY_STOP_3, stop3);
+    }
+
+    public void setStop4(Stop stop4) {
+        put(KEY_STOP_4, stop4);
+    }
+
+    public void setStop5(Stop stop5) {
+        put(KEY_STOP_5, stop5);
+    }
+
 
     public static class Query extends ParseQuery<Path> {
 
