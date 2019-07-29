@@ -80,15 +80,6 @@ public class Path extends ParseObject {
         return (Gems)getParseObject(KEY_PATH_GEM);
     }
 
-
-    public void setPathRating(Float newRating) {
-        ArrayList<Double> myAddedRating = new ArrayList<>();
-        myAddedRating = getPathRatings();
-        myAddedRating.add((double)newRating);
-        put(KEY_PATH_ALL_RATINGS, myAddedRating);
-
-    }
-
     public boolean getStartedPath(){
         return pathStarted;
     }
@@ -150,6 +141,37 @@ public class Path extends ParseObject {
             return this;
         }
     }
+
+
+
+    // HELPER METHODS: PATH RATINGS
+    // for each path, when completed, allow a user to input a rating via RatingBar widget and update to Parse in Array of 'PathRatings'
+    public void setPathRating(Float newRating) {
+        ArrayList<Double> myAddedRating = getPathRatings();
+        myAddedRating.add((double)newRating);
+        put(KEY_PATH_ALL_RATINGS, myAddedRating);
+    }
+
+
+    // for each path, load the rating by querying for each Path's Array of 'PathRatings' and averaging individually
+    public Float getPathRatingAvg(){
+        ArrayList<Double> myRatingsList = getPathRatings();
+        double sum = 0.0;
+        for (int i = 0; i < getPathRatings().size(); i++){
+            Object num = myRatingsList.get(i);
+            double myFloat;
+            if (num.getClass().equals(Integer.class)){
+                myFloat = (double)((Integer)num);
+            } else {
+                myFloat = (double)(num);
+            }
+            sum = (sum + myFloat);
+        }
+        return (float)(sum/myRatingsList.size());
+    }
+
+
+
 
 
 }

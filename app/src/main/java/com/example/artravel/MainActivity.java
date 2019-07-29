@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_main);
 
-
         if (ParseUser.getCurrentUser() != null){
             checkUser(ParseUser.getCurrentUser(), false);
         } else if (AccessToken.getCurrentAccessToken() != null){
@@ -124,12 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-                Log.d("fb", "request");
-
-              //  Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-              //   String accesstoken = loginResult.getAccessToken().getToken();
-
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
@@ -148,19 +141,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onCancel() {
-
             }
-
             @Override
             public void onError(FacebookException error) {
-
             }
         });
     }
 
-
-
-    // retrieving FB data in graph request
+    // retrieving specific data from Facebook in graph request
     private void getData(JSONObject object) {
         try{
             profilePic = new URL("https://graph.facebook.com/"+object.getString("id")+"/picture?width=500&height=500");
@@ -174,7 +162,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onClick(View view) {
@@ -270,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
+    // for later use: when app is made public and allowed to use on multiple devices (developer tools)
     private void getKeyHash(){
         try {
             PackageInfo info = getPackageManager().getPackageInfo("com.example.artravel",

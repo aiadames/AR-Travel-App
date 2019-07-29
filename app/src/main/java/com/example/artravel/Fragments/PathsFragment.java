@@ -71,7 +71,7 @@ public class PathsFragment extends Fragment {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
-               // Add whatever code is needed to append new items to the bottom of the list
+                // Add whatever code is needed to append new items to the bottom of the list
                 if (mAdapter.getFilter() == null) {
                     loadEndless();
                 } else{
@@ -84,6 +84,7 @@ public class PathsFragment extends Fragment {
     }
 
     protected void loadTopPaths() {
+        // query to Parse backend for the top 20 paths to load into mPaths and mPathsFull, notify adapter that data has been updated
         final Path.Query pathsQuery = new Path.Query();
         pathsQuery.getTop();
         pathsQuery.addDescendingOrder(Path.KEY_CREATED_AT);
@@ -95,8 +96,9 @@ public class PathsFragment extends Fragment {
                     mPathsFull.addAll(objects);
                     mAdapter.notifyDataSetChanged();
 
-
-
+                    // query for a relation of started paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has started
+                    // if exist in both: switch path's started attribute to true
                     ParseRelation<Path> startedPaths = ParseUser.getCurrentUser().getRelation("startedPaths");
                     startedPaths.getQuery().findInBackground(new FindCallback<Path>() {
                         @Override
@@ -104,15 +106,9 @@ public class PathsFragment extends Fragment {
                             if (e != null){
                                 e.printStackTrace();
                             } else {
-                                Integer mySize =  mPathsFull.size();
-                                Log.d("test", mySize.toString());
                                 for (int x = 0; x < mPathsFull.size(); x++) {
-                                    Log.d("test",mPathsFull.get(x).getStartedPath()==true ? "1":"0");
                                     for (int i = 0; i < objects.size(); i++) {
-                                        Log.d("test", "test3");
                                         if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
-                                            Log.d("yer", mPathsFull.get(x).getPathName());
-                                            Log.d("yer", "found one");
                                             mPathsFull.get(x).setStartedPath();
                                         }
                                     }
@@ -122,6 +118,9 @@ public class PathsFragment extends Fragment {
                         }
                     });
 
+                    // query for a relation of completed paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has completed
+                    // if exist in both: switch path's completed attribute to true
                     ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
                     completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
                         @Override
@@ -131,10 +130,7 @@ public class PathsFragment extends Fragment {
                             } else { ;
                                 for (int x = 0; x < mPathsFull.size(); x++) {
                                     for (int i = 0; i < objects.size(); i++) {
-                                        Log.d("testCompleted", "test3");
                                         if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
-                                            Log.d("yer", mPathsFull.get(x).getPathName());
-                                            Log.d("yer", "found one");
                                             mPathsFull.get(x).setCompletedPath();
                                         }
                                     }
@@ -145,12 +141,10 @@ public class PathsFragment extends Fragment {
                     });
 
 
-
-
                     for (int i = 0; i < objects.size(); i++) {
-
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
                     }
+
                 } else {
                     e.printStackTrace();
                 }
@@ -164,6 +158,7 @@ public class PathsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // menu item in toolbar for searching through paths by path name specifically
         inflater.inflate(R.menu.path_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -183,9 +178,8 @@ public class PathsFragment extends Fragment {
 
     }
 
-
-    // Append the next page of data into the adapter
-    // This method probably sends out a network request and appends new data items to your adapter.
+    // append the next page of data into the adapter via endless scroll
+    // sends a network request to Parse and appends new data items to your adapter based on last Path object in mPaths
     public void loadEndless() {
         final Path.Query pathsQuery = new Path.Query();
         pathsQuery.getTop();
