@@ -72,10 +72,9 @@ public class CompletedPathsAdapter extends RecyclerView.Adapter<CompletedPathsAd
         }
 
         public void bind(Path myPath) {
+            // bind each individual Path object
             mPathDescription.setText(myPath.getPathDescription());
-            // String temp = myPath.getStartedPath() == true ? "true" : "false";
             mPathTitle.setText(myPath.getPathName());
-
             ParseFile pathImage = myPath.getPathImage();
             if (pathImage != null) {
                 Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
