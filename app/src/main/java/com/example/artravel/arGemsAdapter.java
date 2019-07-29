@@ -2,7 +2,9 @@ package com.example.artravel;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.GemDetail;
 import com.example.artravel.models.Gems;
+import com.google.zxing.client.result.VINParsedResult;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import static android.content.Context.VIBRATOR_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 //this adapter is the same as the one used in passport with a few changes
 //the onclick listener puts the object into sceneform
@@ -33,8 +39,9 @@ import java.util.List;
 public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHolder> {
     private List<Gems> gemsList;
     public Context context;
-
+    public Vibrator vibrator;
     public ImageView gemImage;
+    public int selection;
 
     public arGemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
@@ -63,25 +70,32 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
         }
 
         public void onClick(View view) {
+            Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
+            vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
+            vibrator.vibrate(15);
+
 
             int position = getAdapterPosition();
+            selection = position;
+//
+//            Fragment details = new GemDetail();
+//
+//            if (position != RecyclerView.NO_POSITION) {
+//                // get the movie at the position, this won't work if the class is static
+//                Gems gem = gemsList.get(position);
+//                Toast.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
+//
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("Gems", Parcels.wrap(gem));
+//                details.setArguments(bundle);
+//
+//                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.flContainer, details).addToBackStack("Gems")
+//                        .commit();
+//            }
+//        }
 
-            Fragment details = new GemDetail();
-
-            if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
-                Gems gem = gemsList.get(position);
-                Toast.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
-
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("Gems", Parcels.wrap(gem));
-                details.setArguments(bundle);
-
-                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, details).addToBackStack("Gems")
-                        .commit();
-            }
         }
     }
     @Override
@@ -103,6 +117,11 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     @Override
     public int getItemCount() {
         return gemsList.size();
+    }
+
+    public int getSelected(){
+        return selection;
+
     }
 
 

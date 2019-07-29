@@ -37,7 +37,7 @@
     file: 'sampledata/Mesh_BengalTiger.obj',
     name: 'Mesh_BengalTiger',
     recenter: 'root',
-    scale: 0.022169999999999999,
+    scale: 0.0022169999999999999,
   },
   samplers: [
     {
