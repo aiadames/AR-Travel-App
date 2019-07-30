@@ -52,6 +52,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (ParseUser.getCurrentUser() != null){
             checkUser(ParseUser.getCurrentUser(), false);
+
         } else if (AccessToken.getCurrentAccessToken() != null){
             // just set user id
             Log.d("Login Activity", "Access token valid, already logged in via Facebook");
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
+    }
         callbackManager = CallbackManager.Factory.create();
 
         usernameInput = findViewById(R.id.etUsername);
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 request.executeAsync();
                 Log.d("fb", "request user log in now");
                 checkUser(ParseUser.getCurrentUser(), true);
+
             }
 
             @Override
@@ -232,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ParseUser newUser = new ParseUser();
                         newUser.setUsername(firstName + lastName);
                         newUser.setPassword("1234");
+                        newUser.put("firstName", firstName);
+                        newUser.put("lastName", lastName);
+                        convertImageFB(profilePic);
                         newUser.setEmail(email);
                         newUser.put("profilePicture", profilePic.toString());
                         newUser.signUpInBackground(new SignUpCallback() {
@@ -285,7 +292,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         catch (NoSuchAlgorithmException e) { }
     }
 
-}
+
+
+    private void convertImageFB(URL url) {
+
+        Thread thread = new Thread(new Runnable() {
+
+            public void run() {
+
+                Bitmap mIcon = null;
+                try {
+                    mIcon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (mIcon != null) {
+                    final ParseFile imageParseFile = new ParseFile("image.jpg", encodeToByteArray(mIcon));
+                    imageParseFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null){
+                                Log.e("EYEEE", "Error while saving");
+                                e.printStackTrace();
+                                return;
+                            }
+                            Log.e("EYEEE", "Success");
+
+                        }
+                    });
+                    ParseUser.getCurrentUser().put("image", imageParseFile);
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null){
+                                Log.e("YEET", "Error while saving");
+                                e.printStackTrace();
+                                return;
+                            } else{
+                                Log.e("YEET", "Success");
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+        thread.start();
+
+
+    }
+
+    public byte[] encodeToByteArray(Bitmap image) {
+            Log.d("yep", "encodeToByteArray");
+            Bitmap b= image;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imgByteArray = baos.toByteArray();
+
+            return imgByteArray ;
+        }
+
+
+
+
+
+    }
+
+
 
 
 
