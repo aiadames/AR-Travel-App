@@ -122,7 +122,7 @@ public class ProfileFragment extends Fragment {
         ParseFile image = (ParseFile) currentUser.get("image");
         if (image != null){
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(300)).format(DecodeFormat.PREFER_ARGB_8888);
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(400)).format(DecodeFormat.PREFER_ARGB_8888);
             Glide.with(getContext())
                     .load(image.getUrl())
                     .apply(requestOptions).into(ibProfile);

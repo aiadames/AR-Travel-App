@@ -71,15 +71,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String id, firstName, lastName, email,gender,birthday;
     private CallbackManager callbackManager;
     FacebookCallback<LoginResult> mFacebookCallback;
-    private boolean isLoggedInFB;
+    private boolean isLoggedInFB =false;
 
     private URL profilePic;
 
     String username;
     String password;
-
-
-    private static final String EMAIL = "email";
 
 
 
@@ -95,15 +92,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_main);
-
         if (ParseUser.getCurrentUser() != null){
             checkUser(ParseUser.getCurrentUser(), false);
-        } else if (AccessToken.getCurrentAccessToken() != null){
+        }
+
+    /*
+        else if (AccessToken.getCurrentAccessToken() != null){
             // just set user id
             Log.d("Login Activity", "Access token valid, already logged in via Facebook");
             checkUser(ParseUser.getCurrentUser(), true);
         }
-
+*/
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -129,14 +128,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d("response", response.toString());
                         isLoggedInFB = true;
                         getData(object);
+                        checkUser(ParseUser.getCurrentUser(), true);
                     }
                 });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,email,first_name,last_name");
                 request.setParameters(parameters);
                 request.executeAsync();
-                Log.d("fb", "request user log in now");
-                checkUser(ParseUser.getCurrentUser(), true);
+              //  Log.d("fb", "request user log in now");
+             //   checkUser(ParseUser.getCurrentUser(), true);
             }
 
             @Override
@@ -146,6 +146,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onError(FacebookException error) {
             }
         });
+
+        if(isLoggedInFB == false){
+            LoginManager.getInstance().logOut();
+        }
     }
 
     // retrieving specific data from Facebook in graph request
@@ -220,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         newUser.setUsername(firstName + lastName);
                         newUser.setPassword("1234");
                         newUser.setEmail(email);
-                        newUser.put("profilePicture", profilePic.toString());
                         newUser.signUpInBackground(new SignUpCallback() {
                             @Override
                             public void done(ParseException e) {
