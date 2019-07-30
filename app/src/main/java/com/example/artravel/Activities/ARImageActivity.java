@@ -26,8 +26,6 @@ import com.google.ar.core.Session;
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
-import com.google.ar.sceneform.math.Quaternion;
-import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -71,7 +69,7 @@ public class ARImageActivity extends AppCompatActivity {
             return false;
         }
         augmentedImageDatabase = new AugmentedImageDatabase(session);
-        augmentedImageDatabase.addImage("gem", bitmap);
+        augmentedImageDatabase.addImage("tiger", bitmap);
         config.setAugmentedImageDatabase(augmentedImageDatabase);
         return true;
     }
@@ -82,8 +80,8 @@ public class ARImageActivity extends AppCompatActivity {
         Collection<AugmentedImage> augmentedImages = frame.getUpdatedTrackables(AugmentedImage.class);
         for (AugmentedImage augmentedImage : augmentedImages) {
             if (augmentedImage.getTrackingState() == TrackingState.TRACKING) {
-                if (augmentedImage.getName().equals("gem") && shouldAddModel) {
-                    placeObject(arFragment, augmentedImage.createAnchor(augmentedImage.getCenterPose()), Uri.parse("Diamond.sfb"));
+                if (augmentedImage.getName().equals("tiger") && shouldAddModel) {
+                    placeObject(arFragment, augmentedImage.createAnchor(augmentedImage.getCenterPose()), Uri.parse("Mesh_BengalTiger.sfb"));
                     shouldAddModel = false;
                 }
             }
@@ -107,17 +105,6 @@ public class ARImageActivity extends AppCompatActivity {
     private void addNodeToScene(ArFragment arFragment, Anchor anchor, Renderable renderable) {
         AnchorNode anchorNode = new AnchorNode(anchor);
         TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-
-        //set rotation in direction (x,y,z) in degrees 90
-        node.setLocalRotation(Quaternion.axisAngle(new Vector3(1f, 0, 0), 270f));
-
-        node.setParent(anchorNode);
-        node.setRenderable(renderable);
-        node.select();
-
-        // Scale size of the AR model
-        node.getScaleController().setMaxScale(0.05f);
-        node.getScaleController().setMinScale(0.01f);
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);

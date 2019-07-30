@@ -16,16 +16,16 @@
     <include layout="@layout/stop_bottom_sheet" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnStreetView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/street_view"
-        android:clickable="true"
-        android:focusable="true"
-        android:backgroundTint="@android:color/black"
-        app:layout_anchor="@+id/bottom_sheet"
-        app:layout_anchorGravity="top|end" />
+    android:id="@+id/btnStreetView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:src="@drawable/street_view"
+    android:clickable="true"
+    android:focusable="true"
+    android:backgroundTint="@android:color/black"
+    app:layout_anchor="@+id/bottom_sheet"
+    app:layout_anchorGravity="top|end" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnStopZoom"
@@ -42,6 +42,7 @@
         app:backgroundTint="@android:color/darker_gray"
         app:layout_anchor="@id/map"
         app:layout_anchorGravity="top|end" />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,8 +25,6 @@ import com.example.artravel.models.Path;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +68,7 @@ public class PathsFragment extends Fragment {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
+               // Add whatever code is needed to append new items to the bottom of the list
                 if (mAdapter.getFilter() == null) {
                     loadEndless();
                 } else{
@@ -84,7 +81,6 @@ public class PathsFragment extends Fragment {
     }
 
     protected void loadTopPaths() {
-        // query to Parse backend for the top 20 paths to load into mPaths and mPathsFull, notify adapter that data has been updated
         final Path.Query pathsQuery = new Path.Query();
         pathsQuery.getTop();
         pathsQuery.addDescendingOrder(Path.KEY_CREATED_AT);
@@ -96,70 +92,20 @@ public class PathsFragment extends Fragment {
                     mPathsFull.addAll(objects);
                     mAdapter.notifyDataSetChanged();
 
-                    // query for a relation of started paths for a specific user:
-                    // double for loop to iterate through all paths in existence and returned paths a user has started
-                    // if exist in both: switch path's started attribute to true
-                    ParseRelation<Path> startedPaths = ParseUser.getCurrentUser().getRelation("startedPaths");
-                    startedPaths.getQuery().findInBackground(new FindCallback<Path>() {
-                        @Override
-                        public void done(List<Path> objects, ParseException e) {
-                            if (e != null){
-                                e.printStackTrace();
-                            } else {
-                                for (int x = 0; x < mPathsFull.size(); x++) {
-                                    for (int i = 0; i < objects.size(); i++) {
-                                        if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
-                                            mPathsFull.get(x).setStartedPath();
-                                        }
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
-
-                    // query for a relation of completed paths for a specific user:
-                    // double for loop to iterate through all paths in existence and returned paths a user has completed
-                    // if exist in both: switch path's completed attribute to true
-                    ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
-                    completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
-                        @Override
-                        public void done(List<Path> objects, ParseException e) {
-                            if (e != null){
-                                e.printStackTrace();
-                            } else { ;
-                                for (int x = 0; x < mPathsFull.size(); x++) {
-                                    for (int i = 0; i < objects.size(); i++) {
-                                        if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
-                                            mPathsFull.get(x).setCompletedPath();
-
-                                        }
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
-
-
                     for (int i = 0; i < objects.size(); i++) {
+
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
                     }
-
                 } else {
                     e.printStackTrace();
                 }
             }
         });
-
-
-
     }
 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // menu item in toolbar for searching through paths by path name specifically
         inflater.inflate(R.menu.path_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -179,8 +125,9 @@ public class PathsFragment extends Fragment {
 
     }
 
-    // append the next page of data into the adapter via endless scroll
-    // sends a network request to Parse and appends new data items to your adapter based on last Path object in mPaths
+
+    // Append the next page of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
     public void loadEndless() {
         final Path.Query pathsQuery = new Path.Query();
         pathsQuery.getTop();
@@ -200,9 +147,6 @@ public class PathsFragment extends Fragment {
             }
         });
     }
-
-
-
 }
 
 
