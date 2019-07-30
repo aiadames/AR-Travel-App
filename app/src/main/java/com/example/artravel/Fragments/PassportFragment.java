@@ -99,7 +99,9 @@ public class PassportFragment extends Fragment{
             Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
         }
         else
-            Toast.makeText(getContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
+        {
+           // Toast.makeText(getContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
+        }
 
         ParseRelation<Gems> relation;
         relation = user.getRelation("collectedGems");
