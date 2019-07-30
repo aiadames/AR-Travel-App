@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnTest = view.findViewById(R.id.btnTest);
-        launchAr = view.findViewById(R.id.arTest);
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,15 +53,6 @@ public class HomeFragment extends Fragment {
 
         });
 
-        launchAr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Ar = new Intent(getActivity(), passportSceneform.class);
-                startActivity(Ar);
-                Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
-            }
-
-        });
 
     }
 }

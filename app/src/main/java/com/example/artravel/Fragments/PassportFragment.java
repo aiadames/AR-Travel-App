@@ -1,6 +1,7 @@
 package com.example.artravel.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +24,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.artravel.Activities.passportSceneform;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -49,6 +53,7 @@ public class PassportFragment extends Fragment{
     private CardView cardView;
     private Context context;
     private int numCollected;
+    private FloatingActionButton fab;
     private static final String TAG = "PassportFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,6 +76,17 @@ public class PassportFragment extends Fragment{
         setupView(view);
         setView(view);
         queryGems();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Ar = new Intent(getActivity(), passportSceneform.class);
+                startActivity(Ar);
+                //Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
 
@@ -96,6 +112,7 @@ public class PassportFragment extends Fragment{
                     return;
                 }
                 mGems.addAll(userGems);
+                gemCount.setText(("You've collected " + mGems.size() + " gems this week"));
 
                // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
@@ -141,6 +158,7 @@ public class PassportFragment extends Fragment{
         profile = view.findViewById(R.id.ivArGemImage);
         cardView = view.findViewById(R.id.cardView);
 
+        fab = view.findViewById(R.id.floatingActionButton2);
 
     }
 
@@ -151,8 +169,6 @@ public class PassportFragment extends Fragment{
         ParseUser user = ParseUser.getCurrentUser();
         if (user == null)
             Toast.makeText(view.getContext(), "user null", Toast.LENGTH_SHORT).show();
-
-        gemCount.setText(("You've collected " + numCollected + " gems this week"));
 
         username.setText(user.getUsername());
 

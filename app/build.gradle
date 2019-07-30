@@ -4,7 +4,7 @@ apply plugin: 'com.google.ar.sceneform.plugin'
 
 android {
     compileSdkVersion 29
-    compileOptions{
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -94,9 +94,7 @@ dependencies {
     implementation 'com.google.ar.sceneform:assets:1.5.0'
 
 
-
 }
-
 
 
 sceneform.asset('sampledata/Mesh_BengalTiger.obj',

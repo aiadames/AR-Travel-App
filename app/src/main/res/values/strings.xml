@@ -6,5 +6,6 @@
     <string name="fb_login_protocol_scheme">fb488384535263120</string>
     <string name="resume_path_button">Resume path</string>
     <string name="title_activity_passport_sceneform">passportSceneform</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>

@@ -1,20 +1,14 @@
 
 package com.example.artravel.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.artravel.MainActivity;
 import com.example.artravel.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.artravel.Fragments.CreateFragment;
@@ -46,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = new HomeFragment();
                 switch (item.getItemId()) {
-                    case R.id.action_home:
+                    case R.id.Home:
                         fragment = new HomeFragment();
                         //Toast. makeText(HomeActivity.this, "Compose",Toast.LENGTH_SHORT).show();
                         break;

@@ -59,7 +59,7 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
             if (image != null) {
                 Glide.with(context)
                         .load(image.getUrl())
-                        .apply(RequestOptions.circleCropTransform())
+                        //.apply(RequestOptions.circleCropTransform())
                         .into(gemImage);
             }
         }

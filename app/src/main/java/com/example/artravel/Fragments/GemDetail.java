@@ -1,6 +1,7 @@
 package com.example.artravel.Fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.SceneView;
+import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
@@ -45,6 +47,7 @@ public class GemDetail extends AppCompatActivity {
     private Node node;
     private TransformableNode tigerNode;
     Scene scene;
+    private String modelLink;
 
 
     private ModelRenderable tigerRenderable;
@@ -87,9 +90,12 @@ public class GemDetail extends AppCompatActivity {
 
         scene = new Scene(sceneView);
 
-
+    modelLink = currentGem.getModel();
         ModelRenderable.builder()
-                .setSource(getApplicationContext(), R.raw.mesh_bengaltiger)
+                .setSource(this, RenderableSource.builder().setSource(
+                        this,
+                        Uri.parse(modelLink),
+                        RenderableSource.SourceType.GLTF2).build())
                 .build().thenAccept(tigerRenderable -> onRenderableLoaded(tigerRenderable))
                 .exceptionally(
                         throwable -> {

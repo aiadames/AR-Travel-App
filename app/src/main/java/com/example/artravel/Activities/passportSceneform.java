@@ -107,16 +107,6 @@ public class passportSceneform extends AppCompatActivity {
                             return null;
                         }
                 );
-
-        ModelRenderable.builder()
-                .setSource(this, R.raw.pepe)
-                .build().thenAccept(modelRenderable -> pepe = modelRenderable)
-                .exceptionally(
-                        throwable -> {
-                            Toast.makeText(this, "cant load model", Toast.LENGTH_SHORT).show();
-                            return null;
-                        }
-                );
     }
 
 
