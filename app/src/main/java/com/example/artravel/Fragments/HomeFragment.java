@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
             tvContinuePath.setVisibility(View.INVISIBLE);
 
             // Query for all of the user's collected gems
-            ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
+           ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
             relation.getQuery().findInBackground(new FindCallback<Gems>() {
                 @Override
                 public void done(List<Gems> objects, ParseException e) {
