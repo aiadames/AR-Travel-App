@@ -1,5 +1,6 @@
 package com.example.artravel.Activities;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.artravel.GemsAdapter;
@@ -23,7 +24,15 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.Camera;
+import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.SceneView;
+import com.google.ar.sceneform.assets.RenderableSource;
+import com.google.ar.sceneform.math.Quaternion;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.Renderable;
+import com.google.ar.sceneform.rendering.RenderableInstance;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
@@ -43,9 +52,9 @@ public class passportSceneform extends AppCompatActivity {
     private RecyclerView rvGems;
     private arGemsAdapter adapter;
     private int selected;
-
+    private String modelLink;
     ArFragment fragment;
-    private ModelRenderable tigerRenderable,pepe;
+    private ModelRenderable tigerRenderable, pepe;
 
 
     @Override
@@ -66,7 +75,7 @@ public class passportSceneform extends AppCompatActivity {
         //show all gems but the ones you dont own appear grayed out
         //when you click them it gives a message about what path to complete to earn them
 
-            setupModel();
+
 
         fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             int selected;
@@ -75,28 +84,33 @@ public class passportSceneform extends AppCompatActivity {
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(fragment.getArSceneView().getScene());
-            createModel(anchorNode, selected);
+            setupModel();
+            createModel(anchorNode);
 
 
-            Toast.makeText(this, "selected is equals to "+ selected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
         });
 
     }
 
     private void setupModel() {
+        modelLink = adapter.getImageLink();
         ModelRenderable.builder()
-                .setSource(this,R.raw.mesh_bengaltiger)
-                .build().thenAccept(modelRenderable ->tigerRenderable = modelRenderable)
+                .setSource(this, RenderableSource.builder().setSource(
+                        this,
+                        Uri.parse(modelLink),
+                        RenderableSource.SourceType.GLTF2).build())
+                .build().thenAccept(modelRenderable -> tigerRenderable = modelRenderable)
                 .exceptionally(
                         throwable -> {
                             Toast.makeText(this, "cant load model", Toast.LENGTH_SHORT).show();
                             return null;
                         }
-);
+                );
 
         ModelRenderable.builder()
-                .setSource(this,R.raw.pepe)
-                .build().thenAccept(modelRenderable ->pepe = modelRenderable)
+                .setSource(this, R.raw.pepe)
+                .build().thenAccept(modelRenderable -> pepe = modelRenderable)
                 .exceptionally(
                         throwable -> {
                             Toast.makeText(this, "cant load model", Toast.LENGTH_SHORT).show();
@@ -106,30 +120,20 @@ public class passportSceneform extends AppCompatActivity {
     }
 
 
-    private void createModel (AnchorNode anchorNode, int selected){
+    private void createModel(AnchorNode anchorNode) {
 
-        if (selected == 0){
-           TransformableNode tiger = new TransformableNode(fragment.getTransformationSystem());
-           tiger.setParent(anchorNode);
-           tiger.setRenderable(tigerRenderable);
-           tiger.select();
+            TransformableNode tiger = new TransformableNode(fragment.getTransformationSystem());
+            tiger.setParent(anchorNode);
+            tiger.setRenderable(tigerRenderable);
+            tiger.select();
 
-        }
-
-        if (selected == 1){
-            TransformableNode human = new TransformableNode(fragment.getTransformationSystem());
-            human.setParent(anchorNode);
-            human.setRenderable(pepe);
-            human.select();
-
-        }
     }
 
-    private void setupView(){
+    private void setupView() {
 
-        mGems= new ArrayList<>();
-        rvGems= findViewById(R.id.rvSceneForm);
-        adapter = new arGemsAdapter( mGems, this.getApplicationContext());
+        mGems = new ArrayList<>();
+        rvGems = findViewById(R.id.rvSceneForm);
+        adapter = new arGemsAdapter(mGems, this.getApplicationContext());
         rvGems.setAdapter(adapter);
 
         rvGems.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -142,11 +146,10 @@ public class passportSceneform extends AppCompatActivity {
 
 
         ParseUser user = ParseUser.getCurrentUser();
-        if (user == null){
+        if (user == null) {
             Toast.makeText(this.getApplicationContext(), "user null", Toast.LENGTH_SHORT).show();
-        }
-        else
-            Toast.makeText(this.getApplicationContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(this.getApplicationContext(), "user " + user.getUsername() + " is not null", Toast.LENGTH_SHORT).show();
 
         ParseRelation<Gems> relation;
         relation = user.getRelation("collectedGems");
@@ -166,5 +169,4 @@ public class passportSceneform extends AppCompatActivity {
             }
         });
     }
-
 }

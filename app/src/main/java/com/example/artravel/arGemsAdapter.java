@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +43,9 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     public Vibrator vibrator;
     public ImageView gemImage;
     public int selection;
+    public CardView cardView;
+    public String imageLink;
+    public RecyclerView recyclerView;
 
     public arGemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
@@ -54,6 +58,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
         public GemsViewHolder(View itemView) {
             super(itemView);
             gemImage = itemView.findViewById(R.id.ivArGemImage);
+            cardView = itemView.findViewById(R.id.cardViewGem);
             itemView.setOnClickListener(this);
 
         }
@@ -70,32 +75,13 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
         }
 
         public void onClick(View view) {
-            Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show();
             vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
             vibrator.vibrate(15);
 
 
             int position = getAdapterPosition();
             selection = position;
-//
-//            Fragment details = new GemDetail();
-//
-//            if (position != RecyclerView.NO_POSITION) {
-//                // get the movie at the position, this won't work if the class is static
-//                Gems gem = gemsList.get(position);
-//                Toast.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
-//
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("Gems", Parcels.wrap(gem));
-//                details.setArguments(bundle);
-//
-//                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.flContainer, details).addToBackStack("Gems")
-//                        .commit();
-//            }
-//        }
-
+            //cardView.setCardBackgroundColor(0xffffff00);
         }
     }
     @Override
@@ -121,6 +107,14 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
 
     public int getSelected(){
         return selection;
+
+    }
+
+    public String getImageLink(){
+        Gems currentGem = gemsList.get(getSelected());
+
+       imageLink= currentGem.getModel();
+       return imageLink;
 
     }
 

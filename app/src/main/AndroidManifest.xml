@@ -48,6 +48,7 @@
             android:required="false" />
 
         <activity android:name=".Activities.PathDetailsActivity" />
+        <activity android:name=".Fragments.GemDetail"/>
         <activity
             android:name=".Activities.HomeActivity"
             android:windowSoftInputMode="adjustPan"></activity>

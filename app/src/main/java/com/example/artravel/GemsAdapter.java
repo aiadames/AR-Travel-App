@@ -1,6 +1,7 @@
 package com.example.artravel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.artravel.Activities.SignupActivity;
 import com.example.artravel.Fragments.GemDetail;
 import com.example.artravel.models.Gems;
 import com.parse.ParseFile;
@@ -66,21 +68,17 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
 
             int position = getAdapterPosition();
 
-            Fragment details = new GemDetail();
-
             if (position != RecyclerView.NO_POSITION) {
                 // get the movie at the position, this won't work if the class is static
                 Gems gem = gemsList.get(position);
                 Toast.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
 
-
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Gems", Parcels.wrap(gem));
-                details.setArguments(bundle);
+                Intent intent = new Intent(view.getContext(), GemDetail.class);
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
 
-                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, details).addToBackStack("Gems")
-                        .commit();
             }
         }
     }
