@@ -2,6 +2,7 @@ package com.example.artravel.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,6 +164,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ParseUser.logOut();
+                Log.d("logout", "logout");
                 Intent logout = new Intent(getActivity(), MainActivity.class);
                 startActivity(logout);
                 Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();

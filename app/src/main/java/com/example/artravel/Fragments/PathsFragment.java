@@ -132,6 +132,7 @@ public class PathsFragment extends Fragment {
                                     for (int i = 0; i < objects.size(); i++) {
                                         if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
                                             mPathsFull.get(x).setCompletedPath();
+
                                         }
                                     }
                                 }
