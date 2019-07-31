@@ -38,6 +38,7 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.artravel.MainActivity;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
@@ -75,7 +76,6 @@ public class ProfileFragment extends Fragment {
     public static final int GET_FROM_GALLERY = 3;
     private ParseUser currentUser;
 
-
     private TextView tvUsername;
     private TextView tvUserName;
     private TextView tvEmail;
@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvCompletedPaths;
     private Button btnViewCompleted;
 
-
+    private Button btnLogOut;
 
     public static final int STORAGE_PERMISSION_CODE = 123;
     public static final int UPLOAD_PERMISSION_CODE = 124;
@@ -114,6 +114,13 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
+
+        btnLogOut = view.findViewById(R.id.btnLogOut);
+
+
+        requestStoragePermission();
+        ibProfile = getView().findViewById(R.id.ivProfile);
+        tvName = getView().findViewById(R.id.tvName);
 
 
 
@@ -169,6 +176,20 @@ public class ProfileFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, userPaths).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Profile").commit();
             }
         });
+
+        btnLogOut.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Log.d("logout", "logout");
+                Intent logout = new Intent(getActivity(), MainActivity.class);
+                startActivity(logout);
+                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     }
 
 
