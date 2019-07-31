@@ -1,20 +1,30 @@
 
 package com.example.artravel.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
+import com.example.artravel.MainActivity;
 import com.example.artravel.R;
+import com.example.artravel.StopFragmentPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.artravel.Fragments.CreateFragment;
 import com.example.artravel.Fragments.HomeFragment;
 import com.example.artravel.Fragments.PathsFragment;
 import com.example.artravel.Fragments.PassportFragment;
+import com.google.android.material.tabs.TabLayout;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -69,9 +79,6 @@ public class HomeActivity extends AppCompatActivity {
             }
             // bottomNavigationView.setSelectedItemId(R.id.action_home);
         });
-
-
-
     }
 
     @Override
