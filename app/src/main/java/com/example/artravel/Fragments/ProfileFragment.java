@@ -34,6 +34,7 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.artravel.MainActivity;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
 import com.facebook.login.Login;
@@ -65,6 +66,15 @@ public class ProfileFragment extends Fragment {
     private ParseUser currentUser;
 
 
+
+    private TextView tvUsername;
+    private TextView tvUserName;
+    private TextView tvEmail;
+    private TextView tvUserEmail;
+    private TextView tvCompletedPaths;
+    private Button btnViewCompleted;
+    private Button btnLogOut;
+
     public static final int STORAGE_PERMISSION_CODE = 123;
     public static final int UPLOAD_PERMISSION_CODE = 124;
     public static final int PICK_IMAGE_REQUEST = 22;
@@ -84,6 +94,19 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        requestStoragePermission();
+        ibProfile = view.findViewById(R.id.ivProfile);
+        tvName = view.findViewById(R.id.tvName);
+        tvWelcome = view.findViewById(R.id.tvWelcome);
+        tvUserEmail = view.findViewById(R.id.tvUserEmail);
+        tvUserName = view.findViewById(R.id.tvUserName);
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvEmail = view.findViewById(R.id.tvEmail);
+        tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
+        btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
+        btnLogOut = view.findViewById(R.id.btnLogOut);
+
 
         requestStoragePermission();
         ibProfile = getView().findViewById(R.id.ivProfile);
@@ -107,6 +130,29 @@ public class ProfileFragment extends Fragment {
                 showFileChooser();
             }
         });
+
+
+        // user clicks on profile fragment 'View Completed Paths' to take to a new fragment where RecyclerView populated by only completed paths by the user
+        btnViewCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment userPaths = new UserCompletedPathsFragment();
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, userPaths).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Profile").commit();
+            }
+        });
+
+        btnLogOut.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Log.d("logout", "logout");
+                Intent logout = new Intent(getActivity(), MainActivity.class);
+                startActivity(logout);
+                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     }
