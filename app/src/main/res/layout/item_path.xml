@@ -6,6 +6,7 @@
     android:layout_width="410dp"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
+    android:backgroundTint="#FFFFFF"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="10dp">
 
@@ -13,7 +14,9 @@
         android:id="@+id/relativeLayout"
         android:layout_width="400dp"
         android:layout_height="50dp"
-        android:layout_margin="4dp">
+        android:layout_margin="4dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF">
 
         <ImageView
             android:id="@+id/ivPathImage"

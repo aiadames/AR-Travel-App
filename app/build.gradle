@@ -99,15 +99,10 @@ dependencies {
 
 sceneform.asset('sampledata/Mesh_BengalTiger.obj',
         'default',
-        'sampledata/mesh_bengaltiger.sfa',
-        'src/main/res/raw/mesh_bengaltiger')
+        'sampledata/Mesh_BengalTiger.sfa',
+        'src/main/assets/Mesh_BengalTiger')
 
-sceneform.asset('sampledata/models/model.obj',
+sceneform.asset('sampledata/Diamond.obj',
         'default',
-        'sampledata/models/model.sfa',
-        'src/main/res/raw/model')
-
-sceneform.asset('sampledata/models/pepe.obj',
-        'default',
-        'sampledata/models/pepe.sfa',
-        'src/main/res/raw/pepe')
+        'sampledata/Diamond.sfa',
+        'src/main/assets/Diamond')

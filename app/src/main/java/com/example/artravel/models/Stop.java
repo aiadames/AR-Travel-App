@@ -67,4 +67,12 @@ public class Stop extends ParseObject {
         return getParseFile(KEY_STOP_DETAILS_IMAGE);
     }
 
+    public void setStopName(String stopName) {
+        put(KEY_STOP_NAME, stopName);
+    }
+
+    public void setStopDescription(String stopDescription) {
+        put(KEY_STOP_DETAILS, stopDescription);
+    }
+
 }

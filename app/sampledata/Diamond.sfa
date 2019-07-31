@@ -1,25 +1,24 @@
 {
   materials: [
     {
-      name: 'lambert2SG',
+      name: '_crayfishdiffuse',
       parameters: [
         {
-          baseColor: 'Tex_BengalTiger',
+          baseColor: null,
         },
         {
           baseColorTint: [
+            0.1333,
             1,
-            1,
-            1,
-
+            0.88629999999999998,
             1,
           ],
         },
         {
-          metallic: 0,
+          metallic: 1,
         },
         {
-          roughness: 1,
+          roughness: 0.25,
         },
         {
           opacity: null,
@@ -31,21 +30,13 @@
   model: {
     attributes: [
       'Position',
-      'TexCoord',
       'Orientation',
     ],
     collision: {},
-    file: 'sampledata/Mesh_BengalTiger.obj',
-    name: 'Mesh_BengalTiger',
+    file: 'sampledata/Diamond.obj',
+    name: 'Diamond',
     recenter: 'root',
-    scale: 0.0022169999999999999,
+    scale: 6.0000000000000002e-06,
   },
-  samplers: [
-    {
-      file: 'sampledata/Tex_BengalTiger.png',
-      name: 'Tex_BengalTiger',
-      pipeline_name: 'Tex_BengalTiger.png',
-    },
-  ],
   version: '0.54:2',
 }

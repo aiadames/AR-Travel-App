@@ -8,14 +8,14 @@
 
     <ImageButton
         android:id="@+id/ivProfile"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="124dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="50dp"
         android:background="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -23,10 +23,90 @@
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="45dp"
+        android:text="username"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/tvWelcome"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="62dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="8dp"
+        android:text="Hello, "
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="65dp"
+        android:text="username :"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
+        android:text="e-mail :"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="65dp"
         android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
+
+    <TextView
+        android:id="@+id/tvUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/tvEmail"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
+
+    <TextView
+        android:id="@+id/tvCompletedPaths"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="You have completed 60 paths!"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+
+    <Button
+        android:id="@+id/btnViewCompleted"
+        android:layout_width="174dp"
+        android:layout_height="35dp"
+        android:text="view completed paths"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
 </androidx.constraintlayout.widget.ConstraintLayout>
