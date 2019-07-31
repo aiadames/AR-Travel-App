@@ -60,9 +60,6 @@ public class GemDetail extends AppCompatActivity {
 
         setupView();
 
-
-        setupModel();
-
         Bundle bundle = getIntent().getExtras();
         currentGem = Parcels.unwrap(bundle.getParcelable("Gems"));
 
@@ -152,18 +149,6 @@ public class GemDetail extends AppCompatActivity {
         gemDescription = findViewById(R.id.tvdetailDescr);
 
 
-    }
-
-    private void setupModel() {
-        ModelRenderable.builder()
-                .setSource(getApplicationContext(), R.raw.mesh_bengaltiger)
-                .build().thenAccept(modelRenderable -> tigerRenderable = modelRenderable)
-                .exceptionally(
-                        throwable -> {
-                            Toast.makeText(getApplicationContext(), "cant load model", Toast.LENGTH_SHORT).show();
-                            return null;
-                        }
-                );
     }
 
 
