@@ -2,7 +2,6 @@ package com.example.artravel.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,65 +12,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.Activities.HomeActivity;
+import com.example.artravel.Activities.passportSceneform;
 import com.example.artravel.MainActivity;
-import com.example.artravel.ProgressBar;
 import com.example.artravel.R;
-import com.example.artravel.StopsAdapter;
-import com.example.artravel.StopsItemTouchHelperCallback;
-import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
-import com.example.artravel.models.Stop;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
-
-import org.parceler.Parcels;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import static com.example.artravel.R.layout.fragment_home;
 
 public class HomeFragment extends Fragment {
 
     private Button btnTest;
-    private TextView tvWelcome;
-    private TextView tvCollectedGems;
-    private TextView tvContinuePath;
-    private CardView cvContinuePath;
-    private Path continuePath;
-    private ArrayList<Stop> continuePathStops;
-
-    private final Random random = new Random();
-    private ProgressBar progressBar;
-
-    public enum reachedStop {
-        STOP1 (20),
-        STOP2 (40),
-        STOP3 (60),
-        STOP4 (80),
-        STOP5 (98.5);
-
-        private final double progress;
-
-        reachedStop(double progress) {
-            this.progress = progress;
-        }
-    }
+    private Button launchAr;
+    private TextView tvName;
+    private ImageView ivProfile;
+    private TextView tvEmail;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return (View) inflater.inflate(fragment_home,container, false);
@@ -81,6 +41,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnTest = view.findViewById(R.id.btnTest);
+
         tvWelcome = view.findViewById(R.id.tvWelcome);
         tvCollectedGems = view.findViewById(R.id.tvCollectedGems);
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
@@ -159,62 +120,18 @@ public class HomeFragment extends Fragment {
             });
 
         }
-
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ParseUser.logOut();
-                Log.d("logout", "logout");
                 Intent logout = new Intent(getActivity(), MainActivity.class);
                 startActivity(logout);
-                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
+                Toast. makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
             }
 
         });
 
-        cvContinuePath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (continuePath != null) {
-                    Fragment detailedPathFragment = new DetailedPathFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("Path", Parcels.wrap(continuePath));
-                    detailedPathFragment.setArguments(bundle);
-
-                    FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).addToBackStack("Home")
-                            .commit();
-                } else {
-                    Fragment pathsFragment = new PathsFragment();
-
-                    FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, pathsFragment).addToBackStack("Home")
-                            .commit();
-                }
-            }
-        });
-
-        double[] arr = {reachedStop.STOP1.progress, reachedStop.STOP2.progress, reachedStop.STOP3.progress,
-                reachedStop.STOP4.progress, reachedStop.STOP5.progress};
-        progressBar.setGoals(arr);
-        progressBar.setIndicatorType(ProgressBar.IndicatorType.Circle);
-        progressBar.setGoalIndicatorThickness(0.5f);
-        progressBar.setGoalIndicatorHeight(30);
     }
-
-
-    private ArrayList<Stop> createStopsList() {
-        ArrayList<Stop> stops = new ArrayList<>();
-        stops.add(continuePath.getStop1());
-        stops.add(continuePath.getStop2());
-        stops.add(continuePath.getStop3());
-        stops.add(continuePath.getStop4());
-        stops.add(continuePath.getStop5());
-        return stops;
-    }
-
-
-
 }
 

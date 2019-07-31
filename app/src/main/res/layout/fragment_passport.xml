@@ -8,13 +8,14 @@ android:layout_height="match_parent"
 android:orientation="vertical" >
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="378dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
 
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +29,8 @@ android:orientation="vertical" >
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                app:cardCornerRadius="5dp"
-                android:onClick="cardViewClick">
+                android:onClick="cardViewClick"
+                app:cardCornerRadius="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -38,7 +39,7 @@ android:orientation="vertical" >
                     android:layout_marginRight="2dp">
 
                     <ImageView
-                        android:id="@+id/ivProfileImag1"
+                        android:id="@+id/ivArGemImage"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="8dp"
@@ -101,5 +102,22 @@ android:orientation="vertical" >
 
         </RelativeLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        app:backgroundTint="#61D9F7"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92"
+        app:srcCompat="@drawable/camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

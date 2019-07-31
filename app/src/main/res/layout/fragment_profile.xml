@@ -8,14 +8,14 @@
 
     <ImageButton
         android:id="@+id/ivProfile"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="124dp"
         android:background="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -81,24 +81,14 @@
     <TextView
         android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/tvEmail"
-        app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
 
-    <TextView
-        android:id="@+id/tvCompletedPaths"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="You have completed 60 paths!"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="28dp"
+        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+
 
     <Button
         android:id="@+id/btnViewCompleted"
@@ -124,4 +114,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.92" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

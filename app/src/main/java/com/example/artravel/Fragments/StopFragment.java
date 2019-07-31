@@ -110,6 +110,7 @@ public class StopFragment extends Fragment {
     private TextView tvStopDetails;
     private TextView tvPathName;
     private TextView tvStopDistance;
+    private Button btnNextStop;
     private Button btnStopInfo;
     private FloatingActionButton btnStreetView;
     private FloatingActionButton btnStopZoom;
@@ -135,6 +136,7 @@ public class StopFragment extends Fragment {
         tvStopName = view.findViewById(R.id.tvStopName);
         tvStopDetails = view.findViewById(R.id.tvStopDetails);
         tvPathName = view.findViewById(R.id.tvPathName);
+        btnNextStop = view.findViewById(R.id.btnNextStop);
         tvStopDistance = view.findViewById(R.id.tvStopDistance);
         btnStopInfo = view.findViewById(R.id.btnStopInfo);
         btnStreetView = view.findViewById(R.id.btnStreetView);
@@ -147,6 +149,33 @@ public class StopFragment extends Fragment {
         ParseGeoPoint stopLocation = getLocationOfStop(currentStop);
         stopLatitude = stopLocation.getLatitude();
         stopLongitude = stopLocation.getLongitude();
+
+
+        btnNextStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
+                    relation.add(currentStop);
+                    currentUser.saveInBackground();
+                }
+                Fragment stopFragment = new StopFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+                if (stopIndex < stopsList.size() - 1) {
+                    stopIndex++;
+                }
+                bundle.putInt("Stop Index", stopIndex);
+                stopFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                        .commit();
+            }
+        });
 
         btnStopInfo.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -134,6 +134,7 @@ public class DetailedPathFragment extends Fragment {
 
         initializeViews();
 
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
@@ -153,10 +154,6 @@ public class DetailedPathFragment extends Fragment {
                     }
                 }
             });
-        }
-
-        if(currentPath.getCompletedPath() == true){
-            btnStartPath.setText("You've completed this path already");
         }
 
         stops = createStopsList();
@@ -229,21 +226,22 @@ public class DetailedPathFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null && currentPath.getCompletedPath() == false) {
+                if (currentUser != null) {
                     ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
                     relation.add(currentPath);
                     currentUser.saveInBackground();
-                    Fragment stopFragment = new StopFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("Path", Parcels.wrap(currentPath));
-                    bundle.putParcelable("Stops Array", Parcels.wrap(stops));
-                    bundle.putInt("Stop Index", 0);
-                    stopFragment.setArguments(bundle);
-                    FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
-                } else if (currentPath.getCompletedPath() == true){
-                    Toast.makeText(getContext(),"you've already completed this path", Toast.LENGTH_LONG).show();
                 }
+
+                Fragment stopFragment = new StopFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Path", Parcels.wrap(currentPath));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stops));
+                bundle.putInt("Stop Index", 0);
+                stopFragment.setArguments(bundle);
+
+                FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
             }
         });
     }
@@ -400,7 +398,7 @@ public class DetailedPathFragment extends Fragment {
     private void initializeViews() {
         tvPathName.setText(currentPath.getPathName());
         tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(currentPath.getPathRatingAvg());
+        rbPathRating.setRating(getPathRatingAvg());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
@@ -470,7 +468,25 @@ public class DetailedPathFragment extends Fragment {
     }
 
 
-
+    public Float getPathRatingAvg(){
+        double sum;
+        int size = currentPath.getPathRatings().size();
+        ArrayList<Double> myArrayList = new ArrayList<>();
+        myArrayList = currentPath.getPathRatings();
+        sum = 0.0;
+        for (int i = 0; i < size; i++){
+            Object num = myArrayList.get(i);
+            Log.d("yer", num.getClass().toString());
+            double myFloat;
+            if (num.getClass().equals(Integer.class)){
+                 myFloat = (double)((Integer)num);
+            } else {
+                 myFloat = (double)(num);
+            }
+            sum = (sum + myFloat);
+        }
+        return (float)(sum/size);
+    }
 }
 
 
