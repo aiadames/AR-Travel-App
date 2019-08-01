@@ -1,142 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#8BFFC107"
-    tools:context=".MainActivity">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="loginViewModel"
+            type="com.example.artravel.MainActivity.LoginViewModel"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="352dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="188dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/rounded_corners"
-        android:textColorHint="#FFFFFF"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8BFFC107"
+        tools:context=".MainActivity">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="352dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginTop="188dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_corners"
+            android:textColorHint="#FFFFFF"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsername"
-            android:layout_width="356dp"
-            android:layout_height="match_parent"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="356dp"
+                android:layout_height="match_parent"
+                android:text="@={loginViewModel.username,default=Name}"
+                android:backgroundTint="#00FFFFFF"
+                android:fontFamily="sans-serif-light"
+                android:hint="  Username"
+                android:textColor="#FFFFFF" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="352dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_corners"
+            android:textColorHint="#FFFFFF"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="356dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="#00FFFFFF"
+                android:fontFamily="sans-serif-light"
+                android:hint="  Password"
+                android:text="@={loginViewModel.password,default=Name}"
+                android:singleLine="false"
+                android:textColor="#FFFFFF" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:layout_width="299dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="348dp"
+            android:background="@drawable/rounded_corners"
             android:backgroundTint="#00FFFFFF"
             android:fontFamily="sans-serif-light"
-            android:hint="  Username"
-            android:textColor="#FFFFFF" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:onClick="@{()->loginViewModel.onLoginButtonClick()}"
+            android:shadowColor="#EBE1E1"
+            android:text="Log in"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
-        android:layout_width="352dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/rounded_corners"
-        android:textColorHint="#FFFFFF"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="356dp"
-            android:layout_height="match_parent"
+        <Button
+            android:id="@+id/bSignUp"
+            android:layout_width="299dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="76dp"
+            android:background="@drawable/rounded_corners"
             android:backgroundTint="#00FFFFFF"
             android:fontFamily="sans-serif-light"
-            android:hint="  Password"
-            android:singleLine="false"
-            android:textColor="#FFFFFF" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:shadowColor="#FD000000"
+            android:shadowRadius="0.0"
+            android:text="Sign up."
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
-    <Button
-        android:id="@+id/bLogin"
-        android:layout_width="299dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="348dp"
+        <Button
+            android:id="@+id/bContinueNoLogin"
+            android:layout_width="299dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#00FFFFFF"
+            android:fontFamily="sans-serif-light"
+            android:text="Continue with no account"
+            android:textAllCaps="false"
+            android:textColor="#FDFDFD"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bSignUp" />
 
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#00FFFFFF"
-        android:fontFamily="sans-serif-light"
-        android:shadowColor="#EBE1E1"
-        android:text="Log in"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="#FFFFFF"
-        android:textColorHighlight="#FFFFFF"
-        android:textColorLink="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/bSignUp"
-        android:layout_width="299dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#00FFFFFF"
-        android:fontFamily="sans-serif-light"
-        android:shadowColor="#FD000000"
-        android:shadowRadius="0.0"
-        android:text="Sign up."
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bLogin" />
-
-    <Button
-        android:id="@+id/bContinueNoLogin"
-        android:layout_width="299dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#00FFFFFF"
-        android:fontFamily="sans-serif-light"
-        android:text="Continue with no account"
-        android:textAllCaps="false"
-        android:textColor="#FDFDFD"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bSignUp" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="299dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="56dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bContinueNoLogin" />
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="299dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bContinueNoLogin" />
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+</layout>
 

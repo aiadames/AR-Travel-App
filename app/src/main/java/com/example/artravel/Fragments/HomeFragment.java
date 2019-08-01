@@ -48,7 +48,6 @@ import static com.example.artravel.R.layout.fragment_home;
 
 public class HomeFragment extends Fragment {
 
-    private Button btnTest;
     private TextView tvWelcome;
     private TextView tvCollectedGems;
     private TextView tvContinuePath;
@@ -81,7 +80,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnTest = view.findViewById(R.id.btnTest);
         tvWelcome = view.findViewById(R.id.tvWelcome);
         tvCollectedGems = view.findViewById(R.id.tvCollectedGems);
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
@@ -239,17 +237,7 @@ public class HomeFragment extends Fragment {
             });
 
         }
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                Log.d("logout", "logout");
-                Intent logout = new Intent(getActivity(), MainActivity.class);
-                startActivity(logout);
-                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
-            }
 
-        });
 
         cvContinuePath.setOnClickListener(new View.OnClickListener() {
             @Override

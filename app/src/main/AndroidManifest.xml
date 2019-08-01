@@ -22,7 +22,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.camera.ar"
@@ -40,15 +39,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.ARImageActivity">
+        </activity>
         <activity android:name=".Activities.StreetViewActivity" />
-        <activity android:name=".Activities.passportSceneform" />
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
         <activity android:name=".Activities.PathDetailsActivity" />
-        <activity android:name=".Fragments.GemDetail" />
         <activity
             android:name=".Activities.HomeActivity"
             android:windowSoftInputMode="adjustPan" />

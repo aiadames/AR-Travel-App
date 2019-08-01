@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/Home"
+        android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/home"
+        android:icon="@android:drawable/btn_dialog"
         android:title="@string/btnhome"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_paths"
         android:enabled="true"
-        android:icon="@drawable/maplocation"
-        android:title="Paths"
+        android:icon="@android:drawable/btn_star_big_off"
+        android:title="btPaths"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_create"
         android:enabled="true"
-        android:icon="@drawable/plussymbol"
-        android:title="Create"
+        android:icon="@android:drawable/ic_delete"
+        android:title="btnCreate"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_passport"
         android:enabled="true"
-        android:icon="@drawable/star"
-        android:title="Passport"
+        android:icon="@android:drawable/ic_input_delete"
+        android:title="btnPassport"
         app:showAsAction="always" />
 </menu>
