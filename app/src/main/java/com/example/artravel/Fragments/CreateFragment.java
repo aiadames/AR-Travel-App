@@ -29,7 +29,6 @@ public class CreateFragment extends Fragment {
     private ImageView ivPathImage;
     private Button btnContinuePath;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

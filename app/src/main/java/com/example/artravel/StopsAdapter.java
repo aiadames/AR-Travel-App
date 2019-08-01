@@ -20,12 +20,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.StopDetailsFragment;
 import com.example.artravel.Fragments.StopFragment;
+import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,10 +37,12 @@ public class StopsAdapter extends
 
     private List<Stop> mStops;
     public Context context;
+    private Bundle fragmentBundle;
 
-    public StopsAdapter(List<Stop> stops, Context context) {
+    public StopsAdapter(List<Stop> stops, Context context, Bundle data) {
         mStops = stops;
         this.context= context;
+        fragmentBundle = data;
     }
 
     @NonNull
@@ -65,7 +70,6 @@ public class StopsAdapter extends
         if (image != null) {
             Glide.with(context)
                     .load(image.getUrl())
-                    .apply(RequestOptions.circleCropTransform())
                     .into(holder.ivStopImage);
         }
     }
@@ -113,16 +117,39 @@ public class StopsAdapter extends
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Stop clickedStop = mStops.get(position);
-                Fragment stopDetailsFragment = new StopDetailsFragment();
 
+                Stop clickedStop = mStops.get(position);
+                Fragment stopFragment = new StopFragment();
+
+                // Get bundle containing path and stops
+                Path path = Parcels.unwrap(fragmentBundle.getParcelable("Path"));
+                ArrayList<Stop> stops = Parcels.unwrap(fragmentBundle.getParcelable("Stops Array"));
+                int stopIndex = fragmentBundle.getInt("Stop Index");
+
+                // Create new bundle also containing the stop that was clicked
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Stop", Parcels.wrap(clickedStop));
-                stopDetailsFragment.setArguments(bundle);
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                bundle.putParcelable("Stops Array", Parcels.wrap(stops));
+                bundle.putInt("Stop Index", stopIndex);
+
+                stopFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopDetailsFragment).addToBackStack("Path Detail")
+                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Path Detail")
                         .commit();
+
+
+//                Stop clickedStop = mStops.get(position);
+//                Fragment stopDetailsFragment = new StopDetailsFragment();
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("Stop", Parcels.wrap(clickedStop));
+//                stopDetailsFragment.setArguments(bundle);
+//
+//                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.flContainer, stopDetailsFragment).addToBackStack("Path Detail")
+//                        .commit();
 
             }
         }

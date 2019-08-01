@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +22,24 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 public class TabStopFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
     private EditText etStopName;
     private EditText etStopDescription;
+    private EditText etStopQuestion;
+    private EditText etAnswer1;
+    private EditText etAnswer2;
+    private EditText etAnswer3;
+    private EditText etAnswer4;
+    private EditText etStopInfoParagraph;
+
+    private RadioGroup rgAnswers;
+    private int answerButtonId;
+
     private Button btnSaveStop;
 
     private Path newPath;
@@ -57,17 +71,60 @@ public class TabStopFragment extends Fragment {
 
         etStopName = view.findViewById(R.id.etStopName);
         etStopDescription = view.findViewById(R.id.etStopDescription);
+        etStopQuestion = view.findViewById(R.id.etStopQuestion);
+        etStopInfoParagraph = view.findViewById(R.id.etStopInfoParagraph);
+        etAnswer1 = view.findViewById(R.id.etAnswer1);
+        etAnswer2 = view.findViewById(R.id.etAnswer2);
+        etAnswer3 = view.findViewById(R.id.etAnswer3);
+        etAnswer4 = view.findViewById(R.id.etAnswer4);
+        rgAnswers = view.findViewById(R.id.rgAnswers);
+
+        rgAnswers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                answerButtonId = rgAnswers.getCheckedRadioButtonId();
+            }
+        });
+
         btnSaveStop = view.findViewById(R.id.btnSaveStop);
         btnSaveStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String stopName = etStopName.getText().toString();
                 final String stopDescription = etStopDescription.getText().toString();
+                final String stopQuestion = etStopQuestion.getText().toString();
+                final String stopInfoParagraph = etStopInfoParagraph.getText().toString();
+
+                String stopAnswer = "";
+                switch(answerButtonId) {
+                    case R.id.radioButton1:
+                        stopAnswer = etAnswer1.getText().toString();
+                        break;
+                    case R.id.radioButton2:
+                        stopAnswer = etAnswer2.getText().toString();
+                        break;
+                    case R.id.radioButton3:
+                        stopAnswer = etAnswer3.getText().toString();
+                        break;
+                    case R.id.radioButton4:
+                        stopAnswer = etAnswer4.getText().toString();
+                        break;
+                }
+
+                ArrayList<String> multipleChoice = new ArrayList<>();
+                multipleChoice.add(etAnswer1.getText().toString());
+                multipleChoice.add(etAnswer2.getText().toString());
+                multipleChoice.add(etAnswer3.getText().toString());
+                multipleChoice.add(etAnswer4.getText().toString());
 
                 // Create a new Stop object
                 Stop newStop = new Stop();
                 newStop.setStopName(stopName);
                 newStop.setStopDescription(stopDescription);
+                newStop.setStopQuestion(stopQuestion);
+                newStop.setStopInfoParagraph(stopInfoParagraph);
+                newStop.setStopMultipleChoice(multipleChoice);
+                newStop.setStopAnswer(stopAnswer);
 
                 // Save stop object on Parse server
                 newStop.saveInBackground(new SaveCallback() {
@@ -77,6 +134,8 @@ public class TabStopFragment extends Fragment {
                             e.printStackTrace();
                         } else {
                             Toast.makeText(getContext(), "Successfully created stop!", Toast.LENGTH_SHORT).show();
+
+                            // Switch statement to determine which stop is currently being added to the path
                             switch (mPage) {
                                 case 0:
                                     newPath.setStop1(newStop);
@@ -94,6 +153,7 @@ public class TabStopFragment extends Fragment {
                                     newPath.setStop5(newStop);
                                     break;
                             }
+                            // Save updated path to Parse server
                             newPath.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
@@ -109,8 +169,6 @@ public class TabStopFragment extends Fragment {
                 });
             }
         });
-
-
 
         return view;
     }

@@ -24,6 +24,7 @@ public class Stop extends ParseObject {
     private static final String KEY_STOP_DETAILS_IMAGE = "stopDetailsImage";
 
 
+
     public Stop() {
     }
 
@@ -73,6 +74,22 @@ public class Stop extends ParseObject {
 
     public void setStopDescription(String stopDescription) {
         put(KEY_STOP_DETAILS, stopDescription);
+    }
+
+    public void setStopQuestion(String stopQuestion) {
+        put(KEY_STOP_QUESTION, stopQuestion);
+    }
+
+    public void setStopMultipleChoice(ArrayList<String> multipleChoice) {
+        put(KEY_MULTIPLE_CHOICE, multipleChoice);
+    }
+
+    public void setStopInfoParagraph(String infoParagraph) {
+        put(KEY_INFO_PARAGRAPH, infoParagraph);
+    }
+
+    public void setStopAnswer(String answer) {
+        put(KEY_STOP_ANSWER, answer);
     }
 
 }
