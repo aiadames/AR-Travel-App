@@ -1,82 +1,297 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/tvFragmentNumber"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiLayoutStopName"
-        android:layout_width="352dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/cardview_light_background"
-        android:textColorHint="@android:color/darker_gray"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true">
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etStopName"
-            android:layout_width="356dp"
-            android:layout_height="match_parent"
-            android:layout_alignStart="@+id/textInputLayout"
-            android:layout_alignTop="@+id/textInputLayout"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@android:color/black"
-            android:fontFamily="sans-serif-light"
-            android:hint="Stop Name"
-            android:textColor="@android:color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/ivTabStop"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/tiLayoutStopName"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiLayoutStopDescription"
-        android:layout_width="352dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/ivTabStop"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/cardview_light_background"
-        android:textColorHint="@android:color/darker_gray"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true">
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etStopDescription"
-            android:layout_width="356dp"
-            android:layout_height="match_parent"
-            android:layout_alignStart="@+id/textInputLayout"
-            android:layout_alignTop="@+id/textInputLayout"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@android:color/black"
-            android:fontFamily="sans-serif-light"
-            android:hint="Stop Description"
-            android:textColor="@android:color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/btnSaveStop"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tiLayoutStopDescription"
-        android:layout_marginTop="50dp"
-        android:text="Save" />
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvFragmentNumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutStopName"
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etStopName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textInputLayout"
+                android:layout_alignTop="@+id/textInputLayout"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Stop Name"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/ivTabStop"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/tiLayoutStopName"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutStopDescription"
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivTabStop"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etStopDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tiLayoutStopDescription"
+                android:layout_alignTop="@+id/tiLayoutStopDescription"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Stop Description"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutStopInfoParagraph"
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutStopDescription"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etStopInfoParagraph"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tiLayoutStopInfoParagraph"
+                android:layout_alignTop="@+id/tiLayoutStopInfoParagraph"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Stop Information Paragraph"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutStopQuestion"
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutStopInfoParagraph"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etStopQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textInputLayout"
+                android:layout_alignTop="@+id/textInputLayout"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Stop Question"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutAnswer1"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutStopQuestion"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="41dp"
+            android:layout_toRightOf="@id/rgAnswers"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tiLayoutAnswer1"
+                android:layout_alignTop="@+id/textInputLayout"
+                android:layout_alignEnd="@+id/tiLayoutAnswer1"
+                android:layout_alignBottom="@+id/tiLayoutAnswer1"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Answer Choice 1"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutAnswer2"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutAnswer1"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="41dp"
+            android:layout_toRightOf="@id/rgAnswers"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tiLayoutAnswer2"
+                android:layout_alignTop="@+id/textInputLayout"
+                android:layout_alignEnd="@+id/tiLayoutAnswer2"
+                android:layout_alignBottom="@+id/tiLayoutAnswer2"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Answer Choice 2"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutAnswer3"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutAnswer2"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="41dp"
+            android:layout_toRightOf="@id/rgAnswers"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tiLayoutAnswer3"
+                android:layout_alignTop="@+id/textInputLayout"
+                android:layout_alignEnd="@+id/tiLayoutAnswer3"
+                android:layout_alignBottom="@+id/tiLayoutAnswer3"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Answer Choice 3"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutAnswer4"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutAnswer3"
+            android:layout_centerVertical="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="41dp"
+            android:layout_toRightOf="@id/rgAnswers"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/cardview_light_background"
+            android:textColorHint="@android:color/darker_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAnswer4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/tiLayoutAnswer4"
+                android:layout_alignTop="@+id/textInputLayout"
+                android:layout_alignEnd="@+id/tiLayoutAnswer4"
+                android:layout_alignBottom="@+id/tiLayoutAnswer4"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="sans-serif-light"
+                android:hint="Answer Choice 4"
+                android:textColor="@android:color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <Button
+            android:id="@+id/btnSaveStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutAnswer4"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="400dp"
+            android:text="Save" />
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rgAnswers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tiLayoutStopQuestion"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp" />
+
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+</ScrollView>

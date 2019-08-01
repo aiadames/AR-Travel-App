@@ -16,15 +16,25 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.artravel.Fragments.CompletedPathFragment;
+import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.MainActivity;
 import com.example.artravel.R;
 import com.example.artravel.StopFragmentPagerAdapter;
+import com.example.artravel.models.Path;
+import com.example.artravel.models.Stop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.artravel.Fragments.CreateFragment;
 import com.example.artravel.Fragments.HomeFragment;
 import com.example.artravel.Fragments.PathsFragment;
 import com.example.artravel.Fragments.PassportFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,13 +47,52 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment initialize;
         initialize = new HomeFragment();
         fragmentManager.beginTransaction().replace(R.id.flContainer, initialize).commit();
 
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("Fragment")) {
+            Fragment detailedPathFragment = new DetailedPathFragment();
+            Fragment doneFragment = new CompletedPathFragment();
+
+            Path path = Parcels.unwrap(intent.getParcelableExtra("Path"));
+            ArrayList<Stop> stopsList = Parcels.unwrap(intent.getParcelableExtra("Stops Array"));
+            int stopIndex = intent.getIntExtra("Stop Index", 1);
+            Stop stop = Parcels.unwrap(intent.getParcelableExtra("Stop"));
+
+
+            // Pass bundle with path
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Path", Parcels.wrap(path));
+            if (stopIndex < stopsList.size() - 1) {
+                //stopIndex++;
+                for (int i = 0; i < stopsList.size(); i++) {
+                    if (stop.getObjectId().equals(stopsList.get(i).getObjectId())) {
+                        stopsList.remove(stopsList.get(i));
+                    }
+                }
+                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+                // add gems to relation of specific user for passport use
+                detailedPathFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                        .commit();
+            } else if (stopIndex == stopsList.size() - 1){
+                // query for started paths relation and remove this path
+                // query for completed paths relation and add this path
+                ParseUser user = ParseUser.getCurrentUser();
+                ParseRelation<Path> startedPaths = user.getRelation("startedPaths");
+                startedPaths.remove(path);
+                user.saveInBackground();
+                ParseRelation<Path> completedPaths = user.getRelation("completedPaths");
+                completedPaths.add(path);
+                user.saveInBackground();
+                doneFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+                        .commit();
+            }
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
