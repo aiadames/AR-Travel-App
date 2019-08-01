@@ -1,6 +1,7 @@
 package com.example.artravel.Fragments;
 
 import android.Manifest;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.artravel.Activities.ARImageActivity;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -85,6 +87,7 @@ public class GemLocationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Get bundle with stops, path, and current stop
         Bundle bundle = this.getArguments();
         stop = Parcels.unwrap(bundle.getParcelable("Stop"));
         path = Parcels.unwrap(bundle.getParcelable("Path"));
@@ -118,6 +121,7 @@ public class GemLocationFragment extends Fragment {
         btnQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("GemLocationFragment", "Clicked question");
                 switchToQuestionFragment();
             }
         });
@@ -174,17 +178,27 @@ public class GemLocationFragment extends Fragment {
     }
 
     private void switchToQuestionFragment() {
-        Fragment questionFragment = new QuestionFragment();
+        Intent intent = new Intent(getActivity(), ARImageActivity.class);
+        intent.putExtra("Gem", Parcels.wrap(stop.getGem()));
+        intent.putExtra("Stop", Parcels.wrap(stop));
+        intent.putExtra("Path", Parcels.wrap(path));
+        intent.putExtra("Stops Array", Parcels.wrap(stopsList));
+        intent.putExtra("Stop Index", stopIndex);
+        getContext().startActivity(intent);
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("Stop", Parcels.wrap(stop));
-        bundle.putParcelable("Path", Parcels.wrap(path));
-        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-        bundle.putInt("Stop Index", stopIndex);
-        questionFragment.setArguments(bundle);
 
-        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop").commit();
+//        Fragment questionFragment = new QuestionFragment();
+//
+//        // Pass bundle with stops, path, and current stop
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("Stop", Parcels.wrap(stop));
+//        bundle.putParcelable("Path", Parcels.wrap(path));
+//        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+//        bundle.putInt("Stop Index", stopIndex);
+//        questionFragment.setArguments(bundle);
+//
+//        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop").commit();
     }
 
     @Override

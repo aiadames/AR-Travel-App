@@ -86,7 +86,6 @@ public class HomeFragment extends Fragment {
         tvCollectedGems = view.findViewById(R.id.tvCollectedGems);
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
         cvContinuePath = view.findViewById(R.id.cvContinuePath);
-
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 

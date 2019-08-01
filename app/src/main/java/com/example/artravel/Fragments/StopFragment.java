@@ -1,7 +1,6 @@
 package com.example.artravel.Fragments;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,17 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.StreetViewActivity;
@@ -46,7 +42,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,8 +58,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -80,6 +73,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 public class StopFragment extends Fragment {
 
     private Path path;
+    private ArrayList<Stop> allStops;
     private ArrayList<Stop> stopsList;
     private int stopIndex;
     private Stop currentStop;
@@ -94,7 +88,6 @@ public class StopFragment extends Fragment {
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
     private static final String KEY_LOCATION = "location";
-    private static final int NUM_STOPS = 5;
     private static final int MARKER_HEIGHT = 100;
     private static final int MARKER_WIDTH = 100;
     private static final int STOP_RADIUS = 30;
@@ -372,6 +365,7 @@ public class StopFragment extends Fragment {
 
         Fragment stopInfoFragment = new StopInfoFragment();
 
+        // Create new bundle with path, stops, and current stops
         Bundle bundle = new Bundle();
         bundle.putParcelable("Stop", Parcels.wrap(currentStop));
         bundle.putParcelable("Path", Parcels.wrap(path));
@@ -408,9 +402,9 @@ public class StopFragment extends Fragment {
                     map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                     loadMap(map);
                     map.setInfoWindowAdapter(new MapsWindowAdapter(getLayoutInflater()));
-
-                    for (int i = 0; i < stopsList.size(); i++) {
-                        createStopMarker(stopsList.get(i));
+                    ArrayList<Stop> allStops = createStopsList();
+                    for (int i = 0; i < allStops.size(); i++) {
+                        createStopMarker(allStops.get(i));
                     }
                 }
             });
@@ -420,11 +414,12 @@ public class StopFragment extends Fragment {
     }
 
     private void initializeBundleArguments() {
+        // Get bundle containing path, stops, and current stop
         Bundle bundle = this.getArguments();
         path = Parcels.unwrap(bundle.getParcelable("Path"));
+        currentStop = Parcels.unwrap(bundle.getParcelable("Stop"));
         stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
         stopIndex = bundle.getInt("Stop Index");
-        currentStop = stopsList.get(stopIndex);
     }
 
     private ParseGeoPoint getLocationOfStop(Stop stop) {
@@ -436,7 +431,6 @@ public class StopFragment extends Fragment {
         }
         return stopLocation;
     }
-
 
     public static Bitmap changeBitmapColor(Bitmap sourceBitmap, int color) {
         Bitmap resultBitmap = sourceBitmap.copy(sourceBitmap.getConfig(),true);
@@ -462,5 +456,15 @@ public class StopFragment extends Fragment {
                 .strokeColor(Color.MAGENTA)
                 .fillColor(0x55EB1465)
                 .strokeWidth(4));
+    }
+
+    private ArrayList<Stop> createStopsList() {
+        allStops = new ArrayList<>();
+        allStops.add(path.getStop1());
+        allStops.add(path.getStop2());
+        allStops.add(path.getStop3());
+        allStops.add(path.getStop4());
+        allStops.add(path.getStop5());
+        return allStops;
     }
 }

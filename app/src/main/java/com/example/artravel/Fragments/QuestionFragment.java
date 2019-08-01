@@ -24,8 +24,10 @@ import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
+import com.parse.ParseException;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -57,7 +59,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private Integer userAttemptsLeft;
     private boolean recievesGem;
     private boolean answeredQuestion;
-    private static final int NUM_STOPS = 5;
 
     @Nullable
     @Override
@@ -157,6 +158,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     // unwrap bundle to get Stop and Path object for data user, also set up all  initial
     // values for this run of the fragment such as the user attempts, if question answered, and if gets gem
     private void initializeValues() {
+        // Get bundle with stops, path, and current stop
         Bundle bundle = this.getArguments();
         stop = Parcels.unwrap(bundle.getParcelable("Stop"));
         path = Parcels.unwrap(bundle.getParcelable("Path"));
@@ -192,21 +194,21 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
             currentUser.saveInBackground();
         }
 
-
-        // send intent to next stop
-        Fragment stopFragment = new StopFragment();
+        // send intent
+        Fragment detailedPathFragment = new DetailedPathFragment();
         Fragment doneFragment = new CompletedPathFragment();
 
+        // Pass bundle with path
         Bundle bundle = new Bundle();
         bundle.putParcelable("Path", Parcels.wrap(path));
-        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
         if (stopIndex < stopsList.size() - 1) {
-            stopIndex++;
+            //stopIndex++;
+            stopsList.remove(stop);
             // add gems to relation of specific user for passport use
-            bundle.putInt("Stop Index", stopIndex);
-            stopFragment.setArguments(bundle);
+            bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+            detailedPathFragment.setArguments(bundle);
             FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
+            fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
                     .commit();
         } else if (stopIndex == stopsList.size() - 1){
             // query for started paths relation and remove this path
@@ -223,9 +225,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
             fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
                     .commit();
         }
-
     }
-
 
 
     public void updateTextView(Integer userAttemptsLeft) {
