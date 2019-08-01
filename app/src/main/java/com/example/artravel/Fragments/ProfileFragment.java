@@ -38,6 +38,7 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.artravel.MainActivity;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
@@ -75,7 +76,6 @@ public class ProfileFragment extends Fragment {
     public static final int GET_FROM_GALLERY = 3;
     private ParseUser currentUser;
 
-
     private TextView tvUsername;
     private TextView tvUserName;
     private TextView tvEmail;
@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvCompletedPaths;
     private Button btnViewCompleted;
 
-
+    private Button btnLogOut;
 
     public static final int STORAGE_PERMISSION_CODE = 123;
     public static final int UPLOAD_PERMISSION_CODE = 124;
@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
 
     private Uri filePath;
     private Bitmap bitmap;
-    private Uri myImage;
+
 
 
     @Nullable
@@ -104,12 +104,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         requestStoragePermission();
         ibProfile = view.findViewById(R.id.ivProfile);
         tvName = view.findViewById(R.id.tvName);
         tvWelcome = view.findViewById(R.id.tvWelcome);
-
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvUserName = view.findViewById(R.id.tvUserName);
         tvUsername = view.findViewById(R.id.tvUsername);
@@ -117,17 +115,21 @@ public class ProfileFragment extends Fragment {
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
 
+        btnLogOut = view.findViewById(R.id.btnLogOut);
 
 
+        requestStoragePermission();
+        ibProfile = getView().findViewById(R.id.ivProfile);
+        tvName = getView().findViewById(R.id.tvName);
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(300
-        )).format(DecodeFormat.PREFER_ARGB_8888);
+
 
         currentUser = ParseUser.getCurrentUser();
-        currentUser.getUsername();
+
         ParseFile image = (ParseFile) currentUser.get("image");
         if (image != null){
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(400)).format(DecodeFormat.PREFER_ARGB_8888);
             Glide.with(getContext())
                     .load(image.getUrl())
                     .apply(requestOptions).into(ibProfile);
@@ -135,12 +137,11 @@ public class ProfileFragment extends Fragment {
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
 
-        String yer = (String) currentUser.get("firstName");
-        tvName.setText(yer);
-
+        tvName.setText((String) currentUser.get("firstName"));
         tvUserName.setText("@"+currentUser.getUsername());
         tvUserEmail.setText(currentUser.getEmail());
 
+        // query through relation of completed paths for a user and display how many they have completed as size of returned objects
         ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
         completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
             @Override
@@ -158,8 +159,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-
+        // set profile picture on click as a way to access gallery on phone to upload and change profile picture
         ibProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,33 +167,40 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // user clicks on profile fragment 'View Completed Paths' to take to a new fragment where RecyclerView populated by only completed paths by the user
         btnViewCompleted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "viewing completed paths", Toast.LENGTH_LONG).show();
                 Fragment userPaths = new UserCompletedPathsFragment();
                 FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, userPaths).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, userPaths).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Profile").commit();
             }
         });
 
-
+        btnLogOut.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Log.d("logout", "logout");
+                Intent logout = new Intent(getActivity(), MainActivity.class);
+                startActivity(logout);
+                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
+
+
+    // METHODS: accessing gallery (includes requesting reading and writing external storage permissions)
     private void requestStoragePermission(){
         if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
             return;
-
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-
-
     }
-
     private void requestUploadPermission(){
         if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
             return;
-
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, UPLOAD_PERMISSION_CODE);
     }
 
@@ -202,24 +209,25 @@ public class ProfileFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == STORAGE_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_LONG).show();
             } else{
-                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_LONG).show();
             }
         }
 
         if (requestCode == UPLOAD_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_LONG).show();
             } else{
-                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_LONG).show();
             }
         }
     }
 
 
 
-
+    // on result of selecting an image from the gallery:
+    // if request code valid: create a new bitmap from data stored from media, compress to JPEG, create a new ParseFile to update backend value for user
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -229,14 +237,12 @@ public class ProfileFragment extends Fragment {
             try{
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
                 bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500,false);
-
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-
                 byte[] myDAT = baos.toByteArray();
                 Random random = new Random();
 
-                //create parse File
+                //create new ParseFile: random naming and save in background
                 final ParseFile file = new ParseFile(random.nextInt(10000) + ".jpg", myDAT);
                 file.saveInBackground(new SaveCallback() {
                     @Override
@@ -250,8 +256,7 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
-
-
+                // save to specific user under 'Image' which is the profile picture loaded
                 currentUser.put("image", file);
                 currentUser.saveInBackground(new SaveCallback() {
                     @Override
@@ -271,13 +276,8 @@ public class ProfileFragment extends Fragment {
                         } else{
                             ibProfile.setImageResource(R.drawable.ic_profile);
                         }
-
                     }
                 });
-
-
-             //   Glide.with(getContext()).load(file.getUrl()).into(ibProfile);
-
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -287,25 +287,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+
     private void showFileChooser(){
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(Intent.createChooser(galleryIntent, "Select a Picture"), PICK_IMAGE_REQUEST);
     }
-
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        requestUploadPermission();
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-
-
-
-
-
-
-
 }

@@ -35,7 +35,6 @@ public class UserCompletedPathsFragment extends Fragment {
     protected LinearLayoutManager mLayoutManager;
     protected CompletedPathsAdapter mAdapter;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,12 +43,10 @@ public class UserCompletedPathsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        loadPaths();
+        loadCompletedPaths();
         setUpRecyclerView();
 
     }
-
-
 
     public void setUpRecyclerView() {
         mPaths = new ArrayList<>();
@@ -62,7 +59,10 @@ public class UserCompletedPathsFragment extends Fragment {
         mRecyclerViewPaths.setAdapter(mAdapter);
     }
 
-    public void loadPaths(){
+
+    // query for a relation of completed paths for a specific user:
+    // add all returned objects from query to mPaths and notify adapter to update to display values
+    public void loadCompletedPaths(){
         ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
         completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
             @Override

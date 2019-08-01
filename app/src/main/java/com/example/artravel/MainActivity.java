@@ -52,6 +52,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String id, firstName, lastName, email,gender,birthday;
     private CallbackManager callbackManager;
     FacebookCallback<LoginResult> mFacebookCallback;
-    private boolean isLoggedInFB;
+    private boolean isLoggedInFB =false;
 
     private URL profilePic;
 
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("Login Activity", "Access token valid, already logged in via Facebook");
             checkUser(ParseUser.getCurrentUser(), true);
         }
+
 
 
         callbackManager = CallbackManager.Factory.create();

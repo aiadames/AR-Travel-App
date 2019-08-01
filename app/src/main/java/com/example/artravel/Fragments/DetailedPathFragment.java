@@ -399,7 +399,7 @@ public class DetailedPathFragment extends Fragment {
     private void initializeViews() {
         tvPathName.setText(currentPath.getPathName());
         tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(getPathRatingAvg());
+        rbPathRating.setRating(currentPath.getPathRatingAvg());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {

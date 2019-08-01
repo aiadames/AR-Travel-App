@@ -73,40 +73,38 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 @Override
                 public void onClick(View view) {
                     Fragment detail = new DetailedPathFragment();
-
                     int position = getAdapterPosition();
                     Path path = mPathList.get(position);
 
+                    // once have grabbed specific path, wrap path object via Parcelable into bundle for next fragment
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("Path", Parcels.wrap(path));
                     detail.setArguments(bundle);
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
                             .commit();
-
-
                 }
             });
         }
 
         public void bind(Path myPath) {
+            // loading a specific path's data for the RecyclerView display
             mPathDescription.setText(myPath.getPathDescription());
-           // String temp = myPath.getStartedPath() == true ? "true" : "false";
             mPathTitle.setText(myPath.getPathName());
-
             ParseFile pathImage = myPath.getPathImage();
             if (pathImage != null) {
                 Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }
-
         }
     }
 
     public PathsAdapter(List<Path> pathList, List<Path> pathListFull){
         this.mPathList = pathList;
-        mPathListFull = pathListFull;// independent list, don't point to same list (mutability prevention)
+        // mPathListFull is an independent list, don't point to same list (mutability prevention) but stores all paths
+        // will be used for filter as can iterate through all paths and only update mPaths which is bound to the layout
+        mPathListFull = pathListFull;
     }
 
     @NonNull
@@ -130,8 +128,8 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         holder.bind(currentPath);
         holder.setIsRecyclable(false);
 
+        // based on if path is started or completed, change the display color so users can easily determine paths they can access
         if (currentPath.getStartedPath() == true) {
-            Log.d("test", "change color");
             relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.inProgressBlue));
         }else if (currentPath.getCompletedPath() == true){
             relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.grey));
@@ -151,19 +149,22 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     private Filter pathFilter = new Filter(){
         @Override
         protected FilterResults performFiltering(CharSequence constraint){
+            // create a new list which will include all our filtered results
             List<Path> filteredList = new ArrayList<>();
-
+            // if there is no search constraint/is empty "": add all items already in mPathListFull
+            // else: grab the filter constraint based on text change, then iterate through all paths (mPathListFull)
+            // and grab each path's title as a String to see if it contains our filter, if so add to list
             if (constraint == null || constraint.length() == 0){
-                  filteredList.addAll(mPathListFull);   // add all items
+                  filteredList.addAll(mPathListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-
                 for (Path item: mPathListFull){
                     if (item.getPathName().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
             }
+            // return filtered list values stored in a filter result
             FilterResults filterResults = new FilterResults();
             filterResults.values = filteredList;
             return filterResults;
@@ -171,10 +172,10 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            // display filtered results to screen via clearing mPathList and adding values stored
             mPathList.clear();
             mPathList.addAll((List) filterResults.values);
             notifyDataSetChanged();
-
         }
     };
 

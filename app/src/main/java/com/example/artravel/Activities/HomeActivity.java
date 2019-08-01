@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = new HomeFragment();
                 switch (item.getItemId()) {
-                    case R.id.action_home:
+                    case R.id.Home:
                         fragment = new HomeFragment();
                         //Toast. makeText(HomeActivity.this, "Compose",Toast.LENGTH_SHORT).show();
                         break;

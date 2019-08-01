@@ -10,8 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -27,26 +24,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.artravel.Activities.passportSceneform;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
-import com.example.artravel.models.Path;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.example.artravel.R.layout.fragment_passport;
 
@@ -61,6 +53,7 @@ public class PassportFragment extends Fragment{
     private CardView cardView;
     private Context context;
     private int numCollected;
+    private FloatingActionButton fab;
     private static final String TAG = "PassportFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,6 +76,17 @@ public class PassportFragment extends Fragment{
         setupView(view);
         setView(view);
         queryGems();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Ar = new Intent(getActivity(), passportSceneform.class);
+                startActivity(Ar);
+                //Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
 
@@ -95,7 +99,9 @@ public class PassportFragment extends Fragment{
             Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
         }
         else
-            Toast.makeText(getContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
+        {
+           // Toast.makeText(getContext(), "user " + user.getUsername()+ " is not null", Toast.LENGTH_SHORT).show();
+        }
 
         ParseRelation<Gems> relation;
         relation = user.getRelation("collectedGems");
@@ -108,6 +114,7 @@ public class PassportFragment extends Fragment{
                     return;
                 }
                 mGems.addAll(userGems);
+                gemCount.setText(("You've collected " + mGems.size() + " gems this week"));
 
                // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
@@ -150,9 +157,10 @@ public class PassportFragment extends Fragment{
 
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
-        profile = view.findViewById(R.id.ivProfileImag1);
+        profile = view.findViewById(R.id.ivArGemImage);
         cardView = view.findViewById(R.id.cardView);
 
+        fab = view.findViewById(R.id.floatingActionButton2);
 
     }
 
@@ -163,8 +171,6 @@ public class PassportFragment extends Fragment{
         ParseUser user = ParseUser.getCurrentUser();
         if (user == null)
             Toast.makeText(view.getContext(), "user null", Toast.LENGTH_SHORT).show();
-
-        gemCount.setText(("You've collected " + numCollected + " gems this week"));
 
         username.setText(user.getUsername());
 
