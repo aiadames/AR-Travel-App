@@ -38,14 +38,6 @@
         android:text="TextView"
         android:textStyle="italic" />
 
-    <Button
-        android:id="@+id/btnNextStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvPathName"
-        android:layout_marginLeft="70dp"
-        android:text="Go to next stop" />
-
     <TextView
         android:id="@+id/tvStopDistance"
         android:layout_width="wrap_content"
@@ -58,8 +50,9 @@
         android:id="@+id/btnStopInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/btnNextStop"
-        android:layout_alignTop="@id/btnNextStop"
+        android:layout_below="@id/tvPathName"
+        android:layout_centerHorizontal="true"
+
         android:layout_marginLeft="30dp"
         android:text="Stop Info" />
 

@@ -4,11 +4,6 @@ apply plugin: 'com.google.ar.sceneform.plugin'
 
 android {
     compileSdkVersion 29
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.artravel"
@@ -40,7 +35,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -91,23 +85,15 @@ dependencies {
 
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.8.0"
 
-    implementation 'com.google.ar.sceneform:assets:1.5.0'
-
-
 }
 
 
 sceneform.asset('sampledata/Mesh_BengalTiger.obj',
         'default',
-        'sampledata/mesh_bengaltiger.sfa',
-        'src/main/res/raw/mesh_bengaltiger')
+        'sampledata/Mesh_BengalTiger.sfa',
+        'src/main/assets/Mesh_BengalTiger')
 
-sceneform.asset('sampledata/models/model.obj',
+sceneform.asset('sampledata/Diamond.obj',
         'default',
-        'sampledata/models/model.sfa',
-        'src/main/res/raw/model')
-
-sceneform.asset('sampledata/models/pepe.obj',
-        'default',
-        'sampledata/models/pepe.sfa',
-        'src/main/res/raw/pepe')
+        'sampledata/Diamond.sfa',
+        'src/main/assets/Diamond')

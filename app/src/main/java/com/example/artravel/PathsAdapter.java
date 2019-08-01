@@ -9,14 +9,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +53,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     public Context context;
     private int started_check ;
     private List<Path> relation_Paths;
+    ConstraintLayout relativeLayout;
 
 
 
@@ -62,32 +67,30 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathImage = itemView.findViewById(R.id.ivPathImage);
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Fragment detail = new DetailedPathFragment();
-
                     int position = getAdapterPosition();
                     Path path = mPathList.get(position);
 
+                    // once have grabbed specific path, wrap path object via Parcelable into bundle for next fragment
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("Path", Parcels.wrap(path));
                     detail.setArguments(bundle);
-
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
                             .commit();
-
-
                 }
             });
         }
 
         public void bind(Path myPath) {
+            // loading a specific path's data for the RecyclerView display
             mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
-
             ParseFile pathImage = myPath.getPathImage();
             if (pathImage != null) {
                 Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
@@ -99,7 +102,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
     public PathsAdapter(List<Path> pathList, List<Path> pathListFull){
         this.mPathList = pathList;
-        mPathListFull = pathListFull;// independent list, don't point to same list (mutability prevention)
+        // mPathListFull is an independent list, don't point to same list (mutability prevention) but stores all paths
+        // will be used for filter as can iterate through all paths and only update mPaths which is bound to the layout
+        mPathListFull = pathListFull;
     }
 
     @NonNull
@@ -112,47 +117,23 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
     }
 
-//    public void relation_Check(Path currentPath) {
-//
-//        ParseUser user = ParseUser.getCurrentUser();
-//        ParseRelation<Path> relation;
-//        relation = user.getRelation("startedPaths");
-//        //relation_Paths= new ArrayList<>();
-//
-//        relation.getQuery().findInBackground(new FindCallback<Path>() {
-//            @Override
-//            public void done(List<Path> userPaths, ParseException e) {
-//                if (e != null) {
-//                    Toast.makeText(context, "query error", Toast.LENGTH_SHORT).show();
-//                    e.printStackTrace();
-//                    return ;
-//                }
-//                helper(userPaths);
-//                Log.d("Relations", "relation size" + relation_Paths.size());
-//
-//                //Log.d("Relations", "relation size" + relation_Paths.size());
-//
-//            }
-//        });
-
-   //     }
-//    private int helper( List<Path> userPaths){
-//        relation_Paths.clear();
-//        relation_Paths.addAll(userPaths);
-//        return relation_Paths.size();
-//        }
-
-        // Toast.makeText(context, "hello" + started_check + "hrllo", Toast.LENGTH_SHORT).show();
-//started check was added to signal that a path was in the users started paths
-
 
     @Override
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
         final Path currentPath = mPathList.get(position);
-
-
+        for (int i = 0; i < mPathListFull.size() ; i++) {
+            Log.d("Testaa", mPathListFull.get(i).getPathName());
+            Log.d("Testaa", mPathListFull.get(i).getStartedPath() ? "true" : "false");
+        }
         holder.bind(currentPath);
+        holder.setIsRecyclable(false);
 
+        // based on if path is started or completed, change the display color so users can easily determine paths they can access
+        if (currentPath.getStartedPath() == true) {
+            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.inProgressBlue));
+        }else if (currentPath.getCompletedPath() == true){
+            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.grey));
+        }
     }
 
     @Override
@@ -168,19 +149,22 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     private Filter pathFilter = new Filter(){
         @Override
         protected FilterResults performFiltering(CharSequence constraint){
+            // create a new list which will include all our filtered results
             List<Path> filteredList = new ArrayList<>();
-
+            // if there is no search constraint/is empty "": add all items already in mPathListFull
+            // else: grab the filter constraint based on text change, then iterate through all paths (mPathListFull)
+            // and grab each path's title as a String to see if it contains our filter, if so add to list
             if (constraint == null || constraint.length() == 0){
-                  filteredList.addAll(mPathListFull);   // add all items
+                  filteredList.addAll(mPathListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-
                 for (Path item: mPathListFull){
                     if (item.getPathName().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
             }
+            // return filtered list values stored in a filter result
             FilterResults filterResults = new FilterResults();
             filterResults.values = filteredList;
             return filterResults;
@@ -188,10 +172,10 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            // display filtered results to screen via clearing mPathList and adding values stored
             mPathList.clear();
             mPathList.addAll((List) filterResults.values);
             notifyDataSetChanged();
-
         }
     };
 

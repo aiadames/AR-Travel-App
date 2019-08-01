@@ -16,7 +16,6 @@ public class Gems extends ParseObject {
     private static final String KEY_GEM_LOCATION_CLUE = "gemLocationClue";
     private static final String KEY_GEM_LOCATION_IMAGE = "gemLocationImage";
     private static final String KEY_GEM_LOCATION = "gemLocation";
-    private static final String KEY_GEM_MODEL = "Model";
 
     public String getDescription() {
         return getString(KEY_GEM_DESCRIPTION);
@@ -42,6 +41,5 @@ public class Gems extends ParseObject {
         return getParseGeoPoint(KEY_GEM_LOCATION);
     }
 
-    public String getModel(){return getString(KEY_GEM_MODEL); }
 }
 
