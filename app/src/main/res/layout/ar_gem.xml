@@ -20,7 +20,7 @@
             android:id="@+id/ivArGemImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_margin="4dp"
+            android:layout_margin="0dp"
             android:transitionName="user_image"
             tools:srcCompat="@tools:sample/avatars" />
 

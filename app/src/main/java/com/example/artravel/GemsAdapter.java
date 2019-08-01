@@ -12,15 +12,9 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.artravel.Activities.SignupActivity;
-import com.example.artravel.Fragments.GemDetail;
 import com.example.artravel.models.Gems;
 import com.parse.ParseFile;
 
@@ -47,13 +41,13 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
         public GemsViewHolder(View itemView) {
             super(itemView);
             gemImage = itemView.findViewById(R.id.ivArGemImage);
-            gemName = itemView.findViewById(R.id.tvName);
+            //gemName = itemView.findViewById(R.id.tvName);
             itemView.setOnClickListener(this);
 
         }
 
         public void bind(Gems myGem) {
-            gemName.setText(myGem.getName());
+           //gemName.setText(myGem.getName());
 
             ParseFile image = myGem.getImage();
             if (image != null) {

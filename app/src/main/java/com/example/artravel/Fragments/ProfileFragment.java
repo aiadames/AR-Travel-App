@@ -190,8 +190,6 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    }
-
 
 
     // METHODS: accessing gallery (includes requesting reading and writing external storage permissions)

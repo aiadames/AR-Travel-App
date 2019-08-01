@@ -1,10 +1,11 @@
-package com.example.artravel.Fragments;
+package com.example.artravel;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.artravel.R;
+import com.example.artravel.databinding.ActivityGemDetailBinding;
 import com.example.artravel.models.Gems;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
@@ -48,6 +50,7 @@ public class GemDetail extends AppCompatActivity {
     private TransformableNode tigerNode;
     Scene scene;
     private String modelLink;
+    private ModelRenderable renderable;
 
 
     private ModelRenderable tigerRenderable;
@@ -56,18 +59,21 @@ public class GemDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gem_detail);
-
-        setupView();
 
         Bundle bundle = getIntent().getExtras();
         currentGem = Parcels.unwrap(bundle.getParcelable("Gems"));
 
-        setValues(currentGem);
+        ActivityGemDetailBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_gem_detail);
+
+        DetailViewModel detailViewModel = new DetailViewModel(currentGem);
+        binding.setDetailViewModel(detailViewModel);
+
+        sceneView = findViewById(R.id.detail_scene_view);
+
         renderOcject();
 
         transformationSystem = new TransformationSystem(getResources().getDisplayMetrics(), new FootprintSelectionVisualizer());
-        //transformationSystem.selectNode((BaseTransformableNode) tigerNode);
 
         sceneView.getScene().addOnPeekTouchListener(new Scene.OnPeekTouchListener() {
 
@@ -85,7 +91,7 @@ public class GemDetail extends AppCompatActivity {
 
     private void renderOcject() {
 
-        scene = new Scene(sceneView);
+
 
     modelLink = currentGem.getModel();
         ModelRenderable.builder()
@@ -93,7 +99,16 @@ public class GemDetail extends AppCompatActivity {
                         this,
                         Uri.parse(modelLink),
                         RenderableSource.SourceType.GLTF2).build())
-                .build().thenAccept(tigerRenderable -> onRenderableLoaded(tigerRenderable))
+                .build().thenAccept(renderable -> {
+                    scene = sceneView.getScene();
+                    Node node = new Node();
+                    node.setParent(scene);
+                    node.setRenderable(renderable);
+                    node.setLocalScale(new Vector3(3f,3f,3f));
+                    node.setLocalPosition(new Vector3(0f, -1f, -2f));
+
+        })
+                       // tigerRenderable -> onRenderableLoaded(tigerRenderable)
                 .exceptionally(
                         throwable -> {
                             Log.e("Model", "model failed to build");
@@ -124,32 +139,7 @@ public class GemDetail extends AppCompatActivity {
         sceneView.destroy();
     }
 
-    private void onRenderableLoaded(Renderable renderable) {
-        tigerNode = new TransformableNode(transformationSystem);
-        tigerNode.setRenderable(renderable);
-        tigerNode.setParent(scene);
-        tigerNode.setLocalScale(new Vector3(5f,5f,5f));
-        tigerNode.setLocalPosition(new Vector3(0f, -1f, -2f));
-        tigerNode.addChild(tigerNode);
-
-        tigerNode.select();
-        transformationSystem.selectNode(tigerNode);
-      //  Camera camera = sceneView.getScene().getCamera();
-     //   camera.setLocalRotation(Quaternion.axisAngle(Vector3.right(), -30.0f));
-    }
-
-    private void setValues(Gems currentGem) {
-       gemName.setText(currentGem.getName());
-       gemDescription.setText(currentGem.getDescription());
-    }
-
-    private void setupView() {
-        sceneView = findViewById(R.id.detail_scene_view);
-        gemName = findViewById(R.id.tvdetailName);
-        gemDescription = findViewById(R.id.tvdetailDescr);
-
-
-    }
 
 
 }
+

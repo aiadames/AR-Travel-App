@@ -37,15 +37,12 @@
         android:layout_height="32dp"
         android:layout_marginStart="112dp"
 
-        android:layout_marginTop="45dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:text="Hello, "
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.113"
 
         app:layout_constraintHorizontal_bias="0.082"
 
