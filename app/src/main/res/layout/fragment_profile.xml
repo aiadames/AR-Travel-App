@@ -36,16 +36,13 @@
         android:layout_width="62dp"
         android:layout_height="32dp"
         android:layout_marginStart="112dp"
-
         android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:text="Hello, "
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintHorizontal_bias="0.082"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,7 +81,6 @@
     <TextView
         android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -114,17 +110,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
 
-
-    <Button
-        android:id="@+id/btnViewCompleted"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:text="view completed paths"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
-
     <Button
         android:id="@+id/btnLogOut"
         android:layout_width="92dp"
@@ -135,10 +120,8 @@
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.92" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
