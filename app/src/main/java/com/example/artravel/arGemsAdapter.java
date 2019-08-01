@@ -1,36 +1,40 @@
 package com.example.artravel;
 
+
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.models.Gems;
 import com.parse.ParseFile;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
+import static android.content.Context.VIBRATOR_SERVICE;
 
-public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder> {
+//this adapter is the same as the one used in passport with a few changes
+//the onclick listener puts the object into sceneform
+//the xml file for the gem cardview is different
+
+public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHolder> {
     private List<Gems> gemsList;
     public Context context;
-
+    public Vibrator vibrator;
     public ImageView gemImage;
-    public TextView gemName;
+    public int selection;
+    public CardView cardView;
+    public String imageLink;
+    public RecyclerView recyclerView;
 
-    public GemsAdapter(List<Gems> gemsListNew, Context context) {
+    public arGemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
         this.context= context;
     }
@@ -41,13 +45,12 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
         public GemsViewHolder(View itemView) {
             super(itemView);
             gemImage = itemView.findViewById(R.id.ivArGemImage);
-            //gemName = itemView.findViewById(R.id.tvName);
+            cardView = itemView.findViewById(R.id.cardViewGem);
             itemView.setOnClickListener(this);
 
         }
 
         public void bind(Gems myGem) {
-           //gemName.setText(myGem.getName());
 
             ParseFile image = myGem.getImage();
             if (image != null) {
@@ -59,27 +62,19 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
         }
 
         public void onClick(View view) {
+            vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
+            vibrator.vibrate(15);
+
 
             int position = getAdapterPosition();
-
-            if (position != RecyclerView.NO_POSITION) {
-                // get the movie at the position, this won't work if the class is static
-                Gems gem = gemsList.get(position);
-                Toast.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("Gems", Parcels.wrap(gem));
-                Intent intent = new Intent(view.getContext(), GemDetail.class);
-                intent.putExtras(bundle);
-                view.getContext().startActivity(intent);
-
-            }
+            selection = position;
+            //cardView.setCardBackgroundColor(0xffffff00);
         }
     }
     @Override
     public GemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gem, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ar_gem, parent, false);
         GemsViewHolder viewHolder = new GemsViewHolder(view);
         return viewHolder;
 
@@ -95,6 +90,19 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
     @Override
     public int getItemCount() {
         return gemsList.size();
+    }
+
+    public int getSelected(){
+        return selection;
+
+    }
+
+    public String getImageLink(){
+        Gems currentGem = gemsList.get(getSelected());
+
+       imageLink= currentGem.getModel();
+       return imageLink;
+
     }
 
 

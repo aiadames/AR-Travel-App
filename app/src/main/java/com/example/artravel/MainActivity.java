@@ -21,16 +21,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableField;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.Activities.SignupActivity;
-import com.example.artravel.databinding.ActivityMainBinding;
-
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookActivity;
@@ -75,12 +69,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button signUpButton;
     private Button continueNoLoginButton;
     private LoginButton facebookLoginButton;
-    private String id, firstName, lastName, email, gender, birthday;
+    private String id, firstName, lastName, email,gender,birthday;
     private CallbackManager callbackManager;
     FacebookCallback<LoginResult> mFacebookCallback;
-    private boolean isLoggedInFB = false;
+    private boolean isLoggedInFB =false;
 
     private URL profilePic;
+
+    String username;
+    String password;
+
+
+    private static final String EMAIL = "email";
+
 
 
     @Override
@@ -93,26 +94,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-        LoginViewModel loginViewModel = new LoginViewModel();
-        binding.setLoginViewModel(loginViewModel);
-
-
         FacebookSdk.sdkInitialize(this.getApplicationContext());
-        //setContentView(R.layout.activity_main);
-        if (ParseUser.getCurrentUser() != null) {
+        setContentView(R.layout.activity_main);
+
+
+        if (ParseUser.getCurrentUser() != null){
             checkUser(ParseUser.getCurrentUser(), false);
+        } else if (AccessToken.getCurrentAccessToken() != null){
+            // just set user id
+            Log.d("Login Activity", "Access token valid, already logged in via Facebook");
+            checkUser(ParseUser.getCurrentUser(), true);
         }
+
+
 
         callbackManager = CallbackManager.Factory.create();
 
-
+        usernameInput = findViewById(R.id.etUsername);
+        passwordInput = findViewById(R.id.etPassword);
+        loginButton = findViewById(R.id.bLogin);
         signUpButton = findViewById(R.id.bSignUp);
         continueNoLoginButton = findViewById(R.id.bContinueNoLogin);
         facebookLoginButton = (LoginButton) findViewById(R.id.login_button);
 
 
+        loginButton.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
         continueNoLoginButton.setOnClickListener(this);
 
@@ -120,53 +126,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
+                Log.d("fb", "request");
+
+              //  Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+              //   String accesstoken = loginResult.getAccessToken().getToken();
+
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.d("response", response.toString());
                         isLoggedInFB = true;
                         getData(object);
-                        checkUser(ParseUser.getCurrentUser(), true);
                     }
                 });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,email,first_name,last_name");
                 request.setParameters(parameters);
                 request.executeAsync();
+                Log.d("fb", "request user log in now");
+                checkUser(ParseUser.getCurrentUser(), true);
             }
 
             @Override
             public void onCancel() {
+
             }
 
             @Override
             public void onError(FacebookException error) {
+
             }
         });
-
-        if (isLoggedInFB == false) {
-            LoginManager.getInstance().logOut();
-        }
     }
 
-    // retrieving specific data from Facebook in graph request
+
+
+    // retrieving FB data in graph request
     private void getData(JSONObject object) {
-        try {
-            profilePic = new URL("https://graph.facebook.com/" + object.getString("id") + "/picture?width=500&height=500");
+        try{
+            profilePic = new URL("https://graph.facebook.com/"+object.getString("id")+"/picture?width=500&height=500");
             firstName = object.getString("first_name");
             lastName = object.getString("last_name");
             email = object.getString("email");
 
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException e){
             e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (JSONException e){
             e.printStackTrace();
         }
     }
 
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
+        switch(view.getId()){
+            case R.id.bLogin:
+                // leave on login screen, grab user input if trying to login with username and password
+                username = usernameInput.getText().toString();
+                password = passwordInput.getText().toString();
+                checkUser(ParseUser.getCurrentUser(), false);
+                break;
             case R.id.bSignUp:
                 // else, take to new create an account activity where can put in info
                 Intent signUpIntent = new Intent(MainActivity.this, SignupActivity.class);
@@ -174,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bContinueNoLogin:
                 anonAcct();
-                Intent noLoginIntent = new Intent(MainActivity.this, HomeActivity.class);
+                Intent noLoginIntent = new Intent(MainActivity.this,HomeActivity.class);
                 startActivity(noLoginIntent);
                 break;
         }
@@ -214,10 +234,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ParseUser newUser = new ParseUser();
                         newUser.setUsername(firstName + lastName);
                         newUser.setPassword("1234");
-                        newUser.put("firstName", firstName);
-                        newUser.put("lastName", lastName);
-                        convertImageFB(profilePic);
                         newUser.setEmail(email);
+                        newUser.put("profilePicture", profilePic.toString());
                         newUser.signUpInBackground(new SignUpCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -236,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
-        } /*else {
+        } else {
             ParseUser.logInInBackground(username, password, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
@@ -250,12 +268,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             });
-        }*/
+        }
     }
 
 
-    // for later use: when app is made public and allowed to use on multiple devices (developer tools)
-    private void getKeyHash() {
+
+    private void getKeyHash(){
         try {
             PackageInfo info = getPackageManager().getPackageInfo("com.example.artravel",
                     PackageManager.GET_SIGNATURES);
@@ -264,118 +282,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 md.update(signature.toByteArray());
                 Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        } catch (PackageManager.NameNotFoundException e) {
-        } catch (NoSuchAlgorithmException e) {
         }
-    }
-
-
-    private void convertImageFB(URL url) {
-
-        Thread thread = new Thread(new Runnable() {
-
-            public void run() {
-
-                Bitmap mIcon = null;
-                try {
-                    mIcon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (mIcon != null) {
-                    final ParseFile imageParseFile = new ParseFile("image.jpg", encodeToByteArray(mIcon));
-                    imageParseFile.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.e("EYEEE", "Error while saving");
-                                e.printStackTrace();
-                                return;
-                            }
-                            Log.e("EYEEE", "Success");
-
-                        }
-                    });
-                    ParseUser.getCurrentUser().put("image", imageParseFile);
-                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.e("YEET", "Error while saving");
-                                e.printStackTrace();
-                                return;
-                            } else {
-                                Log.e("YEET", "Success");
-                            }
-                        }
-                    });
-                }
-            }
-
-        });
-        thread.start();
-
-
-    }
-
-    public byte[] encodeToByteArray(Bitmap image) {
-        Log.d("yep", "encodeToByteArray");
-        Bitmap b = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imgByteArray = baos.toByteArray();
-
-        return imgByteArray;
-    }
-
-
-    public class LoginViewModel extends BaseObservable{
-        private String username;
-        private String password;
-
-
-        @Bindable
-        public String getUsername() {
-            return this.username;
-        }
-
-        @Bindable
-        public String getPassword() {
-            return this.password;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public void setPassword(String lastName) {
-            this.password = lastName;
-
-        }
-
-        public void onLoginButtonClick(){
-            Log.v("LoginActivity", "button is clicked");
-            ParseUser.logInInBackground(getUsername(), getPassword(), new LogInCallback() {
-                @Override
-                public void done(ParseUser user, ParseException e) {
-                    if (e == null) {
-                        Log.d("LoginActivity", "Login successful");
-                        final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Log.d("LoginActvitiy", "login failure");
-                    }
-                }
-            });
-
-        }
+        catch (PackageManager.NameNotFoundException e) { }
+        catch (NoSuchAlgorithmException e) { }
     }
 
 }
-
-
 
 
 

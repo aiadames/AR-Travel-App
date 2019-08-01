@@ -76,16 +76,14 @@ public class ProfileFragment extends Fragment {
     public static final int GET_FROM_GALLERY = 3;
     private ParseUser currentUser;
 
-
     private TextView tvUsername;
     private TextView tvUserName;
     private TextView tvEmail;
     private TextView tvUserEmail;
     private TextView tvCompletedPaths;
     private Button btnViewCompleted;
+
     private Button btnLogOut;
-
-
 
     public static final int STORAGE_PERMISSION_CODE = 123;
     public static final int UPLOAD_PERMISSION_CODE = 124;
@@ -116,7 +114,13 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
+
         btnLogOut = view.findViewById(R.id.btnLogOut);
+
+
+        requestStoragePermission();
+        ibProfile = getView().findViewById(R.id.ivProfile);
+        tvName = getView().findViewById(R.id.tvName);
 
 
 
@@ -184,6 +188,7 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
 
 
 
