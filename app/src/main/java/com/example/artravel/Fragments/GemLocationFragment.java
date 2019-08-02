@@ -49,6 +49,8 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
+/* TODO -- AR may repeat if user is in the same spot, resulting in crash - need to keep track if the user has already scanned the gem */
+
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 @RuntimePermissions
@@ -64,15 +66,17 @@ public class GemLocationFragment extends Fragment {
     private Stop stop;
 
     Location mCurrentLocation;
-    private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private static final int GEM_RADIUS = 58;
+    private static final int GEM_RADIUS = 50;
     private double distanceToGem;
     private double gemLatitude;
     private double gemLongitude;
 
+    private LocationRequest mLocationRequest;
+    private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
+
 
     /*
      * Method that inflates the fragment_gem_location XML layout file for the Gem Location fragment.
@@ -185,20 +189,6 @@ public class GemLocationFragment extends Fragment {
         intent.putExtra("Stops Array", Parcels.wrap(stopsList));
         intent.putExtra("Stop Index", stopIndex);
         getContext().startActivity(intent);
-
-
-//        Fragment questionFragment = new QuestionFragment();
-//
-//        // Pass bundle with stops, path, and current stop
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("Stop", Parcels.wrap(stop));
-//        bundle.putParcelable("Path", Parcels.wrap(path));
-//        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-//        bundle.putInt("Stop Index", stopIndex);
-//        questionFragment.setArguments(bundle);
-//
-//        FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.flContainer, questionFragment).addToBackStack("Stop").commit();
     }
 
     @Override

@@ -12,12 +12,11 @@
     <RelativeLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:background="@android:color/white"
         android:orientation="vertical"
-        android:paddingBottom="50dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="150dp"
+        app:behavior_peekHeight="90dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <TextView
@@ -37,7 +36,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:numStars="5"
-            android:rating="@{detailedPathViewModel.pathRating}"/>
+            android:rating="@{detailedPathViewModel.pathRating}" />
 
         <TextView
             android:id="@+id/tvPathDescription"
@@ -52,17 +51,19 @@
             android:id="@+id/rvStops"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnStartPath"
+            android:layout_below="@id/tvPathCompleted"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="10dp" />
 
-        <Button
-            android:id="@+id/btnStartPath"
+        <TextView
+            android:id="@+id/tvPathCompleted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPathDescription"
             android:layout_centerHorizontal="true"
-            android:text="Start Path" />
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:text="TextView" />
 
     </RelativeLayout>
 </layout>

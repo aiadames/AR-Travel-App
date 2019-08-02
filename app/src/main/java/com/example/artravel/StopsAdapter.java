@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,8 @@ import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -32,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StopsAdapter extends
+public class  StopsAdapter extends
         RecyclerView.Adapter<StopsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Stop> mStops;
@@ -117,7 +120,6 @@ public class StopsAdapter extends
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-
                 Stop clickedStop = mStops.get(position);
                 Fragment stopFragment = new StopFragment();
 
@@ -126,31 +128,27 @@ public class StopsAdapter extends
                 ArrayList<Stop> stops = Parcels.unwrap(fragmentBundle.getParcelable("Stops Array"));
                 int stopIndex = fragmentBundle.getInt("Stop Index");
 
-                // Create new bundle also containing the stop that was clicked
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("Stop", Parcels.wrap(clickedStop));
-                bundle.putParcelable("Path", Parcels.wrap(path));
-                bundle.putParcelable("Stops Array", Parcels.wrap(stops));
-                bundle.putInt("Stop Index", stopIndex);
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null && path.getCompletedPath() == false) {
+                    ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
+                    relation.add(path);
+                    currentUser.saveInBackground();
 
-                stopFragment.setArguments(bundle);
+                    // Create new bundle also containing the stop that was clicked
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Stop", Parcels.wrap(clickedStop));
+                    bundle.putParcelable("Path", Parcels.wrap(path));
+                    bundle.putParcelable("Stops Array", Parcels.wrap(stops));
+                    bundle.putInt("Stop Index", stopIndex);
 
-                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Path Detail")
-                        .commit();
+                    stopFragment.setArguments(bundle);
 
-
-//                Stop clickedStop = mStops.get(position);
-//                Fragment stopDetailsFragment = new StopDetailsFragment();
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("Stop", Parcels.wrap(clickedStop));
-//                stopDetailsFragment.setArguments(bundle);
-//
-//                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.flContainer, stopDetailsFragment).addToBackStack("Path Detail")
-//                        .commit();
-
+                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Path Detail")
+                            .commit();
+                } else if (path.getCompletedPath() == true) {
+                    Toast.makeText(context, "You have already completed this path", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

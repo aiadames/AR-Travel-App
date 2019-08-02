@@ -49,28 +49,28 @@
             android:id="@+id/tvInfoParagraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/tvInfoStopTitle"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif"
+            android:lineSpacingExtra="8sp"
             android:text="@{stopInfoViewModel.stopInfoParagraph}"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/btnGemLocation"
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabGemLocation"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/tvInfoParagraph"
-            android:text="Continue" />
+            android:clickable="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/right_arrow" />
 
-        <Button
-            android:id="@+id/btnQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnGemLocation"
-            android:text="Answer question" />
     </RelativeLayout>
 </layout>

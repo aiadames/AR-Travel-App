@@ -15,9 +15,8 @@
         android:layout_height="400dp"
         android:background="@android:color/white"
         android:orientation="vertical"
-        android:paddingBottom="50dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="200dp"
+        app:behavior_peekHeight="150dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <TextView
