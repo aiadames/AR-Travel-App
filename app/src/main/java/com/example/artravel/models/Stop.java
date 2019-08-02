@@ -22,6 +22,7 @@ public class Stop extends ParseObject {
     private static final String KEY_STOP_ANSWER = "stopAnswer";
     private static final String KEY_STOP_QUESTION = "stopQuestion";
     private static final String KEY_STOP_DETAILS_IMAGE = "stopDetailsImage";
+    private static final String KEY_STOP_PROFILE_IMAGE = "stopProfileImage";
 
 
 
@@ -66,6 +67,10 @@ public class Stop extends ParseObject {
 
     public ParseFile getStopDetailsImage() {
         return getParseFile(KEY_STOP_DETAILS_IMAGE);
+    }
+
+    public ParseFile getStopProfileImage() {
+        return getParseFile(KEY_STOP_PROFILE_IMAGE);
     }
 
     public void setStopName(String stopName) {

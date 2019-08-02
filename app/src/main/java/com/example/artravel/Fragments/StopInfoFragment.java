@@ -45,21 +45,25 @@ public class StopInfoFragment extends Fragment {
     private Button btnGemLocation;
     private Button btnAnswerQuestion;
 
+    /*
+     * Method that creates the view for the StopInfoFragment. It handles the bundle that is
+     * passed in and sets up the view model for the fragment data binding.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentStopInfoBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_stop_info, container, false );
         View view = binding.getRoot();
         initializeBundleArguments();
-        StopInfoViewModel stopInfoViewModel = new StopInfoViewModel();
-        stopInfoViewModel.setStop(stop);
-        stopInfoViewModel.setPath(path);
-        stopInfoViewModel.setStopsList(stopsList);
-        stopInfoViewModel.setStopIndex(stopIndex);
+        StopInfoViewModel stopInfoViewModel = setUpViewModel();
         binding.setStopInfoViewModel(stopInfoViewModel);
         return view;
     }
 
+    /*
+     * Method that is called when the view for the fragment has been created. It handles
+     * part of the data binding and the logic for the buttons.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -67,21 +71,11 @@ public class StopInfoFragment extends Fragment {
         btnGemLocation = view.findViewById(R.id.btnGemLocation);
         btnAnswerQuestion = view.findViewById(R.id.btnQuestion);
 
+        // On click method for gem location button
         btnGemLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment gemLocationFragment = new GemLocationFragment();
-
-                // Pass bundle with stops, path, and current stop
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("Stop", Parcels.wrap(stop));
-                bundle.putParcelable("Path", Parcels.wrap(path));
-                bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-                bundle.putInt("Stop Index", stopIndex);
-                gemLocationFragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop Info").commit();
+                switchToGemLocationFragment();
             }
         });
 
@@ -106,12 +100,48 @@ public class StopInfoFragment extends Fragment {
 
     }
 
+    /*
+     * Method that gets the bundle with stops, path, and the current
+     * stop from the previous fragment.
+     */
     private void initializeBundleArguments() {
-        // Get bundle with stops, path, and current stop
         Bundle bundle = this.getArguments();
         stop = Parcels.unwrap(bundle.getParcelable("Stop"));
         path = Parcels.unwrap(bundle.getParcelable("Path"));
         stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
         stopIndex = bundle.getInt("Stop Index");
+    }
+
+    /*
+     * Method that passes the data about the stops and paths to set up the
+     * view model that binds the views to the data associated with the
+     * paths and stops.
+     */
+    private StopInfoViewModel setUpViewModel() {
+        StopInfoViewModel stopInfoViewModel = new StopInfoViewModel();
+        stopInfoViewModel.setStop(stop);
+        stopInfoViewModel.setPath(path);
+        stopInfoViewModel.setStopsList(stopsList);
+        stopInfoViewModel.setStopIndex(stopIndex);
+        return stopInfoViewModel;
+    }
+
+    /*
+     * Method that sets up the bundle to pass data between fragments
+     * and switches to the Gem Location clue fragment.
+     */
+    private void switchToGemLocationFragment() {
+        Fragment gemLocationFragment = new GemLocationFragment();
+
+        // Pass bundle with stops, path, and current stop
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Stop", Parcels.wrap(stop));
+        bundle.putParcelable("Path", Parcels.wrap(path));
+        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+        bundle.putInt("Stop Index", stopIndex);
+        gemLocationFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop Info").commit();
     }
 }

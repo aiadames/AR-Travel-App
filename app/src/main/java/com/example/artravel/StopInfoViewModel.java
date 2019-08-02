@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.Fragments.GemLocationFragment;
 import com.example.artravel.Fragments.StopInfoFragment;
@@ -20,6 +21,8 @@ import com.parse.ParseFile;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class StopInfoViewModel {
 
@@ -52,7 +55,7 @@ public class StopInfoViewModel {
         return stop.getInfoParagraph();
     }
 
-    public String getImageUrl() {
+    public String getStopImageUrl() {
         ParseFile image = stop.getStopImage();
         if (image != null) {
             return image.getUrl();
@@ -60,11 +63,29 @@ public class StopInfoViewModel {
         return null;
     }
 
-    @BindingAdapter({"bind:imageUrl"})
-    public static void loadImage(ImageView view, String imageUrl) {
-        if (imageUrl != null) {
+    public String getStopProfileImageUrl() {
+        ParseFile image = stop.getStopProfileImage();
+        if (image != null) {
+            return image.getUrl();
+        }
+        return null;
+    }
+
+    @BindingAdapter({"bind:stopImageUrl"})
+    public static void loadStopImage(ImageView view, String stopImageUrl) {
+        if (stopImageUrl != null) {
             Glide.with(view.getContext())
-                    .load(imageUrl)
+                    .load(stopImageUrl)
+                    .into(view);
+        }
+    }
+
+    @BindingAdapter({"bind:stopProfileImageUrl"})
+    public static void loadStopProfileImage(ImageView view, String stopProfileImageUrl) {
+        if (stopProfileImageUrl != null) {
+            Glide.with(view.getContext())
+                    .load(stopProfileImageUrl)
+                    .apply(RequestOptions.circleCropTransform())
                     .into(view);
         }
     }

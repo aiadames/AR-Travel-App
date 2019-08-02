@@ -1,58 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_sheet"
-    android:layout_width="match_parent"
-    android:layout_height="400dp"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:paddingBottom="50dp"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="150dp"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvPathName"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="TextView" />
+    <data>
+        <variable
+            name="detailedPathViewModel"
+            type="com.example.artravel.DetailedPathViewModel" />
+    </data>
 
-    <RatingBar
-        android:id="@+id/rbPathRating"
-        style="@style/Widget.AppCompat.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:numStars="5" />
-
-    <TextView
-        android:id="@+id/tvPathDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvPathName"
-        android:layout_marginLeft="10dp"
-        android:text="TextView" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStops"
+    <RelativeLayout
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnStartPath"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="60dp" />
+        android:layout_height="400dp"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="50dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="150dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
-    <Button
-        android:id="@+id/btnStartPath"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvPathDescription"
-        android:layout_centerHorizontal="true"
-        android:text="Start Path" />
+        <TextView
+            android:id="@+id/tvPathName"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@{detailedPathViewModel.pathName}" />
 
-</RelativeLayout>
+        <RatingBar
+            android:id="@+id/rbPathRating"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:numStars="5"
+            android:rating="@{detailedPathViewModel.pathRating}"/>
+
+        <TextView
+            android:id="@+id/tvPathDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvPathName"
+            android:layout_marginLeft="10dp"
+            android:text="@{detailedPathViewModel.pathDescription}" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStops"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnStartPath"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="60dp" />
+
+        <Button
+            android:id="@+id/btnStartPath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvPathDescription"
+            android:layout_centerHorizontal="true"
+            android:text="Start Path" />
+
+    </RelativeLayout>
+</layout>
