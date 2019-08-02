@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -54,6 +59,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     private int started_check ;
     private List<Path> relation_Paths;
     ConstraintLayout relativeLayout;
+    CardView cardView;
 
 
 
@@ -68,6 +74,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
+            cardView = itemView.findViewById(R.id.cvPath);
+
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,9 +100,14 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             // loading a specific path's data for the RecyclerView display
             mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(20)).format(DecodeFormat.PREFER_ARGB_8888).override(200,125);
             ParseFile pathImage = myPath.getPathImage();
             if (pathImage != null) {
-                Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
+                Glide.with(context)
+                        .load(pathImage.getUrl())
+
+                        .apply(requestOptions).into(mPathImage);
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }
@@ -160,6 +174,8 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (Path item: mPathListFull){
                     if (item.getPathName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    } else if (item.getPathDescription().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }

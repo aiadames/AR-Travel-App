@@ -19,14 +19,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.MainActivity;
+import com.example.artravel.PathsAdapter;
 import com.example.artravel.ProgressBar;
 import com.example.artravel.R;
 import com.example.artravel.StopsAdapter;
 import com.example.artravel.StopsItemTouchHelperCallback;
+import com.example.artravel.TopPathsAdapter;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
@@ -48,24 +51,31 @@ import static com.example.artravel.R.layout.fragment_home;
 
 public class HomeFragment extends Fragment {
 
-    private Button btnTest;
     private TextView tvWelcome;
     private TextView tvCollectedGems;
     private TextView tvContinuePath;
     private CardView cvContinuePath;
     private Path continuePath;
     private ArrayList<Stop> continuePathStops;
-    private  ParseUser currentUser;
+    private ParseUser currentUser;
+
+    protected RecyclerView rvTopPaths;
+    protected List<Path> tPaths;
+    protected TopPathsAdapter tAdapter;
+    protected LinearLayoutManager tLayoutManager;
+
+
+
 
     private final Random random = new Random();
     private ProgressBar progressBar;
 
     public enum reachedStop {
-        STOP1 (20),
-        STOP2 (40),
-        STOP3 (60),
-        STOP4 (80),
-        STOP5 (98.5);
+        STOP1(20),
+        STOP2(40),
+        STOP3(60),
+        STOP4(80),
+        STOP5(98.5);
 
         private final double progress;
 
@@ -75,13 +85,13 @@ public class HomeFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return (View) inflater.inflate(fragment_home,container, false);
+        return (View) inflater.inflate(fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnTest = view.findViewById(R.id.btnTest);
+
         tvWelcome = view.findViewById(R.id.tvWelcome);
         tvCollectedGems = view.findViewById(R.id.tvCollectedGems);
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
@@ -90,7 +100,13 @@ public class HomeFragment extends Fragment {
         progressBar.setVisibility(View.INVISIBLE);
 
 
-         currentUser =  ParseUser.getCurrentUser();
+        // query for top 10 paths based on average
+        recyclerViewSetup();
+        loadTopPaths();
+
+
+
+        currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
         if (currentUser != null) {
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
@@ -123,8 +139,7 @@ public class HomeFragment extends Fragment {
                     if (objects.size() > 0) {
                         continuePath = objects.get(0);
                         tvContinuePath.setText("Continue with " + continuePath.getPathName() + ", " + currentUser.getUsername());
-                    }
-                    else {
+                    } else {
                         tvContinuePath.setText("Get started on a path!");
                     }
                     tvContinuePath.setVisibility(View.VISIBLE);
@@ -157,7 +172,6 @@ public class HomeFragment extends Fragment {
                     }
                 }
             });
-
         }
 
         tvWelcome = view.findViewById(R.id.tvWelcome);
@@ -169,7 +183,7 @@ public class HomeFragment extends Fragment {
         progressBar.setVisibility(View.INVISIBLE);
 
 
-         ParseUser currentUser =  ParseUser.getCurrentUser();
+        ParseUser currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
         if (currentUser != null) {
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
@@ -177,7 +191,7 @@ public class HomeFragment extends Fragment {
             tvContinuePath.setVisibility(View.INVISIBLE);
 
             // Query for all of the user's collected gems
-           ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
+            ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
             relation.getQuery().findInBackground(new FindCallback<Gems>() {
                 @Override
                 public void done(List<Gems> objects, ParseException e) {
@@ -202,8 +216,7 @@ public class HomeFragment extends Fragment {
                     if (objects.size() > 0) {
                         continuePath = objects.get(0);
                         tvContinuePath.setText("Continue with " + continuePath.getPathName() + ", " + currentUser.getUsername());
-                    }
-                    else {
+                    } else {
                         tvContinuePath.setText("Get started on a path!");
                     }
                     tvContinuePath.setVisibility(View.VISIBLE);
@@ -238,17 +251,7 @@ public class HomeFragment extends Fragment {
             });
 
         }
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                Log.d("logout", "logout");
-                Intent logout = new Intent(getActivity(), MainActivity.class);
-                startActivity(logout);
-                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
-            }
 
-        });
 
         cvContinuePath.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +285,39 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+    protected void loadTopPaths() {
+        // query to Parse backend for the top 20 paths to load into mPaths and mPathsFull, notify adapter that data has been updated
+        final Path.Query pathsQuery = new Path.Query();
+        pathsQuery.setLimit(4);
+        pathsQuery.addDescendingOrder("pathAvgRating");
+        pathsQuery.findInBackground(new FindCallback<Path>() {
+            @Override
+            public void done(List<Path> objects, ParseException e) {
+                if (e == null) {
+                    Log.d("yer", objects.get(0).getPathName());
+                    Log.d("yer", objects.get(1).getPathName());
+                    tPaths.addAll(objects);
+                    tAdapter.notifyDataSetChanged();
+
+                }
+
+            }
+        });
+    }
+
+
+    protected void recyclerViewSetup(){
+        tPaths = new ArrayList<>();
+        rvTopPaths = getView().findViewById(R.id.rvTopPaths);
+        rvTopPaths.setHasFixedSize(true);
+        tLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvTopPaths.setLayoutManager(tLayoutManager);
+        tAdapter = new TopPathsAdapter(tPaths);
+        rvTopPaths.setAdapter(tAdapter);
+    }
+
+
     private ArrayList<Stop> createStopsList() {
         ArrayList<Stop> stops = new ArrayList<>();
         stops.add(continuePath.getStop1());
@@ -295,4 +331,3 @@ public class HomeFragment extends Fragment {
 
 
 }
-

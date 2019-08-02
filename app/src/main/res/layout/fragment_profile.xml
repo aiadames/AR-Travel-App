@@ -11,11 +11,11 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="50dp"
         android:background="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.672"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -24,8 +24,8 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="44dp"
         android:text="username"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/tvWelcome"
@@ -44,7 +44,7 @@
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintHorizontal_bias="0.152"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -101,27 +101,21 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
 
+
     <Button
         android:id="@+id/btnViewCompleted"
-        android:layout_width="174dp"
-        android:layout_height="35dp"
+        android:layout_width="207dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="88dp"
         android:text="view completed paths"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
-
-
-    <Button
-        android:id="@+id/btnViewCompleted"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:text="view completed paths"
-        android:textAllCaps="false"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCompletedPaths" />
 
@@ -129,16 +123,15 @@
         android:id="@+id/btnLogOut"
         android:layout_width="92dp"
         android:layout_height="39dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="144dp"
         android:text="logout "
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintHorizontal_bias="0.994"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserEmail" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
