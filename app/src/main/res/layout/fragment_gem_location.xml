@@ -8,15 +8,21 @@
         android:id="@+id/ivGemLocationImage"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <TextView
         android:id="@+id/tvGemLocationClue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:lineSpacingExtra="8sp"
         android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnQuestion"

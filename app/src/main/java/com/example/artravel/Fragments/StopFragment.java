@@ -47,6 +47,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,6 +61,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -178,6 +180,7 @@ public class StopFragment extends Fragment {
             StopFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             StopFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
             LatLng latLng = new LatLng(stopLatitude, stopLongitude);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
@@ -260,6 +263,7 @@ public class StopFragment extends Fragment {
         getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
+                        Log.e("StopFragment", "Location updates on");
                         onLocationChanged(locationResult.getLastLocation());
                     }
                 },

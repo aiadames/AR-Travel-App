@@ -63,6 +63,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -98,7 +99,7 @@ public class DetailedPathFragment extends Fragment {
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private LocationCallback mLocationCallback;
 
-    private Button btnStartPath;
+    private TextView tvCompletedPath;
     private Path currentPath;
 
     private final static String KEY_LOCATION = "location";
@@ -135,32 +136,17 @@ public class DetailedPathFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnStartPath = view.findViewById(R.id.btnStartPath);
+        tvCompletedPath = view.findViewById(R.id.tvPathCompleted);
         RecyclerView rvStops = view.findViewById(R.id.rvStops);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
-            relation.getQuery().findInBackground(new FindCallback<Path>() {
-                @Override
-                public void done(List<Path> objects, ParseException e) {
-                    if (e != null) {
-                        e.printStackTrace();
-                    } else {
-                        Log.e("DetailedPathFragment", "Success!");
-                        for (int i = 0; i < objects.size(); i++) {
-                            if (objects.get(i).getObjectId().equals(currentPath.getObjectId())) {
-                                btnStartPath.setText("Resume path");
-                                inProgress = true;
-                            }
-                        }
-                    }
-                }
-            });
-        }
+          ParseUser currentUser = ParseUser.getCurrentUser();
 
         if(currentPath.getCompletedPath() == true){
-            btnStartPath.setText("You've completed this path already");
+            tvCompletedPath.setText("You have completed this path already");
+            tvCompletedPath.setVisibility(View.VISIBLE);
+        } else {
+            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet));
+            bottomSheetBehavior.setState((BottomSheetBehavior.STATE_EXPANDED));
         }
 
         if (receivedBundle.containsKey("Stops Array")) {
@@ -204,21 +190,6 @@ public class DetailedPathFragment extends Fragment {
                 });
             }
         }
-
-
-        btnStartPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null && currentPath.getCompletedPath() == false) {
-                    ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
-                    relation.add(currentPath);
-                    currentUser.saveInBackground();
-                } else if (currentPath.getCompletedPath() == true){
-                    Toast.makeText(getContext(),"you've already completed this path", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 
     protected void loadMap(GoogleMap googleMap) {
