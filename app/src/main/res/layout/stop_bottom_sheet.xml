@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_sheet"
-    android:layout_width="match_parent"
-    android:layout_height="400dp"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:paddingBottom="50dp"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="200dp"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvStopName"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="TextView" />
+    <data>
+        <variable
+            name="stopViewModel"
+            type="com.example.artravel.StopViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="50dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="200dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <TextView
+            android:id="@+id/tvStopName"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@{stopViewModel.stopName}" />
 
 
-    <TextView
-        android:id="@+id/tvStopDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvStopName"
-        android:layout_marginLeft="10dp"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/tvStopDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvStopName"
+            android:layout_marginLeft="10dp"
+            android:text="@{stopViewModel.stopDetails}" />
 
-    <TextView
-        android:id="@+id/tvPathName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/tvStopDistance"
-        android:text="TextView"
-        android:textStyle="italic" />
+        <TextView
+            android:id="@+id/tvPathName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/tvStopDistance"
+            android:text="@{stopViewModel.pathName}"
+            android:textStyle="italic" />
 
-    <TextView
-        android:id="@+id/tvStopDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvStopDetails"
-        android:layout_marginLeft="10dp"
-        android:text="Loading distance ..." />
+        <TextView
+            android:id="@+id/tvStopDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvStopDetails"
+            android:layout_marginLeft="10dp"
+            android:text="Loading distance ..." />
 
-    <Button
-        android:id="@+id/btnStopInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvPathName"
-        android:layout_centerHorizontal="true"
+        <Button
+            android:id="@+id/btnStopInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvPathName"
+            android:layout_centerHorizontal="true"
 
-        android:layout_marginLeft="30dp"
-        android:text="Stop Info" />
+            android:layout_marginLeft="30dp"
+            android:text="Stop Info" />
 
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

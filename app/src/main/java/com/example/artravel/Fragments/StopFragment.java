@@ -27,12 +27,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.StreetViewActivity;
+import com.example.artravel.DetailedPathViewModel;
 import com.example.artravel.R;
+import com.example.artravel.StopViewModel;
+import com.example.artravel.databinding.FragmentDetailedPathBinding;
+import com.example.artravel.databinding.FragmentStopBinding;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -99,16 +104,13 @@ public class StopFragment extends Fragment {
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    private TextView tvStopName;
-    private TextView tvStopDetails;
-    private TextView tvPathName;
     private TextView tvStopDistance;
     private Button btnStopInfo;
     private FloatingActionButton btnStreetView;
-    private FloatingActionButton btnStopZoom;
 
     private double distanceToStop;
 
+    private StopViewModel stopViewModel;
 
     /*
      * Method that inflates the fragment_stop XML layout file for the Stop fragment.
@@ -116,30 +118,35 @@ public class StopFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_stop, container, false);
+        FragmentStopBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_stop, container, false);
+        View view = binding.getRoot();
+        stopViewModel = new StopViewModel();
+        // Get the bundle containing the path
+        initializeBundleArguments();
+        stopViewModel.setStop(currentStop);
+        stopViewModel.setPath(path);
+        binding.setStopViewModel(stopViewModel);
+        binding.stopBottomSheet.setStopViewModel(stopViewModel);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initializeBundleArguments();
         setHasOptionsMenu(true);
 
-        tvStopName = view.findViewById(R.id.tvStopName);
-        tvStopDetails = view.findViewById(R.id.tvStopDetails);
-        tvPathName = view.findViewById(R.id.tvPathName);
         tvStopDistance = view.findViewById(R.id.tvStopDistance);
         btnStopInfo = view.findViewById(R.id.btnStopInfo);
         btnStreetView = view.findViewById(R.id.btnStreetView);
-        btnStopZoom = view.findViewById(R.id.btnStopZoom);
 
-        initializeViews();
         setUpMapFragment(savedInstanceState);
 
 
         ParseGeoPoint stopLocation = getLocationOfStop(currentStop);
         stopLatitude = stopLocation.getLatitude();
         stopLongitude = stopLocation.getLongitude();
+        stopViewModel.setStopLatitude(stopLatitude);
+        stopViewModel.setStopLongitude(stopLongitude);
 
         btnStopInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,15 +164,6 @@ public class StopFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        btnStopZoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LatLng latLng = new LatLng(stopLatitude, stopLongitude);
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
-            }
-        });
-
     }
 
     /*
@@ -176,6 +174,7 @@ public class StopFragment extends Fragment {
         map = googleMap;
         if (map != null) {
             // Map is ready
+            stopViewModel.setMap(map);
             StopFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             StopFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
             LatLng latLng = new LatLng(stopLatitude, stopLongitude);
@@ -356,13 +355,6 @@ public class StopFragment extends Fragment {
     }
 
     private void switchToStopInfoFragment() {
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if (currentUser != null) {
-//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-//            relation.add(currentStop);
-//            currentUser.saveInBackground();
-//        }
-
         Fragment stopInfoFragment = new StopInfoFragment();
 
         // Create new bundle with path, stops, and current stops
@@ -375,12 +367,6 @@ public class StopFragment extends Fragment {
 
         FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).addToBackStack("Stop").commit();
-    }
-
-    private void initializeViews() {
-        tvStopName.setText(currentStop.getStopName());
-        tvStopDetails.setText(currentStop.getStopDetails());
-        tvPathName.setText(path.getPathName());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
