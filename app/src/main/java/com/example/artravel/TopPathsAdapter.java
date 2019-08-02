@@ -24,7 +24,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -72,6 +74,7 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
 
         public void bind(Path myPath) {
             // loading a specific path's data for the RecyclerView display
+            myPath.setPathAvgRating();
             mPathName.setText(myPath.getPathName());
             Log.v("yer2", myPath.getPathName());
             RequestOptions requestOptions = new RequestOptions();
@@ -84,6 +87,13 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }
+            myPath.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    Log.d("yer", "done");
+                }
+            });
+
         }
     }
 

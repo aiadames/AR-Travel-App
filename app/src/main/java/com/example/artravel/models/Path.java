@@ -144,11 +144,14 @@ public class Path extends ParseObject {
 
 
     // HELPER METHODS: PATH RATINGS
+
+
     // for each path, when completed, allow a user to input a rating via RatingBar widget and update to Parse in Array of 'PathRatings'
     public void setPathRating(Float newRating) {
         ArrayList<Double> myAddedRating = getPathRatings();
         myAddedRating.add((double)newRating);
         put(KEY_PATH_ALL_RATINGS, myAddedRating);
+
     }
 
 

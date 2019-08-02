@@ -175,6 +175,8 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 for (Path item: mPathListFull){
                     if (item.getPathName().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
+                    } else if (item.getPathDescription().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
                     }
                 }
             }

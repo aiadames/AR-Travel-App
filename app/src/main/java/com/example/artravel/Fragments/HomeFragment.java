@@ -172,7 +172,6 @@ public class HomeFragment extends Fragment {
                     }
                 }
             });
-
         }
 
         tvWelcome = view.findViewById(R.id.tvWelcome);
