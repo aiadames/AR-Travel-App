@@ -17,27 +17,17 @@ public class Path extends ParseObject {
     private static final String KEY_STOP_5 = "stop5";
     private static final String KEY_PATH_NAME = "pathName";
     private static final String KEY_PATH_DESCRIPTION = "pathDescription";
-    private static final String KEY_PATH_RATING = "pathRating";
+    private static final String KEY_PATH_AVG_RATING = "pathAvgRating";
     private static final String KEY_PATH_IMAGE = "pathImage";
     private static final String KEY_PATH_ALL_RATINGS = "pathRatings";
     private static final String KEY_PATH_GEM = "pathGem";
     private boolean pathStarted = false;
     private boolean pathCompleted = false;
 
-    private String mImageUrl;
-    private String mPathTitle;
-    private String mPathDescription;
-
     ArrayList<Float> ratingList;
 
 
     public Path() {
-    }
-
-    public Path(String imageUrl, String pathTitle, String pathDescription) {
-        mImageUrl = imageUrl;
-        mPathTitle = pathTitle;
-        mPathDescription = pathDescription;
     }
 
     public Stop getStop1() {
@@ -102,6 +92,15 @@ public class Path extends ParseObject {
 
     public void setPathDescription(String pathDescription) {
         put(KEY_PATH_DESCRIPTION, pathDescription);
+    }
+
+
+    public void setPathAvgRating(){
+        put(KEY_PATH_AVG_RATING, getPathRatingAvg());
+    }
+
+    public Float getPathAvgRating(){
+        return (Float) get(KEY_PATH_AVG_RATING);
     }
 
     public void setStop1(Stop stop1) {
