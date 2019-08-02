@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="detailedPathViewModel"
+            type="com.example.artravel.DetailedPathViewModel" />
+    </data>
 
-    <fragment
-        android:id="@+id/map"
-        class="com.google.android.gms.maps.SupportMapFragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <!-- include bottom sheet -->
-    <include layout="@layout/bottom_sheet" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- include bottom sheet -->
+        <include android:id="@+id/bottom_sheet" layout="@layout/bottom_sheet"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

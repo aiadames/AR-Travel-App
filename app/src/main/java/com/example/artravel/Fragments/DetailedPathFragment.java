@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -31,9 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.PathDetailsActivity;
+import com.example.artravel.DetailedPathViewModel;
 import com.example.artravel.R;
+import com.example.artravel.StopInfoViewModel;
 import com.example.artravel.StopsAdapter;
 import com.example.artravel.StopsItemTouchHelperCallback;
+import com.example.artravel.databinding.FragmentDetailedPathBinding;
+import com.example.artravel.databinding.FragmentStopInfoBinding;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.common.ConnectionResult;
@@ -93,9 +98,6 @@ public class DetailedPathFragment extends Fragment {
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private LocationCallback mLocationCallback;
 
-    private TextView tvPathName;
-    private TextView tvPathDescription;
-    private RatingBar rbPathRating;
     private Button btnStartPath;
     private Path currentPath;
 
@@ -107,6 +109,8 @@ public class DetailedPathFragment extends Fragment {
 
     boolean inProgress = false;
 
+    private Bundle receivedBundle;
+
     /*
      * Define a request code to send to Google Play services This code is
      * returned in Activity.onActivityResult
@@ -116,24 +120,23 @@ public class DetailedPathFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detailed_path, container, false);
+        FragmentDetailedPathBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detailed_path, container, false );
+        View view = binding.getRoot();
+        DetailedPathViewModel detailedPathViewModel = new DetailedPathViewModel();
+        // Get the bundle containing the path
+        receivedBundle = this.getArguments();
+        currentPath = Parcels.unwrap(receivedBundle.getParcelable("Path"));
+        detailedPathViewModel.setPath(currentPath);
+        binding.bottomSheet.setDetailedPathViewModel(detailedPathViewModel);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvPathName = view.findViewById(R.id.tvPathName);
-        tvPathDescription = view.findViewById(R.id.tvPathDescription);
-        rbPathRating = view.findViewById(R.id.rbPathRating);
         btnStartPath = view.findViewById(R.id.btnStartPath);
         RecyclerView rvStops = view.findViewById(R.id.rvStops);
-
-        // Get the bundle containing the path
-        Bundle bundle = this.getArguments();
-        currentPath = Parcels.unwrap(bundle.getParcelable("Path"));
-
-        initializeViews();
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
@@ -160,8 +163,8 @@ public class DetailedPathFragment extends Fragment {
             btnStartPath.setText("You've completed this path already");
         }
 
-        if (bundle.containsKey("Stops Array")) {
-            stops = Parcels.unwrap(bundle.getParcelable("Stops Array"));
+        if (receivedBundle.containsKey("Stops Array")) {
+            stops = Parcels.unwrap(receivedBundle.getParcelable("Stops Array"));
 
 
             initializeStop1();
@@ -170,17 +173,8 @@ public class DetailedPathFragment extends Fragment {
 
             setUpMapFragment(savedInstanceState);
         } else {
-
-
             stops = createStopsList();
-//        stop1 = currentPath.getStop1();
-//        ParseGeoPoint stop1Location = getLocationOfStop1();
-//        stop1Latitude = stop1Location.getLatitude();
-//        stop1Longitude = stop1Location.getLongitude();
 
-
-            // REPLACE THIS CODE WITH CODE BELOW IF YOU WANT ALL STOPS TO SHOW - OTHERWISE SHOWS ONLY STOPS THAT HAVEN'T BEEN VISITED
-            // Can modify this code to display already visited stops differently
             ArrayList<Stop> newStops = new ArrayList<>();
             newStops.addAll(stops);
             if (currentUser != null) {
@@ -210,19 +204,7 @@ public class DetailedPathFragment extends Fragment {
                 });
             }
         }
-//
-//        stops = newStops;
-//
-//
-//        StopsAdapter adapter = new StopsAdapter(stops, getContext());
-//        rvStops.setAdapter(adapter);
-//        rvStops.setLayoutManager(new LinearLayoutManager(getContext()));
-//
-//        ItemTouchHelper.Callback callback =
-//                new StopsItemTouchHelperCallback(adapter);
-//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-//        touchHelper.attachToRecyclerView(rvStops);
-//        setUpMapFragment(savedInstanceState);
+
 
         btnStartPath.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,14 +214,6 @@ public class DetailedPathFragment extends Fragment {
                     ParseRelation<Path> relation = currentUser.getRelation("startedPaths");
                     relation.add(currentPath);
                     currentUser.saveInBackground();
-//                    Fragment stopFragment = new StopFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putParcelable("Path", Parcels.wrap(currentPath));
-//                    bundle.putParcelable("Stops Array", Parcels.wrap(stops));
-//                    bundle.putInt("Stop Index", 0);
-//                    stopFragment.setArguments(bundle);
-//                    FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-//                    fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail").commit();
                 } else if (currentPath.getCompletedPath() == true){
                     Toast.makeText(getContext(),"you've already completed this path", Toast.LENGTH_LONG).show();
                 }
@@ -307,32 +281,6 @@ public class DetailedPathFragment extends Fragment {
         super.onStop();
     }
 
-    private boolean isGooglePlayServicesAvailable() {
-        // Check that Google Play services is available
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
-        // If Google Play services is available
-        if (ConnectionResult.SUCCESS == resultCode) {
-            // In debug mode, log the status
-            Log.d("Location Updates", "Google Play services is available.");
-            return true;
-        } else {
-            // Get the error dialog from Google Play services
-            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
-                    CONNECTION_FAILURE_RESOLUTION_REQUEST);
-
-            // If Google Play services can provide an error dialog
-            if (errorDialog != null) {
-                // Create a new DialogFragment for the error dialog
-                PathDetailsActivity.ErrorDialogFragment errorFragment = new PathDetailsActivity.ErrorDialogFragment();
-                errorFragment.setDialog(errorDialog);
-                errorFragment.show(getChildFragmentManager(), "Location Updates");
-            }
-
-            return false;
-        }
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -394,12 +342,6 @@ public class DetailedPathFragment extends Fragment {
                 .icon(smallMarkerIcon)
         );
         createStopCircle(stopLatitude, stopLongitude);
-    }
-
-    private void initializeViews() {
-        tvPathName.setText(currentPath.getPathName());
-        tvPathDescription.setText(currentPath.getPathDescription());
-        rbPathRating.setRating(currentPath.getPathRatingAvg());
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {
@@ -467,27 +409,6 @@ public class DetailedPathFragment extends Fragment {
             e.printStackTrace();
         }
         return stopLocation;
-    }
-
-
-    public Float getPathRatingAvg(){
-        double sum;
-        int size = currentPath.getPathRatings().size();
-        ArrayList<Double> myArrayList = new ArrayList<>();
-        myArrayList = currentPath.getPathRatings();
-        sum = 0.0;
-        for (int i = 0; i < size; i++){
-            Object num = myArrayList.get(i);
-            Log.d("yer", num.getClass().toString());
-            double myFloat;
-            if (num.getClass().equals(Integer.class)){
-                 myFloat = (double)((Integer)num);
-            } else {
-                 myFloat = (double)(num);
-            }
-            sum = (sum + myFloat);
-        }
-        return (float)(sum/size);
     }
 
     private void initializeAdapter(RecyclerView rvStops) {
