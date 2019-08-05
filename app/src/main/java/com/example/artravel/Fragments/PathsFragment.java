@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ import com.example.artravel.EndlessRecyclerViewScrollListener;
 import com.example.artravel.PathsAdapter;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -40,6 +43,8 @@ public class PathsFragment extends Fragment {
     protected LinearLayoutManager mLayoutManager;
     protected PathsAdapter mAdapter;
     private EndlessRecyclerViewScrollListener scrollListener;
+    private List<String> selectedChips;
+    public ChipGroup chipFilters;
 
 
     @Nullable
@@ -52,7 +57,12 @@ public class PathsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         setUpRecyclerView();
+        chipFilters = (ChipGroup) view.findViewById(R.id.chipFilters);
         loadTopPaths();
+        checkFilters(chipFilters);
+
+
+
     }
 
 
@@ -140,12 +150,9 @@ public class PathsFragment extends Fragment {
                             mAdapter.notifyDataSetChanged();
                         }
                     });
-
-
                     for (int i = 0; i < objects.size(); i++) {
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
                     }
-
                 } else {
                     e.printStackTrace();
                 }
@@ -201,6 +208,64 @@ public class PathsFragment extends Fragment {
         });
     }
 
+
+    public void filterChips(){
+        Log.d("chip", "filtering");
+        mPaths.clear();
+        mAdapter.notifyDataSetChanged();
+        final Path.Query pathsQuery = new Path.Query();
+        pathsQuery.findInBackground(new FindCallback<Path>() {
+            @Override
+            public void done(List<Path> objects, ParseException e) {
+                for (Path path: objects){
+                    for(int i = 0; i<path.getPathTheme().size();i++){
+                     //   Log.d("chip", path.getPathName()+ ": "+ path.getPathTheme().get(i));
+                     //   Log.d("chip", selectedChips.get(0));
+                        if (selectedChips.contains(path.getPathTheme().get(i))){
+                            Log.d("chip", "match!");
+                            mPaths.add(path);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+    public void checkFilters(ChipGroup filters){
+        selectedChips = new ArrayList<>();
+
+        for (int i = 0; i < filters.getChildCount(); i++) {
+            Chip chip = (Chip)filters.getChildAt(i);
+            // Set the chip checked change listener
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(chip.isChecked()){
+                        Log.d("chip", "clicked!");
+                        chip.setChipBackgroundColorResource(R.color.green);
+                        selectedChips.add(chip.getText().toString());
+                        Log.d("chip", "size of list (1) : "+ selectedChips.size());
+                    } else if (! chip.isChecked()){
+                        Log.d("chip", "unclicked!");
+                        chip.setChipBackgroundColorResource(R.color.colorOnSurface);
+                        if (selectedChips.contains(chip.getText().toString())){
+                            Log.d("chip", "is in list");
+                            selectedChips.remove(chip.getText().toString());
+                            Log.d("chip", "size of list : "+ selectedChips.size());
+                            if (selectedChips.size()== 0){
+                                Log.d("chip", "no filters!");
+                                loadTopPaths();
+                            }
+
+                        }
+                    }
+                    filterChips();
+                }
+            });
+        }
+    }
 
 
 }
