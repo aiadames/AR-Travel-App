@@ -46,15 +46,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
-public class passportSceneform extends AppCompatActivity {
+public class ARGemViewer extends AppCompatActivity {
 
     private ArrayList mGems;
     private RecyclerView rvGems;
     private arGemsAdapter adapter;
-    private int selected;
     private String modelLink;
     ArFragment fragment;
-    private ModelRenderable tigerRenderable, pepe;
+    private ModelRenderable polyRenderable;
 
 
     @Override
@@ -65,42 +64,35 @@ public class passportSceneform extends AppCompatActivity {
         setupView();
         queryGems();
 
-        //TODO
-
-        // on passport details page load the flat model
-        //change it from hardcoded models to links from google poly
-
-
-        //stretch
-        //show all gems but the ones you dont own appear grayed out
-        //when you click them it gives a message about what path to complete to earn them
-
-
+        int selected;
+        selected = adapter.getSelected();
+        Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
 
         fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            int selected;
-            selected = adapter.getSelected();
+            int selection;
+            selection = adapter.getSelected();
+            Toast.makeText(getApplicationContext(),"selected == "+ selection, Toast.LENGTH_SHORT).show();
 
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(fragment.getArSceneView().getScene());
-            setupModel();
-            createModel(anchorNode);
+            loadModel();
+            setModel(anchorNode);
 
 
-            Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "selected is equals to " + selection, Toast.LENGTH_SHORT).show();
         });
 
     }
 
-    private void setupModel() {
+    private void loadModel() {
         modelLink = adapter.getImageLink();
         ModelRenderable.builder()
                 .setSource(this, RenderableSource.builder().setSource(
                         this,
                         Uri.parse(modelLink),
                         RenderableSource.SourceType.GLTF2).build())
-                .build().thenAccept(modelRenderable -> tigerRenderable = modelRenderable)
+                .build().thenAccept(modelRenderable -> polyRenderable = modelRenderable)
                 .exceptionally(
                         throwable -> {
                             Toast.makeText(this, "cant load model", Toast.LENGTH_SHORT).show();
@@ -110,12 +102,12 @@ public class passportSceneform extends AppCompatActivity {
     }
 
 
-    private void createModel(AnchorNode anchorNode) {
+    private void setModel(AnchorNode anchorNode) {
 
-            TransformableNode tiger = new TransformableNode(fragment.getTransformationSystem());
-            tiger.setParent(anchorNode);
-            tiger.setRenderable(tigerRenderable);
-            tiger.select();
+            TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
+            node.setParent(anchorNode);
+            node.setRenderable(polyRenderable);
+            node.select();
 
     }
 

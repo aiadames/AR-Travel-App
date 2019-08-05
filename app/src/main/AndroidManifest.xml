@@ -41,7 +41,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Activities.StreetViewActivity" />
-        <activity android:name=".Activities.passportSceneform" />
+        <activity android:name=".Activities.ARGemViewer" />
         <activity android:name=".Activities.ARImageActivity" />
 
         <uses-library

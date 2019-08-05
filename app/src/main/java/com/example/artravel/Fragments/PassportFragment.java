@@ -1,6 +1,5 @@
 package com.example.artravel.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,22 +16,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.artravel.Activities.passportSceneform;
+import com.example.artravel.Activities.ARGemViewer;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -50,9 +45,7 @@ public class PassportFragment extends Fragment{
     private ImageView profile;
     private TextView username;
     private TextView gemCount;
-    private CardView cardView;
-    private Context context;
-    private int numCollected;
+
     private FloatingActionButton fab;
     private static final String TAG = "PassportFragment";
 
@@ -75,13 +68,12 @@ public class PassportFragment extends Fragment{
 
         getActivity().setTitle("Passport");
         setupView(view);
-        setView(view);
         queryGems();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Ar = new Intent(getActivity(), passportSceneform.class);
+                Intent Ar = new Intent(getActivity(), ARGemViewer.class);
                 startActivity(Ar);
                 //Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
             }
@@ -89,7 +81,6 @@ public class PassportFragment extends Fragment{
 
 
     }
-
 
     private void queryGems() {
 
@@ -122,7 +113,6 @@ public class PassportFragment extends Fragment{
 
             }
         });
-        numCollected = mGems.size();
     }
 
     @Override
@@ -158,50 +148,10 @@ public class PassportFragment extends Fragment{
 
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
-        profile = view.findViewById(R.id.ivArGemImage);
-        cardView = view.findViewById(R.id.cardView);
+
 
         fab = view.findViewById(R.id.floatingActionButton2);
 
     }
-
-    private void setView(View view) {
-        //TODO
-        //need to setup user gem store and return to set user number of gems for gem count
-
-        ParseUser user = ParseUser.getCurrentUser();
-        if (user == null)
-            Toast.makeText(view.getContext(), "user null", Toast.LENGTH_SHORT).show();
-
-        username.setText(user.getUsername());
-
-        ParseFile image = (ParseFile) user.get("image");
-        if (image != null) {
-            //Toast.makeText(view.getContext()," profile image being loaded", Toast.LENGTH_SHORT).show();
-            Glide.with(view.getContext())
-                    .load(image.getUrl())
-                    // .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
-                    .into(profile);
-
-        } else
-            Toast.makeText(view.getContext(), "Failed image null", Toast.LENGTH_SHORT).show();
-
-        cardView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-               // Toast.makeText(view.getContext(), "clicked the cardview", Toast.LENGTH_SHORT).show();
-                Fragment profile = new ProfileFragment();
-
-                FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.flContainer, profile)
-                        .commit();
-            }
-        }
-        );
-
-    }
-
-
 
 }

@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.models.Gems;
 import com.parse.ParseFile;
 
@@ -22,13 +25,14 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 
 public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder> {
     private List<Gems> gemsList;
     public Context context;
 
     public ImageView gemImage;
-    public TextView gemName;
 
     public GemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
@@ -41,22 +45,23 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
         public GemsViewHolder(View itemView) {
             super(itemView);
             gemImage = itemView.findViewById(R.id.ivArGemImage);
-            //gemName = itemView.findViewById(R.id.tvName);
             itemView.setOnClickListener(this);
 
         }
 
         public void bind(Gems myGem) {
            //gemName.setText(myGem.getName());
-
+            int pos = getAdapterPosition();
             ParseFile image = myGem.getImage();
-            if (image != null) {
-                Glide.with(context)
-                        .load(image.getUrl())
-                        //.apply(RequestOptions.circleCropTransform())
-                        .into(gemImage);
-            }
-        }
+
+                    if (image != null) {
+                        Glide.with(context)
+                                .load(image.getUrl())
+                                //.apply(new RequestOptions().transforms(new RoundedCorners(100)))
+                                .into(gemImage);
+                    }
+
+                }
 
         public void onClick(View view) {
 
