@@ -41,19 +41,10 @@ import org.parceler.Parcels;
 public class GemDetail extends AppCompatActivity {
 
     private Gems currentGem;
-    private TextView gemName;
-    private TextView gemDescription;
-    private ImageView gemImage;
-    private ArFragment fragment;
     private SceneView sceneView;
-    private Node node;
-    private TransformableNode tigerNode;
     Scene scene;
     private String modelLink;
-    private ModelRenderable renderable;
 
-
-    private ModelRenderable tigerRenderable;
     private TransformationSystem transformationSystem;
 
     @Override

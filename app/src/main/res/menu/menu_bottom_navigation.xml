@@ -6,6 +6,7 @@
         android:enabled="true"
         android:icon="@drawable/home"
         android:title="@string/btnhome"
+        android:visible="true"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_paths"

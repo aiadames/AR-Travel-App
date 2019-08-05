@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.passportSceneform">
+    tools:context=".Activities.ARGemViewer">
 
     <fragment
         android:id="@+id/sceneform_passport_fragment"
