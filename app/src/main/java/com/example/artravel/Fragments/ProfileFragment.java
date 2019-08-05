@@ -137,7 +137,11 @@ public class ProfileFragment extends Fragment {
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
 
-        tvName.setText((String) currentUser.get("firstName"));
+        if (!(currentUser.get("firstname") == null)){
+            tvName.setText((String) currentUser.get("firstName"));
+        }else {
+            tvName.setText("user");
+        }
         tvUserName.setText("@"+currentUser.getUsername());
         tvUserEmail.setText(currentUser.getEmail());
 

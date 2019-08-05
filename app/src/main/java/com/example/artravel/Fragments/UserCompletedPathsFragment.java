@@ -43,6 +43,7 @@ public class UserCompletedPathsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle("Completed Path");
         loadCompletedPaths();
         setUpRecyclerView();
 

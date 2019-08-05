@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.Fragments.GemLocationFragment;
 import com.example.artravel.Fragments.StopInfoFragment;
@@ -21,38 +22,30 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class StopInfoViewModel {
 
+    // Private instance variable for the current stop
     private Stop stop;
-    private Path path;
-    private ArrayList<Stop> stopsList;
-    private int stopIndex;
 
+    // Public method to set the current stop
     public void setStop(Stop stop) {
         this.stop = stop;
     }
 
-    public void setPath(Path path) {
-        this.path = path;
-    }
-
-    public void setStopsList(ArrayList<Stop> stops) {
-        stopsList = stops;
-    }
-
-    public void setStopIndex(int index) {
-        stopIndex = index;
-    }
-
+    // Method that returns and binds the name of the stop
     public String getStopTitle() {
         return stop.getStopName();
     }
 
+    // Method that returns and binds the stop's info paragraph
     public String getStopInfoParagraph() {
         return stop.getInfoParagraph();
     }
 
-    public String getImageUrl() {
+    // Method that returns the String URL of the stop image
+    public String getStopImageUrl() {
         ParseFile image = stop.getStopImage();
         if (image != null) {
             return image.getUrl();
@@ -60,14 +53,34 @@ public class StopInfoViewModel {
         return null;
     }
 
-    @BindingAdapter({"bind:imageUrl"})
-    public static void loadImage(ImageView view, String imageUrl) {
-        if (imageUrl != null) {
+    // Method that returns the String URL of the stop's profile image
+    public String getStopProfileImageUrl() {
+        ParseFile image = stop.getStopProfileImage();
+        if (image != null) {
+            return image.getUrl();
+        }
+        return null;
+    }
+
+    // Method that loads the stop image into the image view
+    @BindingAdapter({"bind:stopImageUrl"})
+    public static void loadStopImage(ImageView view, String stopImageUrl) {
+        if (stopImageUrl != null) {
             Glide.with(view.getContext())
-                    .load(imageUrl)
+                    .load(stopImageUrl)
                     .into(view);
         }
     }
 
+    // Method that loads the stop profile image into the image view
+    @BindingAdapter({"bind:stopProfileImageUrl"})
+    public static void loadStopProfileImage(ImageView view, String stopProfileImageUrl) {
+        if (stopProfileImageUrl != null) {
+            Glide.with(view.getContext())
+                    .load(stopProfileImageUrl)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(view);
+        }
+    }
 }
 

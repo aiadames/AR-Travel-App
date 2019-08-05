@@ -27,12 +27,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.StreetViewActivity;
+import com.example.artravel.DetailedPathViewModel;
 import com.example.artravel.R;
+import com.example.artravel.StopViewModel;
+import com.example.artravel.databinding.FragmentDetailedPathBinding;
+import com.example.artravel.databinding.FragmentStopBinding;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,6 +48,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -55,6 +62,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -70,7 +78,7 @@ import permissions.dispatcher.RuntimePermissions;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 @RuntimePermissions
-public class StopFragment extends Fragment {
+public class StopFragment extends Fragment implements View.OnClickListener {
 
     private Path path;
     private ArrayList<Stop> allStops;
@@ -99,16 +107,13 @@ public class StopFragment extends Fragment {
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    private TextView tvStopName;
-    private TextView tvStopDetails;
-    private TextView tvPathName;
     private TextView tvStopDistance;
     private Button btnStopInfo;
     private FloatingActionButton btnStreetView;
-    private FloatingActionButton btnStopZoom;
 
     private double distanceToStop;
 
+    private StopViewModel stopViewModel;
 
     /*
      * Method that inflates the fragment_stop XML layout file for the Stop fragment.
@@ -116,56 +121,58 @@ public class StopFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_stop, container, false);
+        FragmentStopBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_stop, container, false);
+        View view = binding.getRoot();
+        stopViewModel = new StopViewModel();
+        // Get the bundle containing the path
+        initializeBundleArguments();
+        stopViewModel.setStop(currentStop);
+        stopViewModel.setPath(path);
+        binding.setStopViewModel(stopViewModel);
+        binding.stopBottomSheet.setStopViewModel(stopViewModel);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initializeBundleArguments();
         setHasOptionsMenu(true);
 
-        tvStopName = view.findViewById(R.id.tvStopName);
-        tvStopDetails = view.findViewById(R.id.tvStopDetails);
-        tvPathName = view.findViewById(R.id.tvPathName);
+        getActivity().setTitle(currentStop.getStopName());
+
         tvStopDistance = view.findViewById(R.id.tvStopDistance);
         btnStopInfo = view.findViewById(R.id.btnStopInfo);
         btnStreetView = view.findViewById(R.id.btnStreetView);
-        btnStopZoom = view.findViewById(R.id.btnStopZoom);
-
-        initializeViews();
-        setUpMapFragment(savedInstanceState);
-
 
         ParseGeoPoint stopLocation = getLocationOfStop(currentStop);
         stopLatitude = stopLocation.getLatitude();
         stopLongitude = stopLocation.getLongitude();
+        stopViewModel.setStopLatitude(stopLatitude);
+        stopViewModel.setStopLongitude(stopLongitude);
 
-        btnStopInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        setUpMapFragment(savedInstanceState);
+
+        btnStopInfo.setOnClickListener(this);
+        btnStreetView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btnStopInfo:
                 switchToStopInfoFragment();
-            }
-        });
+                break;
 
-        btnStreetView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            case R.id.btnStreetView:
                 Intent intent = new Intent(getActivity(), StreetViewActivity.class);
                 intent.putExtra("Stop Latitude", stopLatitude);
                 intent.putExtra("Stop Longitude", stopLongitude);
                 startActivity(intent);
-            }
-        });
+                break;
 
-        btnStopZoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LatLng latLng = new LatLng(stopLatitude, stopLongitude);
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
-            }
-        });
-
+            default:
+                break;
+        }
     }
 
     /*
@@ -176,9 +183,11 @@ public class StopFragment extends Fragment {
         map = googleMap;
         if (map != null) {
             // Map is ready
+            stopViewModel.setMap(map);
             StopFragmentPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             StopFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
             LatLng latLng = new LatLng(stopLatitude, stopLongitude);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.0f));
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
         } else {
             Toast.makeText(getContext(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
@@ -261,6 +270,7 @@ public class StopFragment extends Fragment {
         getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
+                        Log.e("StopFragment", "Location updates on");
                         onLocationChanged(locationResult.getLastLocation());
                     }
                 },
@@ -356,13 +366,6 @@ public class StopFragment extends Fragment {
     }
 
     private void switchToStopInfoFragment() {
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if (currentUser != null) {
-//            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-//            relation.add(currentStop);
-//            currentUser.saveInBackground();
-//        }
-
         Fragment stopInfoFragment = new StopInfoFragment();
 
         // Create new bundle with path, stops, and current stops
@@ -374,13 +377,7 @@ public class StopFragment extends Fragment {
         stopInfoFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).addToBackStack("Stop").commit();
-    }
-
-    private void initializeViews() {
-        tvStopName.setText(currentStop.getStopName());
-        tvStopDetails.setText(currentStop.getStopDetails());
-        tvPathName.setText(path.getPathName());
+        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop").commit();
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {

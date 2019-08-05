@@ -5,14 +5,13 @@
         android:id="@+id/Home"
         android:enabled="true"
         android:icon="@drawable/home"
-        android:title="@string/btnhome"
-        android:visible="true"
+        android:title="Home"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_paths"
         android:enabled="true"
         android:icon="@drawable/maplocation"
-        android:title="Paths"
+        android:title="Tours"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_create"
