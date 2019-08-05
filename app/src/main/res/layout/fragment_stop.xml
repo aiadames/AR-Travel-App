@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
@@ -51,7 +50,6 @@
             app:layout_anchor="@id/map"
             app:layout_anchorGravity="top|end"
             android:onClick="@{()->stopViewModel.onClickStopZoom()}"/>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

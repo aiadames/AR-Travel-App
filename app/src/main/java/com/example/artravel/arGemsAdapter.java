@@ -2,6 +2,8 @@ package com.example.artravel;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     public Context context;
     public Vibrator vibrator;
     public ImageView gemImage;
-    public int selection;
+    public int selection = -1;
     public CardView cardView;
     public String imageLink;
     public RecyclerView recyclerView;
@@ -68,7 +70,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
 
             int position = getAdapterPosition();
             selection = position;
-            //cardView.setCardBackgroundColor(0xffffff00);
+           // gemImage.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         }
     }
     @Override
@@ -93,7 +95,8 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     }
 
     public int getSelected(){
-        return selection;
+        return( selection!= -1)? selection:0;
+
 
     }
 

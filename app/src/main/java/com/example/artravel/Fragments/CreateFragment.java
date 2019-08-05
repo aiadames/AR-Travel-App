@@ -39,6 +39,8 @@ public class CreateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getActivity().setTitle("Create");
+
         etPathName = view.findViewById(R.id.etPathName);
         etPathDescription = view.findViewById(R.id.etPathDescription);
         ivPathImage = view.findViewById(R.id.ivPathImage);
