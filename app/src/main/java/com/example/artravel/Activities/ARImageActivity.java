@@ -171,7 +171,8 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     private void placeObject(ArFragment arFragment, Anchor anchor, Uri uri) {
         ModelRenderable.builder()
                 .setSource(arFragment.getContext(), uri)
-                .setSource(arFragment.getContext(), RenderableSource.builder().setSource(
+                .setSource(arFragment.getContext(),
+                        RenderableSource.builder().setSource(
                         arFragment.getContext(),
                         Uri.parse(gem.getModel()),
                         RenderableSource.SourceType.GLTF2).build())
