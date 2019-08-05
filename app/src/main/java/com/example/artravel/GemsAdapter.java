@@ -33,8 +33,6 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
     public Context context;
 
     public ImageView gemImage;
-    public ImageView border;
-    public TextView gemName;
 
     public GemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
