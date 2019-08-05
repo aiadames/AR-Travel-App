@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.example.artravel.TopPathsAdapter;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
+import com.google.android.material.chip.Chip;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -63,6 +65,8 @@ public class HomeFragment extends Fragment {
     protected List<Path> tPaths;
     protected TopPathsAdapter tAdapter;
     protected LinearLayoutManager tLayoutManager;
+
+
 
 
 
