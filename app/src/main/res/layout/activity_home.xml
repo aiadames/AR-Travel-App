@@ -35,6 +35,7 @@
         android:visibility="visible"
         app:layout_anchor="@+id/flContainer"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation"
+        app:labelVisibilityMode="labeled"/>
 
 </RelativeLayout>

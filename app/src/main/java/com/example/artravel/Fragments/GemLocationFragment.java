@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.artravel.Activities.ARImageActivity;
+import com.example.artravel.ProgressBar;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -63,6 +64,7 @@ public class GemLocationFragment extends Fragment {
     private TextView tvGemLocationClue;
     private ImageView ivGemLocationImage;
     private Button btnQuestion;
+
     private Stop stop;
 
     Location mCurrentLocation;
@@ -90,6 +92,8 @@ public class GemLocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getActivity().setTitle("Gem Location");
 
         // Get bundle with stops, path, and current stop
         Bundle bundle = this.getArguments();
@@ -125,7 +129,6 @@ public class GemLocationFragment extends Fragment {
         btnQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("GemLocationFragment", "Clicked question");
                 switchToQuestionFragment();
             }
         });
