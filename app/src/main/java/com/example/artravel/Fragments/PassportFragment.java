@@ -73,6 +73,7 @@ public class PassportFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getActivity().setTitle("Passport");
         setupView(view);
         setView(view);
         queryGems();

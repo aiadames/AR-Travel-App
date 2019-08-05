@@ -139,7 +139,9 @@ public class DetailedPathFragment extends Fragment {
         tvCompletedPath = view.findViewById(R.id.tvPathCompleted);
         RecyclerView rvStops = view.findViewById(R.id.rvStops);
 
-          ParseUser currentUser = ParseUser.getCurrentUser();
+        getActivity().setTitle(currentPath.getPathName());
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
 
         if(currentPath.getCompletedPath() == true){
             tvCompletedPath.setText("You have completed this path already");

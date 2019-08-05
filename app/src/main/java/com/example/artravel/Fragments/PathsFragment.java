@@ -56,6 +56,7 @@ public class PathsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle("Tours");
         setUpRecyclerView();
         chipFilters = (ChipGroup) view.findViewById(R.id.chipFilters);
         loadTopPaths();

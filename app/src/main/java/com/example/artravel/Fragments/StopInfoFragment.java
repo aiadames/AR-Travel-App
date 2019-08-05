@@ -44,7 +44,6 @@ public class StopInfoFragment extends Fragment {
     private Path path;
     private ArrayList<Stop> stopsList;
     private int stopIndex;
-
     private FloatingActionButton fabGemlocation;
 
     /*
@@ -69,7 +68,7 @@ public class StopInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getActivity().setTitle(stop.getStopName());
         fabGemlocation = view.findViewById(R.id.fabGemLocation);
 
         // On click method for gem location button
@@ -101,10 +100,20 @@ public class StopInfoFragment extends Fragment {
     private StopInfoViewModel setUpViewModel() {
         StopInfoViewModel stopInfoViewModel = new StopInfoViewModel();
         stopInfoViewModel.setStop(stop);
-        stopInfoViewModel.setPath(path);
-        stopInfoViewModel.setStopsList(stopsList);
-        stopInfoViewModel.setStopIndex(stopIndex);
         return stopInfoViewModel;
+    }
+
+    /*
+     * Method that creates and returns a bundle that is used to pass data
+     * to the Gem Location fragment.
+     */
+    private Bundle createGemLocationBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Stop", Parcels.wrap(stop));
+        bundle.putParcelable("Path", Parcels.wrap(path));
+        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+        bundle.putInt("Stop Index", stopIndex);
+        return bundle;
     }
 
     /*
@@ -113,17 +122,11 @@ public class StopInfoFragment extends Fragment {
      */
     private void switchToGemLocationFragment() {
         Fragment gemLocationFragment = new GemLocationFragment();
-
         // Pass bundle with stops, path, and current stop
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("Stop", Parcels.wrap(stop));
-        bundle.putParcelable("Path", Parcels.wrap(path));
-        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-        bundle.putInt("Stop Index", stopIndex);
+        Bundle bundle = createGemLocationBundle();
         gemLocationFragment.setArguments(bundle);
-
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop Info").commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, gemLocationFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop Info").commit();
     }
-
 }

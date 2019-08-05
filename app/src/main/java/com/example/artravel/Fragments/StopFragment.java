@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.StreetViewActivity;
@@ -77,7 +78,7 @@ import permissions.dispatcher.RuntimePermissions;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 @RuntimePermissions
-public class StopFragment extends Fragment {
+public class StopFragment extends Fragment implements View.OnClickListener {
 
     private Path path;
     private ArrayList<Stop> allStops;
@@ -137,12 +138,11 @@ public class StopFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
+        getActivity().setTitle(currentStop.getStopName());
+
         tvStopDistance = view.findViewById(R.id.tvStopDistance);
         btnStopInfo = view.findViewById(R.id.btnStopInfo);
         btnStreetView = view.findViewById(R.id.btnStreetView);
-
-        setUpMapFragment(savedInstanceState);
-
 
         ParseGeoPoint stopLocation = getLocationOfStop(currentStop);
         stopLatitude = stopLocation.getLatitude();
@@ -150,22 +150,29 @@ public class StopFragment extends Fragment {
         stopViewModel.setStopLatitude(stopLatitude);
         stopViewModel.setStopLongitude(stopLongitude);
 
-        btnStopInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchToStopInfoFragment();
-            }
-        });
+        setUpMapFragment(savedInstanceState);
 
-        btnStreetView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnStopInfo.setOnClickListener(this);
+        btnStreetView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btnStopInfo:
+                switchToStopInfoFragment();
+                break;
+
+            case R.id.btnStreetView:
                 Intent intent = new Intent(getActivity(), StreetViewActivity.class);
                 intent.putExtra("Stop Latitude", stopLatitude);
                 intent.putExtra("Stop Longitude", stopLongitude);
                 startActivity(intent);
-            }
-        });
+                break;
+
+            default:
+                break;
+        }
     }
 
     /*
@@ -370,7 +377,7 @@ public class StopFragment extends Fragment {
         stopInfoFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).addToBackStack("Stop").commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, stopInfoFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop").commit();
     }
 
     private void setUpMapFragment(@Nullable Bundle savedInstanceState) {

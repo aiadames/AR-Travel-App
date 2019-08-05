@@ -11,7 +11,7 @@
         android:id="@+id/action_paths"
         android:enabled="true"
         android:icon="@drawable/maplocation"
-        android:title="Paths"
+        android:title="Tours"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_create"

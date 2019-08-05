@@ -50,6 +50,8 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle("Home");
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment initialize;
         initialize = new HomeFragment();

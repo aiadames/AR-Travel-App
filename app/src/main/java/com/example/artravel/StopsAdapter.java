@@ -144,7 +144,7 @@ public class  StopsAdapter extends
                     stopFragment.setArguments(bundle);
 
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).addToBackStack("Path Detail")
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, stopFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Path Detail")
                             .commit();
                 } else if (path.getCompletedPath() == true) {
                     Toast.makeText(context, "You have already completed this path", Toast.LENGTH_LONG).show();
