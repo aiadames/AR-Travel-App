@@ -32,8 +32,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
+import com.example.artravel.Fragments.PathsFragment;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
+import com.google.android.material.chip.ChipGroup;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -60,6 +62,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     private List<Path> relation_Paths;
     ConstraintLayout relativeLayout;
     CardView cardView;
+
+
+
 
 
 
@@ -119,6 +124,8 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         // mPathListFull is an independent list, don't point to same list (mutability prevention) but stores all paths
         // will be used for filter as can iterate through all paths and only update mPaths which is bound to the layout
         mPathListFull = pathListFull;
+
+
     }
 
     @NonNull

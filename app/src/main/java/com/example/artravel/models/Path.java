@@ -21,6 +21,7 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_IMAGE = "pathImage";
     private static final String KEY_PATH_ALL_RATINGS = "pathRatings";
     private static final String KEY_PATH_GEM = "pathGem";
+    private static final String KEY_PATH_THEME = "pathTheme";
     private boolean pathStarted = false;
     private boolean pathCompleted = false;
 
@@ -123,6 +124,9 @@ public class Path extends ParseObject {
         put(KEY_STOP_5, stop5);
     }
 
+    public ArrayList<CharSequence> getPathTheme(){
+       return (ArrayList<CharSequence>)get(KEY_PATH_THEME);
+    }
 
     public static class Query extends ParseQuery<Path> {
 
