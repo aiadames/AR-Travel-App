@@ -53,8 +53,9 @@
                 app:singleSelection="false">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipNature"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
+                    app:chipStrokeWidth=".5dp"
+                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -68,7 +69,7 @@
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:checkedIconEnabled="false"
-                    app:chipCornerRadius="10dp"
+                    app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_chip_nature"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp" />
@@ -76,6 +77,8 @@
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
+                    app:chipStrokeWidth=".5dp"
+                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -89,13 +92,15 @@
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:checkedIconEnabled="false"
-                    app:chipCornerRadius="10dp"
+                    app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_history"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
+                    app:chipStrokeWidth=".5dp"
+                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -109,13 +114,15 @@
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:checkedIconEnabled="false"
-                    app:chipCornerRadius="10dp"
+                    app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_landmark"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
+                    app:chipStrokeWidth=".5dp"
+                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -126,16 +133,18 @@
                     android:paddingStart="0dp"
                     android:paddingTop="1dp"
                     android:text="Local"
+                    app:chipCornerRadius="4dp"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:checkedIconEnabled="false"
-                    app:chipCornerRadius="10dp"
                     app:chipIcon="@drawable/ic_local"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
+                    app:chipStrokeWidth=".5dp"
+                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -149,7 +158,7 @@
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:checkedIconEnabled="false"
-                    app:chipCornerRadius="10dp"
+                    app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_food"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp" />
