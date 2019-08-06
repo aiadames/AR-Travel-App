@@ -57,6 +57,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         private ImageView mPathImage;
         private TextView mPathTitle;
         private TextView mPathDescription;
+        private TextView mPathProgress;
 
         public PathsViewHolder(View itemView) {
             super(itemView);
@@ -64,7 +65,8 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
             constraintLayout = itemView.findViewById(R.id.constraintLayout);
-            dPathProgress = itemView.findViewById(R.id.dPathProgress);
+         //   dPathProgress = itemView.findViewById(R.id.dPathProgress);
+            mPathProgress = itemView.findViewById(R.id.tvPathProgress);
 
 
 
@@ -102,6 +104,17 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }
+
+            if (myPath.getStartedPath() == true) {
+                mPathProgress.setText("In Progress");
+                mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.inProgressBlue));
+            }else if (myPath.getCompletedPath() == true){
+                mPathProgress.setText("Completed");
+                mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.green));
+            } else{
+                mPathProgress.setText("New");
+                mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.gold));
+            }
         }
     }
 
@@ -131,10 +144,11 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             Log.d("Testaa", mPathListFull.get(i).getPathName());
             Log.d("Testaa", mPathListFull.get(i).getStartedPath() ? "true" : "false");
         }
+
         holder.bind(currentPath);
         holder.setIsRecyclable(false);
         // based on if path is started or completed, change the display color so users can easily determine paths they can access
-        if (currentPath.getStartedPath() == true) {
+       /* if (currentPath.getStartedPath() == true) {
             dPathProgress.setBackgroundResource(R.color.inProgressBlue);
             dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.inProgressBlue));
 
@@ -144,7 +158,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         } else{
             dPathProgress.setBackgroundResource(R.color.grey);
             dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.grey));
-        }
+        }*/
     }
 
     @Override
