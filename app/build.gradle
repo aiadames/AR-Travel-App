@@ -99,6 +99,7 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.8.0"
 
     implementation 'com.google.ar.sceneform:assets:1.5.0'
+    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
 
 
 }

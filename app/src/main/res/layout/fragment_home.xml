@@ -28,6 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/proximanova_semibold"
                 android:text="Welcome!"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -42,11 +44,12 @@
 
             <TextView
                 android:id="@+id/tvCollectedGems"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
+                android:layout_width="296dp"
+                android:layout_height="46dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:fontFamily="@font/proximanova_semibold"
                 android:text="You haven't collected any gems. Start a path now!"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -78,7 +81,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/proximanova_semibold"
+                android:paddingTop="5dp"
                 android:text="Get started on a path!"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -110,7 +116,7 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/proximanova_bold"
             android:includeFontPadding="true"
             android:paddingTop="10dp"
             android:text="  Top Rated Paths"
