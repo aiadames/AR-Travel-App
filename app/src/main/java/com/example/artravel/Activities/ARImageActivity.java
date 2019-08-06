@@ -190,7 +190,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
 
         //set rotation in direction (x,y,z) in degrees 90
-        //node.setLocalRotation(Quaternion.axisAngle(new Vector3(1f, 0, 0), 270f));
+        node.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 0, 1f), 90f));
 
         node.setParent(anchorNode);
         node.setRenderable(renderable);

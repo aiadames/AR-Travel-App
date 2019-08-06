@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -268,13 +269,13 @@ public class HomeFragment extends Fragment {
                     detailedPathFragment.setArguments(bundle);
 
                     FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).addToBackStack("Home")
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Home")
                             .commit();
                 } else {
                     Fragment pathsFragment = new PathsFragment();
 
                     FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, pathsFragment).addToBackStack("Home")
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, pathsFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Home")
                             .commit();
                 }
             }
