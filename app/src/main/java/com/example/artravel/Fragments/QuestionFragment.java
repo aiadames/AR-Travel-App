@@ -174,14 +174,13 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private void doneAnswering(){
         if(answeredQuestion && userAttemptsLeft >=0){
             // launch camera if we implement AR recognition will go here
-            Toast.makeText(getContext(), "congrats, you get a gem!", Toast.LENGTH_SHORT).show();
+          Toast.makeText(getContext(), "congrats, you get a gem!", Toast.LENGTH_SHORT).show();
             // add gems to relation of specific user for passport use
             ParseUser user = ParseUser.getCurrentUser();
             ParseRelation<Gems> relation = user.getRelation("collectedGems");
             relation.add(stop.getGem());
             user.saveInBackground();
         } else{
-            Toast.makeText(getContext(), "sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
         }
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)

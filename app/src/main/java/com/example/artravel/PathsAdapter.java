@@ -1,21 +1,17 @@
 package com.example.artravel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -32,25 +29,14 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
-import com.example.artravel.Fragments.PathsFragment;
-import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
-import com.google.android.material.chip.ChipGroup;
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHolder> implements Filterable {
 
@@ -60,11 +46,10 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     public Context context;
     private int started_check ;
     private List<Path> relation_Paths;
-    ConstraintLayout relativeLayout;
+    ConstraintLayout constraintLayout;
     CardView cardView;
-
-
-
+    View dPathProgress;
+    boolean isFiltered;
 
 
 
@@ -78,8 +63,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathImage = itemView.findViewById(R.id.ivPathImage);
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
-            relativeLayout = itemView.findViewById(R.id.relativeLayout);
-            cardView = itemView.findViewById(R.id.cvPath);
+            constraintLayout = itemView.findViewById(R.id.constraintLayout);
+            dPathProgress = itemView.findViewById(R.id.dPathProgress);
+
 
 
 
@@ -106,7 +92,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(20)).format(DecodeFormat.PREFER_ARGB_8888).override(200,125);
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(4)).format(DecodeFormat.PREFER_ARGB_8888).override(200,125);
             ParseFile pathImage = myPath.getPathImage();
             if (pathImage != null) {
                 Glide.with(context)
@@ -124,8 +110,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         // mPathListFull is an independent list, don't point to same list (mutability prevention) but stores all paths
         // will be used for filter as can iterate through all paths and only update mPaths which is bound to the layout
         mPathListFull = pathListFull;
-
-
     }
 
     @NonNull
@@ -139,6 +123,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
         final Path currentPath = mPathList.get(position);
@@ -148,12 +133,17 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         }
         holder.bind(currentPath);
         holder.setIsRecyclable(false);
-
         // based on if path is started or completed, change the display color so users can easily determine paths they can access
         if (currentPath.getStartedPath() == true) {
-            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.inProgressBlue));
+            dPathProgress.setBackgroundResource(R.color.inProgressBlue);
+            dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.inProgressBlue));
+
         }else if (currentPath.getCompletedPath() == true){
-            relativeLayout.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.grey));
+            dPathProgress.setBackgroundResource(R.color.green);
+            dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.green));
+        } else{
+            dPathProgress.setBackgroundResource(R.color.grey);
+            dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.grey));
         }
     }
 
@@ -201,7 +191,4 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             notifyDataSetChanged();
         }
     };
-
-
-
 }
