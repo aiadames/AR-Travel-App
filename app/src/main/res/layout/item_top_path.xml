@@ -5,8 +5,8 @@
     android:layout_height="150dp"
     android:layout_margin="10dp"
     card_view:cardBackgroundColor="#FFFFFF"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="8dp">
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="4dp">
 
     <FrameLayout
         android:layout_width="wrap_content"
