@@ -40,6 +40,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activities.StreetViewActivity" />
         <activity android:name=".Activities.ARGemViewer" />
         <activity android:name=".Activities.ARImageActivity" />
@@ -55,11 +62,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <uses-library

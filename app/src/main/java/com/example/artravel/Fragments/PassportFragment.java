@@ -21,6 +21,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Activities.ARGemViewer;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.R;
@@ -28,6 +33,7 @@ import com.example.artravel.models.Gems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -43,6 +49,8 @@ public class PassportFragment extends Fragment{
     private List<Gems> mGems;
 
     private ImageView profile;
+    private ImageView background;
+
     private TextView username;
     private TextView gemCount;
 
@@ -137,14 +145,17 @@ public class PassportFragment extends Fragment{
         }
     }
 
-    private void setupView(View view){
+    private void setupView(View view) {
 
-        mGems= new ArrayList<>();
-        rvGems= view.findViewById(R.id.rvRecyclerView);
-        adapter = new GemsAdapter( mGems,getContext());
+        mGems = new ArrayList<>();
+        rvGems = view.findViewById(R.id.rvRecyclerView);
+        adapter = new GemsAdapter(mGems, getContext());
         rvGems.setAdapter(adapter);
 
-        rvGems.setLayoutManager(new GridLayoutManager(getContext(),3));
+        profile = view.findViewById(R.id.ivPassProfile);
+        background = view.findViewById(R.id.ivBackground);
+
+        rvGems.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
@@ -152,6 +163,20 @@ public class PassportFragment extends Fragment{
 
         fab = view.findViewById(R.id.floatingActionButton2);
 
-    }
 
+        ParseFile image = (ParseFile) ParseUser.getCurrentUser().get("image");
+        if (image != null) {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions
+                    .transforms(new CenterCrop(), new RoundedCorners(400)).format(DecodeFormat.PREFER_ARGB_8888);
+            Glide.with(getContext())
+                    .load(image.getUrl())
+                    .apply(requestOptions).into(profile);
+
+        }
+
+        Glide.with(getContext())
+                .load("https://cdn.pixabay.com/photo/2019/07/26/10/04/city-4364408_1280.jpg")
+                 .into(background);
+    }
 }

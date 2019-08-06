@@ -5,8 +5,8 @@
     android:layout_height="150dp"
     android:layout_margin="10dp"
     card_view:cardBackgroundColor="#FFFFFF"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="8dp">
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="4dp">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -23,12 +23,14 @@
         <TextView
             android:id="@+id/tvPathName"
             style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="132dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/proximanova_semibold"
             android:text="TextView"
+            android:textAlignment="center"
             android:textColor="#000000" />
     </FrameLayout>
 </androidx.cardview.widget.CardView>

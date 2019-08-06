@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +44,7 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
         this.mPaths = paths;
     }
 
-    public class TopPathsViewHolder extends RecyclerView.ViewHolder {
+    public class TopPathsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mPathImage;
         private TextView mPathName;
 
@@ -51,6 +52,7 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
             super(itemView);
             mPathImage = itemView.findViewById(R.id.ivPathImage);
             mPathName = itemView.findViewById(R.id.tvPathName);
+            itemView.setOnClickListener(this);
 
 
             /*itemView.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +96,22 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
                 }
             });
 
+        }
+
+        @Override
+        public void onClick(View view) {
+            Fragment detailedPathFragment = new DetailedPathFragment();
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                Path path = mPaths.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Path", Parcels.wrap(path));
+                detailedPathFragment.setArguments(bundle);
+                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("All paths")
+                        .commit();
+            }
         }
     }
 

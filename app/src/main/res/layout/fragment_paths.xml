@@ -6,22 +6,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <com.arlib.floatingsearchview.FloatingSearchView
+        android:id="@+id/floatingSearchView"
+        android:layout_width="377dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:floatingSearch_close_search_on_keyboard_dismiss="true"
+        app:floatingSearch_leftActionMode="showHamburger"
+        app:floatingSearch_searchHint="Search..."
+        app:floatingSearch_showSearchKey="false"
+        app:floatingSearch_suggestionsListAnimDuration="250"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView2"
-        android:layout_width="418dp"
+        android:layout_width="wrap_content"
         android:layout_height="72dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="551dp"
+        android:layout_marginBottom="536dp"
         android:paddingStart="0dp"
-        android:paddingTop="23dp"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/colorPrimaryDark"
             android:orientation="vertical">
@@ -41,27 +60,39 @@
                     android:layout_margin="4dp"
                     android:layout_marginBottom="8dp"
                     android:clickable="true"
+                    android:fontFamily="@font/proximanova_semibold"
                     android:padding="12dp"
-                    android:paddingStart="4dp"
+                    android:paddingStart="0dp"
                     android:paddingTop="1dp"
                     android:text="Nature"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:checkedIconEnabled="false"
                     app:chipCornerRadius="10dp"
                     app:chipIcon="@drawable/ic_chip_nature"
-                    app:chipIconVisible="true" />
+                    app:chipIconVisible="true"
+                    app:chipStartPadding="6dp" />
 
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/proximanova_semibold"
                     android:padding="12dp"
-                    android:paddingTop="5dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="1dp"
                     android:text="History"
                     android:textAlignment="center"
-                    app:chipCornerRadius="10dp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="10dp"
+                    app:chipIcon="@drawable/ic_history"
+                    app:chipIconVisible="true"
+                    app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -69,11 +100,19 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/proximanova_semibold"
                     android:padding="12dp"
-                    android:paddingTop="5dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="1dp"
                     android:text="Landmarks"
                     android:textAlignment="center"
-                    app:chipCornerRadius="10dp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="10dp"
+                    app:chipIcon="@drawable/ic_landmark"
+                    app:chipIconVisible="true"
+                    app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -81,11 +120,19 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/proximanova_semibold"
                     android:padding="12dp"
-                    android:paddingTop="5dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="1dp"
                     android:text="Local"
                     android:textAlignment="center"
-                    app:chipCornerRadius="10dp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="10dp"
+                    app:chipIcon="@drawable/ic_local"
+                    app:chipIconVisible="true"
+                    app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -93,10 +140,19 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/proximanova_semibold"
                     android:padding="12dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="1dp"
                     android:text="Foodie"
                     android:textAlignment="center"
-                    app:chipCornerRadius="10dp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:checkedIconEnabled="false"
+                    app:chipCornerRadius="10dp"
+                    app:chipIcon="@drawable/ic_food"
+                    app:chipIconVisible="true"
+                    app:chipStartPadding="6dp" />
 
 
             </com.google.android.material.chip.ChipGroup>
@@ -110,10 +166,11 @@
         android:layout_width="402dp"
         android:layout_height="548dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="8dp"
         android:background="#FFFFFF"
+        android:clipToPadding="true"
         android:paddingTop="5dp"
         android:paddingBottom="2dp"
         android:scrollbars="vertical"

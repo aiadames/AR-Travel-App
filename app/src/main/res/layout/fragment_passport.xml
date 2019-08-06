@@ -9,13 +9,9 @@ android:orientation="vertical" >
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="378dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
 
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,10 +20,34 @@ android:orientation="vertical" >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="174dp">
+
+                <ImageView
+                    android:id="@+id/ivBackground"
+                    android:layout_width="600dp"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                <ImageView
+                    android:id="@+id/ivPassProfile"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_alignStart="@+id/ivBackground"
+                    android:layout_alignTop="@+id/ivBackground"
+                    android:layout_alignEnd="@+id/ivBackground"
+                    android:layout_alignBottom="@+id/ivBackground"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="119dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="82dp"
+                    android:layout_marginBottom="-24dp"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/textView2"
