@@ -14,13 +14,13 @@
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/cardview_light_background"
         app:cardCornerRadius="0dp"
-        app:cardElevation="8dp">
+        app:cardElevation="4dp">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -67,7 +67,7 @@
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/cardview_light_background"
         app:cardCornerRadius="0dp"
-        app:cardElevation="8dp">
+        app:cardElevation="4dp">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"

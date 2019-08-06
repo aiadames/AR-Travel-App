@@ -103,8 +103,8 @@ public class DetailedPathFragment extends Fragment {
     private Path currentPath;
 
     private final static String KEY_LOCATION = "location";
-    private static final int MARKER_HEIGHT = 100;
-    private static final int MARKER_WIDTH = 100;
+    private static final int MARKER_HEIGHT = 80;
+    private static final int MARKER_WIDTH = 80;
     private static final int STOP_RADIUS = 30;
     private static final float ZOOM_LEVEL = 13.0f;
 
