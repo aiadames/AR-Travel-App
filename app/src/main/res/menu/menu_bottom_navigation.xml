@@ -22,7 +22,7 @@
     <item
         android:id="@+id/action_passport"
         android:enabled="true"
-        android:icon="@drawable/star"
-        android:title="Passport"
+        android:title="Gems"
+        android:icon="@drawable/shiny_diamond"
         app:showAsAction="always" />
 </menu>

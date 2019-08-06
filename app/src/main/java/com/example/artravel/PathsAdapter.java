@@ -49,9 +49,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     ConstraintLayout constraintLayout;
     CardView cardView;
     View dPathProgress;
-
-
-
+    boolean isFiltered;
 
 
 
@@ -112,8 +110,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         // mPathListFull is an independent list, don't point to same list (mutability prevention) but stores all paths
         // will be used for filter as can iterate through all paths and only update mPaths which is bound to the layout
         mPathListFull = pathListFull;
-
-
     }
 
     @NonNull
@@ -137,7 +133,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         }
         holder.bind(currentPath);
         holder.setIsRecyclable(false);
-
         // based on if path is started or completed, change the display color so users can easily determine paths they can access
         if (currentPath.getStartedPath() == true) {
             dPathProgress.setBackgroundResource(R.color.inProgressBlue);
@@ -196,7 +191,4 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             notifyDataSetChanged();
         }
     };
-
-
-
 }

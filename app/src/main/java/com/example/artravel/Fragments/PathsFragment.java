@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.example.artravel.EndlessRecyclerViewScrollListener;
 import com.example.artravel.PathsAdapter;
 import com.example.artravel.R;
@@ -32,6 +34,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,9 @@ public class PathsFragment extends Fragment {
     private EndlessRecyclerViewScrollListener scrollListener;
     private List<String> selectedChips;
     public ChipGroup chipFilters;
+    public FloatingSearchView mSearchView;
+
+    List<Path> myFilteredPaths;
 
 
     @Nullable
@@ -61,9 +67,27 @@ public class PathsFragment extends Fragment {
         chipFilters = (ChipGroup) view.findViewById(R.id.chipFilters);
         loadTopPaths();
         checkFilters(chipFilters);
+        mSearchView = view.findViewById(R.id.floatingSearchView);
+
+        mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                mAdapter.getFilter().filter(newQuery);
+            }
+        });
+
+    }
 
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
 
@@ -165,6 +189,9 @@ public class PathsFragment extends Fragment {
     }
 
 
+
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // menu item in toolbar for searching through paths by path name specifically
@@ -210,14 +237,59 @@ public class PathsFragment extends Fragment {
     }
 
 
+    // REFACTORRRR
+
     public void filterChips(){
         Log.d("chip", "filtering");
+        myFilteredPaths = new ArrayList<>();
         mPaths.clear();
         mAdapter.notifyDataSetChanged();
         final Path.Query pathsQuery = new Path.Query();
         pathsQuery.findInBackground(new FindCallback<Path>() {
             @Override
             public void done(List<Path> objects, ParseException e) {
+
+
+                ParseRelation<Path> startedPaths = ParseUser.getCurrentUser().getRelation("startedPaths");
+                startedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                    @Override
+                    public void done(List<Path> objects3, ParseException e) {
+                        if (e != null){
+                            e.printStackTrace();
+                        } else {
+                            for (int x = 0; x < objects.size(); x++) {
+                                for (int i = 0; i < objects3.size(); i++) {
+                                    if (objects3.get(i).getObjectId().equals(objects.get(x).getObjectId())) {
+                                        objects.get(x).setStartedPath();
+                                    }
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
+
+                ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
+                completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                    @Override
+                    public void done(List<Path> objects3, ParseException e) {
+                        if (e != null){
+                            e.printStackTrace();
+                        } else {
+                            for (int x = 0; x < objects.size(); x++) {
+                                for (int i = 0; i < objects3.size(); i++) {
+                                    if (objects3.get(i).getObjectId().equals(objects.get(x).getObjectId())) {
+                                        objects.get(x).setCompletedPath();
+                                    }
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
+
                 for (Path path: objects){
                     for(int i = 0; i<path.getPathTheme().size();i++){
                      //   Log.d("chip", path.getPathName()+ ": "+ path.getPathTheme().get(i));
@@ -231,12 +303,12 @@ public class PathsFragment extends Fragment {
                 }
             }
         });
+
     }
 
 
     public void checkFilters(ChipGroup filters){
         selectedChips = new ArrayList<>();
-
         for (int i = 0; i < filters.getChildCount(); i++) {
             Chip chip = (Chip)filters.getChildAt(i);
             // Set the chip checked change listener
@@ -257,6 +329,9 @@ public class PathsFragment extends Fragment {
                             Log.d("chip", "size of list : "+ selectedChips.size());
                             if (selectedChips.size()== 0){
                                 Log.d("chip", "no filters!");
+                                mPaths.clear();
+                                mPathsFull.clear();
+                                mAdapter.notifyDataSetChanged();
                                 loadTopPaths();
                             }
 
@@ -267,8 +342,6 @@ public class PathsFragment extends Fragment {
             });
         }
     }
-
-
 }
 
 
