@@ -61,10 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPathDescription"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:textSize="12sp"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:textColor="@color/green"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </layout>

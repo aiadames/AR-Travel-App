@@ -144,8 +144,9 @@ public class DetailedPathFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
 
         if(currentPath.getCompletedPath() == true){
-            tvCompletedPath.setText("You have completed this path already");
+            tvCompletedPath.setText("You have completed this path already.");
             tvCompletedPath.setVisibility(View.VISIBLE);
+            setMargins(tvCompletedPath, 0, 5, 0, 5);
         } else {
             BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet));
             bottomSheetBehavior.setState((BottomSheetBehavior.STATE_EXPANDED));
@@ -411,6 +412,14 @@ public class DetailedPathFragment extends Fragment {
         ParseGeoPoint stop1Location = getLocationOfStop(stop1);
         stop1Latitude = stop1Location.getLatitude();
         stop1Longitude = stop1Location.getLongitude();
+    }
+
+    public static void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
     }
 }
 
