@@ -8,15 +8,15 @@
     android:fitsSystemWindows="true"
     tools:context=".Activities.HomeActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@android:color/white"
-        android:backgroundTint="@android:color/holo_blue_light">
-    </androidx.appcompat.widget.Toolbar>
+    <!--<androidx.appcompat.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:minHeight="?attr/actionBarSize"-->
+        <!--app:titleTextColor="@android:color/white"-->
+        <!--android:backgroundTint="@android:color/holo_blue_light">-->
+    <!--</androidx.appcompat.widget.Toolbar>-->
 
     <FrameLayout
         android:id="@+id/flContainer"
