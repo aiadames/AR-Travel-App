@@ -183,35 +183,6 @@ public class PathsFragment extends Fragment {
                 }
             }
         });
-
-
-
-    }
-
-
-
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // menu item in toolbar for searching through paths by path name specifically
-        inflater.inflate(R.menu.path_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
     }
 
     // append the next page of data into the adapter via endless scroll
@@ -238,7 +209,6 @@ public class PathsFragment extends Fragment {
 
 
     // REFACTORRRR
-
     public void filterChips(){
         Log.d("chip", "filtering");
         myFilteredPaths = new ArrayList<>();
