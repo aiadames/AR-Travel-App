@@ -385,6 +385,7 @@ public class DetailedPathFragment extends Fragment {
         return stopLocation;
     }
 
+    /* Method that sends a bundle to the stops adapter in the bottom sheet */
     private void initializeAdapter(RecyclerView rvStops) {
         Bundle bundleToStop = new Bundle();
         bundleToStop.putParcelable("Path", Parcels.wrap(currentPath));
