@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment {
         if (currentUser != null) {
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
             tvCollectedGems.setVisibility(View.INVISIBLE);
-            tvContinuePath.setVisibility(View.INVISIBLE);
+            tvContinuePath.setVisibility(View.GONE);
 
             // Query for all of the user's collected gems
             ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment {
         if (currentUser != null) {
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
             tvCollectedGems.setVisibility(View.INVISIBLE);
-            tvContinuePath.setVisibility(View.INVISIBLE);
+            tvContinuePath.setVisibility(View.GONE);
 
             // Query for all of the user's collected gems
             ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
@@ -246,6 +246,7 @@ public class HomeFragment extends Fragment {
                                         }
                                         progressBar.setProgress(stopCount * 20);
                                         progressBar.setVisibility(View.VISIBLE);
+                                        setMargins(progressBar, 0, 30, 0, 50);
                                     }
 
                                 }
@@ -331,6 +332,14 @@ public class HomeFragment extends Fragment {
         stops.add(continuePath.getStop4());
         stops.add(continuePath.getStop5());
         return stops;
+    }
+
+    public static void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
     }
 
 

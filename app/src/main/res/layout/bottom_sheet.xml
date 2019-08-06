@@ -12,11 +12,11 @@
     <RelativeLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="260dp"
         android:background="@android:color/white"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="80dp"
+        app:behavior_peekHeight="75dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <TextView
@@ -24,7 +24,9 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:textSize="20sp"
             android:text="@{detailedPathViewModel.pathName}" />
 
         <RatingBar
@@ -33,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:numStars="5"
             android:rating="@{detailedPathViewModel.pathRating}" />
 
@@ -43,7 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPathName"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:textSize="16sp"
             android:text="@{detailedPathViewModel.pathDescription}" />
 
 
@@ -61,10 +64,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPathDescription"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:textSize="12sp"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:textColor="@color/green"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </layout>
