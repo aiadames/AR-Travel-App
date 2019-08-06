@@ -270,7 +270,6 @@ public class StopFragment extends Fragment implements View.OnClickListener {
         getFusedLocationProviderClient(getContext()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-                        Log.e("StopFragment", "Location updates on");
                         onLocationChanged(locationResult.getLastLocation());
                     }
                 },
