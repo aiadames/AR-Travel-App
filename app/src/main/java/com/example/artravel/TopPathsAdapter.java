@@ -53,25 +53,6 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
             mPathImage = itemView.findViewById(R.id.ivPathImage);
             mPathName = itemView.findViewById(R.id.tvPathName);
             itemView.setOnClickListener(this);
-
-
-            /*itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Fragment detail = new DetailedPathFragment();
-                    int position = getAdapterPosition();
-                    Path path = mPaths.get(position);
-                    Log.v("yer2", "clicked");
-
-                    // once have grabbed specific path, wrap path object via Parcelable into bundle for next fragment
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("Path", Parcels.wrap(path));
-                    detail.setArguments(bundle);
-                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer, detail).addToBackStack("All paths")
-                            .commit();
-                }
-            });*/
         }
 
         public void bind(Path myPath) {

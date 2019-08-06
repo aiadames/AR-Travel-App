@@ -70,7 +70,7 @@ public class GemLocationFragment extends Fragment {
     Location mCurrentLocation;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
-    private static final int GEM_RADIUS = 50;
+    private static final int GEM_RADIUS = 15;
     private double distanceToGem;
     private double gemLatitude;
     private double gemLongitude;

@@ -96,8 +96,8 @@ public class StopFragment extends Fragment implements View.OnClickListener {
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
 
     private static final String KEY_LOCATION = "location";
-    private static final int MARKER_HEIGHT = 100;
-    private static final int MARKER_WIDTH = 100;
+    private static final int MARKER_HEIGHT = 80;
+    private static final int MARKER_WIDTH = 80;
     private static final int STOP_RADIUS = 30;
     private static final float ZOOM_LEVEL = 17.5f;
 
