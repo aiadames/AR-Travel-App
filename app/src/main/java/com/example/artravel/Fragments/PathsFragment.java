@@ -317,7 +317,7 @@ public class PathsFragment extends Fragment {
                 public void onClick(View view) {
                     if(chip.isChecked()){
                         Log.d("chip", "clicked!");
-                        chip.setChipBackgroundColorResource(R.color.green);
+                        chip.setChipBackgroundColorResource(R.color.grey);
                         selectedChips.add(chip.getText().toString());
                         Log.d("chip", "size of list (1) : "+ selectedChips.size());
                     } else if (! chip.isChecked()){
