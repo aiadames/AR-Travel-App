@@ -63,15 +63,13 @@ public class HomeFragment extends Fragment {
     private ParseUser currentUser;
 
     protected RecyclerView rvTopPaths;
+    protected RecyclerView rvBookmarkedPaths;
     protected List<Path> tPaths;
     protected TopPathsAdapter tAdapter;
+    protected List<Path> bPaths;
+    protected TopPathsAdapter bAdapter;
+    protected LinearLayoutManager bLayoutManager;
     protected LinearLayoutManager tLayoutManager;
-
-
-
-
-
-
     private final Random random = new Random();
     private ProgressBar progressBar;
 
@@ -108,6 +106,8 @@ public class HomeFragment extends Fragment {
         // query for top 10 paths based on average
         recyclerViewSetup();
         loadTopPaths();
+
+
 
 
 
@@ -191,6 +191,8 @@ public class HomeFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
         if (currentUser != null) {
+            recyclerViewSetup2();
+            loadBookmarkedPaths();
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
             tvCollectedGems.setVisibility(View.INVISIBLE);
             tvContinuePath.setVisibility(View.GONE);
@@ -312,6 +314,29 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    protected void loadBookmarkedPaths() {
+        ParseRelation<Path> startedPaths = ParseUser.getCurrentUser().getRelation("bookmarkedPaths");
+        startedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+            @Override
+            public void done(List<Path> objects, ParseException e) {
+                if (e != null){
+                    e.printStackTrace();
+                } else {
+                    if (objects.size() == 0){
+
+                    } else{
+                        bPaths.addAll(objects);
+                        bAdapter.notifyDataSetChanged();
+                    }
+
+                }
+            }
+        });
+
+    }
+
+
+
 
     protected void recyclerViewSetup(){
         tPaths = new ArrayList<>();
@@ -322,6 +347,20 @@ public class HomeFragment extends Fragment {
         tAdapter = new TopPathsAdapter(tPaths);
         rvTopPaths.setAdapter(tAdapter);
     }
+
+    protected void recyclerViewSetup2(){
+        bPaths = new ArrayList<>();
+        rvBookmarkedPaths = getView().findViewById(R.id.rvBookmarkedPaths);
+        rvBookmarkedPaths.setHasFixedSize(true);
+        bLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvBookmarkedPaths.setLayoutManager(bLayoutManager);
+        bAdapter = new TopPathsAdapter(bPaths);
+        rvBookmarkedPaths.setAdapter(bAdapter);
+    }
+
+
+
+
 
 
     private ArrayList<Stop> createStopsList() {

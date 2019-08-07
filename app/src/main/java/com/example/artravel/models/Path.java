@@ -89,7 +89,11 @@ public class Path extends ParseObject {
     }
 
     public void setPathBookmarked(){
-        pathBookmarked = !(pathBookmarked);
+        pathBookmarked = true;
+    }
+
+    public void setPathUnbookmarked(){
+        pathBookmarked = false;
     }
 
     public boolean getPathBookmarked(){
