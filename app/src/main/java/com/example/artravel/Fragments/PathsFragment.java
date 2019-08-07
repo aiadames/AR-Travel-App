@@ -175,6 +175,31 @@ public class PathsFragment extends Fragment {
                             mAdapter.notifyDataSetChanged();
                         }
                     });
+
+                    // query for a relation of completed paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has completed
+                    // if exist in both: switch path's completed attribute to true
+                    ParseRelation<Path> bookmarkedPaths = ParseUser.getCurrentUser().getRelation("bookmarkedPaths");
+                    bookmarkedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else { ;
+                                for (int x = 0; x < mPathsFull.size(); x++) {
+                                    for (int i = 0; i < objects.size(); i++) {
+                                        if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
+                                            mPathsFull.get(x).setPathBookmarked();
+
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+
                     for (int i = 0; i < objects.size(); i++) {
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
                     }
@@ -183,35 +208,6 @@ public class PathsFragment extends Fragment {
                 }
             }
         });
-
-
-
-    }
-
-
-
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // menu item in toolbar for searching through paths by path name specifically
-        inflater.inflate(R.menu.path_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
     }
 
     // append the next page of data into the adapter via endless scroll
@@ -238,7 +234,6 @@ public class PathsFragment extends Fragment {
 
 
     // REFACTORRRR
-
     public void filterChips(){
         Log.d("chip", "filtering");
         myFilteredPaths = new ArrayList<>();

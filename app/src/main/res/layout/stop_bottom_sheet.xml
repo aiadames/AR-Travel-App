@@ -24,7 +24,8 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
             android:text="@{stopViewModel.stopName}" />
 
 
@@ -33,14 +34,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvStopName"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="15dp"
             android:text="@{stopViewModel.stopDetails}" />
 
         <TextView
             android:id="@+id/tvPathName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="15dp"
             android:layout_below="@id/tvStopDistance"
             android:text="@{stopViewModel.pathName}"
             android:textStyle="italic" />
@@ -50,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvStopDetails"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="15dp"
             android:text="Loading distance ..." />
 
         <Button

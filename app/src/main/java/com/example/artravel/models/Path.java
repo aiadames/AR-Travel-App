@@ -24,6 +24,7 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_THEME = "pathTheme";
     private boolean pathStarted = false;
     private boolean pathCompleted = false;
+    private boolean pathBookmarked = false;
 
     ArrayList<Float> ratingList;
 
@@ -86,6 +87,19 @@ public class Path extends ParseObject {
     public void setCompletedPath(){
         pathCompleted = true;
     }
+
+    public void setPathBookmarked(){
+        pathBookmarked = true;
+    }
+
+    public void setPathUnbookmarked(){
+        pathBookmarked = false;
+    }
+
+    public boolean getPathBookmarked(){
+        return pathBookmarked;
+    }
+
 
     public void setPathName(String pathName) {
         put(KEY_PATH_NAME, pathName);
