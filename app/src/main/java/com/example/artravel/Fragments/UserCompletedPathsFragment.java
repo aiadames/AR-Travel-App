@@ -73,10 +73,101 @@ public class UserCompletedPathsFragment extends Fragment {
                 } else {
                     mPaths.addAll(objects);
                     mAdapter.notifyDataSetChanged();
+
+
+                    // query for a relation of started paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has started
+                    // if exist in both: switch path's started attribute to true
+                    ParseRelation<Path> startedPaths = ParseUser.getCurrentUser().getRelation("startedPaths");
+                    startedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects1, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else {
+                                for (int x = 0; x < mPaths.size(); x++) {
+                                    for (int i = 0; i < objects1.size(); i++) {
+                                        if (objects1.get(i).getObjectId().equals(mPaths.get(x).getObjectId())) {
+                                            mPaths.get(x).setStartedPath();
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    // query for a relation of completed paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has completed
+                    // if exist in both: switch path's completed attribute to true
+                    ParseRelation<Path> completedPaths = ParseUser.getCurrentUser().getRelation("completedPaths");
+                    completedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects2, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else { ;
+                                for (int x = 0; x < mPaths.size(); x++) {
+                                    for (int i = 0; i < objects2.size(); i++) {
+                                        if (objects2.get(i).getObjectId().equals(mPaths.get(x).getObjectId())) {
+                                            mPaths.get(x).setCompletedPath();
+
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    // query for a relation of completed paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has completed
+                    // if exist in both: switch path's completed attribute to true
+                    ParseRelation<Path> bookmarkedPaths = ParseUser.getCurrentUser().getRelation("bookmarkedPaths");
+                    bookmarkedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects3, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else { ;
+                                for (int x = 0; x < mPaths.size(); x++) {
+                                    for (int i = 0; i < objects3.size(); i++) {
+                                        if (objects3.get(i).getObjectId().equals(mPaths.get(x).getObjectId())) {
+                                            mPaths.get(x).setPathBookmarked();
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 }
             }
         });
     }
+
+
+
+
 
 
 

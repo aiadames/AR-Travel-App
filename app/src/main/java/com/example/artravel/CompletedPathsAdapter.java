@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,12 +65,16 @@ public class CompletedPathsAdapter extends RecyclerView.Adapter<CompletedPathsAd
         private ImageView mPathImage;
         private TextView mPathTitle;
         private TextView mPathDescription;
+        private TextView mPathProgress;
+        private ImageButton mPathBookmark;
 
         public PathsViewHolder(View itemView) {
             super(itemView);
             mPathImage = itemView.findViewById(R.id.ivPathImage);
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
+            mPathProgress = itemView.findViewById(R.id.tvPathProgress);
+            mPathBookmark = itemView.findViewById(R.id.ibBookmark);
         }
 
         public void bind(Path myPath) {
@@ -80,6 +86,27 @@ public class CompletedPathsAdapter extends RecyclerView.Adapter<CompletedPathsAd
                 Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
+            }
+
+
+            if (myPath.getStartedPath() == true) {
+                mPathProgress.setText("In Progress");
+                mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.inProgressBlue));
+            }else if (myPath.getCompletedPath() == true){
+                mPathProgress.setText("Completed");
+                mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.green));
+            } else{
+                mPathProgress.setText("New");
+                mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.gold));
+            }
+
+
+            if (myPath.getPathBookmarked() == true) {
+                Log.e("Bookmark", myPath.getPathName()+" yep");
+                mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_filled));
+            } else {
+                Log.e("Bookmark", myPath.getPathName()+" nerp");
+                mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark));
             }
 
         }
