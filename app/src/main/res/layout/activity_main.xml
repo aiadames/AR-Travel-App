@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8BFFC107"
+    android:background="@drawable/gradient_list"
+    android:id="@+id/layout"
     tools:context=".MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -12,10 +13,8 @@
         android:layout_width="352dp"
         android:layout_height="67dp"
         android:layout_marginStart="26dp"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="280dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
         android:background="@drawable/rounded_corners"
         android:textColorHint="#FFFFFF"
         app:hintAnimationEnabled="false"
@@ -31,9 +30,9 @@
             android:layout_width="356dp"
             android:layout_height="match_parent"
             android:backgroundTint="#00FFFFFF"
+            android:drawablePadding="5dp"
             android:fontFamily="sans-serif-light"
             android:hint="  Username"
-            android:drawablePadding="5dp"
             android:textColor="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,9 +59,9 @@
             android:layout_width="356dp"
             android:layout_height="match_parent"
             android:backgroundTint="#00FFFFFF"
+            android:drawablePadding="5dp"
             android:fontFamily="sans-serif-light"
             android:hint="  Password"
-            android:drawablePadding="5dp"
             android:singleLine="false"
             android:textColor="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +70,7 @@
         android:id="@+id/bLogin"
         android:layout_width="299dp"
         android:layout_height="44dp"
-        android:layout_marginTop="348dp"
+        android:layout_marginTop="416dp"
 
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#00FFFFFF"
@@ -92,7 +91,7 @@
         android:id="@+id/bSignUp"
         android:layout_width="299dp"
         android:layout_height="44dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#00FFFFFF"
         android:fontFamily="sans-serif-light"
@@ -111,7 +110,7 @@
         android:layout_width="299dp"
         android:layout_height="44dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#00FFFFFF"
@@ -133,10 +132,35 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="56dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bContinueNoLogin" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="327dp"
+        android:layout_height="149dp"
+        android:layout_marginTop="36dp"
+        android:alpha=".8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/diamond" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="328dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/caviardreams_bold"
+        android:text="hidden gems"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
