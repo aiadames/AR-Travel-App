@@ -30,27 +30,27 @@
             android:layout_height="match_parent"
             android:alpha=".8"
             android:backgroundTint="#00FFFFFF"
-            android:drawableLeft="@drawable/ic_user_icon"
-            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/ic_person_icon"
+            android:drawablePadding="10dp"
             android:drawableTint="@color/offWhite"
             android:fontFamily="@font/proximanova_light"
-            android:hint="  Username"
+            android:hint="Username"
             android:textColor="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/offWhite"
         android:layout_width="352dp"
         android:layout_height="67dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/rounded_corners"
         android:textColorHint="#FFFFFF"
         app:hintAnimationEnabled="false"
         app:hintEnabled="false"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/offWhite">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
@@ -60,11 +60,12 @@
             android:backgroundTint="#00FFFFFF"
             android:drawableStart="@drawable/ic_lock_icon"
             android:drawableLeft="@drawable/ic_lock_icon"
-            android:drawablePadding="5dp"
+            android:drawablePadding="10dp"
             android:drawableTint="@color/offWhite"
             android:fontFamily="@font/proximanova_light"
-            android:hint="  Password"
+            android:hint="Password"
             android:inputType="textPassword"
+            android:paddingRight="10dp"
             android:singleLine="false"
             android:textColor="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>

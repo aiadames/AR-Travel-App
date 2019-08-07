@@ -6,7 +6,7 @@
     android:minHeight="180dp"
     android:layout_margin="10dp"
     card_view:cardBackgroundColor="#FFFFFF"
-    card_view:cardCornerRadius="0dp"
+    card_view:cardCornerRadius="4dp"
     card_view:cardElevation="1dp">
 
     <FrameLayout

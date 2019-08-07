@@ -67,11 +67,6 @@ public class HomeFragment extends Fragment {
     protected TopPathsAdapter tAdapter;
     protected LinearLayoutManager tLayoutManager;
 
-
-
-
-
-
     private final Random random = new Random();
     private ProgressBar progressBar;
 
@@ -102,14 +97,10 @@ public class HomeFragment extends Fragment {
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
         cvContinuePath = view.findViewById(R.id.cvContinuePath);
         progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-
 
         // query for top 10 paths based on average
         recyclerViewSetup();
         loadTopPaths();
-
-
 
         currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
@@ -185,7 +176,7 @@ public class HomeFragment extends Fragment {
         cvContinuePath = view.findViewById(R.id.cvContinuePath);
 
         progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
 
 
         ParseUser currentUser = ParseUser.getCurrentUser();

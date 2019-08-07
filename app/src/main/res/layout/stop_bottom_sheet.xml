@@ -12,11 +12,11 @@
     <RelativeLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="170dp"
         android:background="@android:color/white"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="150dp"
+        app:behavior_peekHeight="170dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <TextView

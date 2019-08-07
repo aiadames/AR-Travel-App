@@ -42,6 +42,8 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="60dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:textSize="24sp"
             android:text="@{stopInfoViewModel.stopTitle}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -49,12 +51,12 @@
             android:id="@+id/tvInfoParagraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/proximanova_regular"
             android:layout_below="@id/tvInfoStopTitle"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
-            android:fontFamily="sans-serif"
             android:lineSpacingExtra="8sp"
             android:text="@{stopInfoViewModel.stopInfoParagraph}"
             android:textSize="16sp" />
