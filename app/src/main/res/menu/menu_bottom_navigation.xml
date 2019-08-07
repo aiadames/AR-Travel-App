@@ -24,6 +24,6 @@
         android:enabled="true"
 
         android:icon="@drawable/diamond_selector"
-        android:title="Passport"
+        android:title="Gems"
         app:showAsAction="always" />
 </menu>
