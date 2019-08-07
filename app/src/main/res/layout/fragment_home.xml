@@ -115,7 +115,7 @@
                         app:barThickness="4dp"
                         app:goalIndicatorHeight="16dp"
                         app:goalIndicatorThickness="4dp"
-                        app:goalReachedColor="@android:color/holo_orange_light"
+                        app:goalReachedColor="@color/colorPrimaryTest"
                         app:indicatorType="square"
                         app:unfilledSectionColor="@color/common_google_signin_btn_text_dark_focused" />
                 </LinearLayout>
