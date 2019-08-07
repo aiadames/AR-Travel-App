@@ -14,8 +14,10 @@ android:orientation="vertical" >
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,35 +26,92 @@ android:orientation="vertical" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="174dp">
+                android:layout_height="175dp">
+
+                <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignTop="@+id/ivBackground"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="110dp"
+                    android:layout_marginEnd="11dp"
+                    android:background="@drawable/settingsx" />
 
                 <ImageView
                     android:id="@+id/ivBackground"
-                    android:layout_width="600dp"
-                    android:layout_height="150dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
                     android:scaleType="centerCrop"
                     tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
                 <ImageView
+                    android:id="@+id/ivcircle"
+                    android:layout_width="111dp"
+                    android:layout_height="110dp"
+                    android:layout_below="@+id/ivBackground"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="-35dp"
+                    android:layout_marginEnd="287dp"
+                    android:layout_marginBottom="-45dp"
+                    app:srcCompat="@drawable/circle"
+                    tools:srcCompat="@drawable/circlewht" />
+
+                <ImageView
                     android:id="@+id/ivPassProfile"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_alignStart="@+id/ivBackground"
                     android:layout_alignTop="@+id/ivBackground"
-                    android:layout_alignEnd="@+id/ivBackground"
                     android:layout_alignBottom="@+id/ivBackground"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="119dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="82dp"
-                    android:layout_marginBottom="-24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="-137dp"
+                    android:layout_marginTop="77dp"
+                    android:layout_marginEnd="137dp"
+                    android:layout_marginBottom="-64dp"
                     tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="121dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="38dp"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:gravity="left"
+                    android:text="TextView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/appBlack"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tvJoinedDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tvUsername"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="120dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginEnd="149dp"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text="TextView"
+                    android:textStyle="italic" />
+
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="Collected Gems"
                 android:textColor="@color/black"
@@ -69,6 +128,7 @@ android:orientation="vertical" >
                 android:id="@+id/tvPrompt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
                 android:textStyle="normal|italic" />
@@ -77,25 +137,27 @@ android:orientation="vertical" >
                 android:id="@+id/rvRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
                 android:layout_marginBottom="8dp" />
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+    <Button
+        android:id="@+id/btnAR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:clickable="true"
-        app:backgroundTint="#61D9F7"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="AR Mode"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92"
-        app:srcCompat="@drawable/camera" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
