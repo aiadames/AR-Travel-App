@@ -95,7 +95,7 @@
         app:layout_constraintStart_toEndOf="@+id/ivPathImage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.307"
-        app:srcCompat="@drawable/bookmark_selector" />
+        app:srcCompat="@drawable/bookmark_filled" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

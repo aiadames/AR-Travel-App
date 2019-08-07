@@ -175,6 +175,31 @@ public class PathsFragment extends Fragment {
                             mAdapter.notifyDataSetChanged();
                         }
                     });
+
+                    // query for a relation of completed paths for a specific user:
+                    // double for loop to iterate through all paths in existence and returned paths a user has completed
+                    // if exist in both: switch path's completed attribute to true
+                    ParseRelation<Path> bookmarkedPaths = ParseUser.getCurrentUser().getRelation("bookmarkedPaths");
+                    bookmarkedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                        @Override
+                        public void done(List<Path> objects, ParseException e) {
+                            if (e != null){
+                                e.printStackTrace();
+                            } else { ;
+                                for (int x = 0; x < mPathsFull.size(); x++) {
+                                    for (int i = 0; i < objects.size(); i++) {
+                                        if (objects.get(i).getObjectId().equals(mPathsFull.get(x).getObjectId())) {
+                                            mPathsFull.get(x).setPathBookmarked();
+
+                                        }
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+
                     for (int i = 0; i < objects.size(); i++) {
                         Log.d("PathsFragment", "Post[" + i + "] = " + objects.get(i).getPathDescription());
                     }

@@ -57,12 +57,14 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
 
 
 
+
     public class PathsViewHolder extends RecyclerView.ViewHolder {
         private ImageView mPathImage;
         private TextView mPathTitle;
         private TextView mPathDescription;
         private TextView mPathProgress;
-        private ImageButton mPathBookmark;
+        public ImageButton mPathBookmark;
+
 
         public PathsViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +74,33 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             constraintLayout = itemView.findViewById(R.id.constraintLayout);
             mPathProgress = itemView.findViewById(R.id.tvPathProgress);
             mPathBookmark = itemView.findViewById(R.id.ibBookmark);
+
+
+            mPathBookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ParseUser user = ParseUser.getCurrentUser();
+                    final int position = getAdapterPosition();
+                    final Path myPath = mPathList.get(position);
+                    ParseRelation<ParseObject> relation = user.getRelation("bookmarkedPaths");
+                    if (myPath.getPathBookmarked() == false){
+                        myPath.setPathBookmarked();
+                        Log.v("Bookmark2", myPath.getPathName() +(myPath.getPathBookmarked() ? " yes":" no"));
+                        relation.add(myPath);
+                        user.saveInBackground();
+                        notifyDataSetChanged();
+
+                    } else{
+                        myPath.setPathUnbookmarked();
+                        Log.v("Bookmark2", myPath.getPathName() +(myPath.getPathBookmarked() ? " yes":" no"));
+                        relation.remove(myPath);
+                        user.saveInBackground();
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+
+
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +119,11 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                             .commit();
                 }
             });
+
+
+
+
+
         }
 
         public void bind(Path myPath) {
@@ -108,6 +142,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }
 
+
             if (myPath.getStartedPath() == true) {
                 mPathProgress.setText("In Progress");
                 mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.inProgressBlue));
@@ -120,25 +155,13 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             }
 
 
-            mPathBookmark.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    myPath.setPathBookmarked();
-                    ParseUser user = ParseUser.getCurrentUser();
-                    if (!(myPath.getPathBookmarked())){
-                        mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.bookmark_filled));
-                        ParseRelation<ParseObject> relation = user.getRelation("bookmarkedPaths");
-                        relation.add(myPath);
-                        user.saveInBackground();
-                    } else{
-                        mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.bookmark));
-                        ParseRelation<ParseObject> relation = user.getRelation("likes");
-                        relation.remove(myPath);
-                        user.saveInBackground();
-                    }
-
-                }
-            });
+            if (myPath.getPathBookmarked() == true) {
+                Log.e("Bookmark", myPath.getPathName()+" yep");
+                mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark_filled));
+            } else {
+                Log.e("Bookmark", myPath.getPathName()+" nerp");
+                mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark));
+            }
 
         }
     }
@@ -161,29 +184,12 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     }
 
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PathsViewHolder holder, int position) {
         final Path currentPath = mPathList.get(position);
-        for (int i = 0; i < mPathListFull.size() ; i++) {
-            Log.d("Testaa", mPathListFull.get(i).getPathName());
-            Log.d("Testaa", mPathListFull.get(i).getStartedPath() ? "true" : "false");
-        }
-
         holder.bind(currentPath);
         holder.setIsRecyclable(false);
-        // based on if path is started or completed, change the display color so users can easily determine paths they can access
-       /* if (currentPath.getStartedPath() == true) {
-            dPathProgress.setBackgroundResource(R.color.inProgressBlue);
-            dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.inProgressBlue));
 
-        }else if (currentPath.getCompletedPath() == true){
-            dPathProgress.setBackgroundResource(R.color.green);
-            dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.green));
-        } else{
-            dPathProgress.setBackgroundResource(R.color.grey);
-            dPathProgress.setBackgroundTintList(ContextCompat.getColorStateList(context,R.color.grey));
-        }*/
     }
 
     @Override
