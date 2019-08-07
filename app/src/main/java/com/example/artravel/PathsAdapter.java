@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Path;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 
 import org.parceler.Parcels;
@@ -58,6 +62,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         private TextView mPathTitle;
         private TextView mPathDescription;
         private TextView mPathProgress;
+        private ImageButton mPathBookmark;
 
         public PathsViewHolder(View itemView) {
             super(itemView);
@@ -65,10 +70,8 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             mPathTitle = itemView.findViewById(R.id.tvPathTitle);
             mPathDescription = itemView.findViewById(R.id.tvPathDescription);
             constraintLayout = itemView.findViewById(R.id.constraintLayout);
-         //   dPathProgress = itemView.findViewById(R.id.dPathProgress);
             mPathProgress = itemView.findViewById(R.id.tvPathProgress);
-
-
+            mPathBookmark = itemView.findViewById(R.id.ibBookmark);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +118,28 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 mPathProgress.setText("New");
                 mPathProgress.setTextColor(ContextCompat.getColor(context, R.color.gold));
             }
+
+
+            mPathBookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myPath.setPathBookmarked();
+                    ParseUser user = ParseUser.getCurrentUser();
+                    if (!(myPath.getPathBookmarked())){
+                        mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.bookmark_filled));
+                        ParseRelation<ParseObject> relation = user.getRelation("bookmarkedPaths");
+                        relation.add(myPath);
+                        user.saveInBackground();
+                    } else{
+                        mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.bookmark));
+                        ParseRelation<ParseObject> relation = user.getRelation("likes");
+                        relation.remove(myPath);
+                        user.saveInBackground();
+                    }
+
+                }
+            });
+
         }
     }
 
