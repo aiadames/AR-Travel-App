@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Activities.ARGemViewer;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.R;
@@ -28,11 +35,15 @@ import com.example.artravel.models.Gems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.artravel.R.layout.fragment_passport;
@@ -41,12 +52,15 @@ public class PassportFragment extends Fragment{
     private RecyclerView rvGems;
     private GemsAdapter adapter;
     private List<Gems> mGems;
-
     private ImageView profile;
+    private ImageView background;
     private TextView username;
+    private TextView usernameSub;
     private TextView gemCount;
+    private TextView date;
+    private ImageButton imageButton;
+    private Button button;
 
-    private FloatingActionButton fab;
     private static final String TAG = "PassportFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,12 +84,24 @@ public class PassportFragment extends Fragment{
         setupView(view);
         queryGems();
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent Ar = new Intent(getActivity(), ARGemViewer.class);
                 startActivity(Ar);
                 //Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                            Fragment profile = new ProfileFragment();
+
+                            FragmentManager fragmentManager = ((AppCompatActivity)getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.flContainer, profile).addToBackStack("Passport")
+                                    .commit();
+
             }
         });
 
@@ -137,21 +163,42 @@ public class PassportFragment extends Fragment{
         }
     }
 
-    private void setupView(View view){
+    private void setupView(View view) {
 
-        mGems= new ArrayList<>();
-        rvGems= view.findViewById(R.id.rvRecyclerView);
-        adapter = new GemsAdapter( mGems,getContext());
+        mGems = new ArrayList<>();
+        rvGems = view.findViewById(R.id.rvRecyclerView);
+        adapter = new GemsAdapter(mGems, getContext());
         rvGems.setAdapter(adapter);
+        rvGems.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
-        rvGems.setLayoutManager(new GridLayoutManager(getContext(),3));
-
+        profile = view.findViewById(R.id.ivPassProfile);
+        background = view.findViewById(R.id.ivBackground);
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
+        button = view.findViewById(R.id.btnAR);
+        date = view.findViewById(R.id.tvJoinedDate);
+        imageButton = view.findViewById(R.id.imageButton3);
 
+        Date temp = (ParseUser.getCurrentUser().getCreatedAt());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        String strDate = dateFormat.format(temp);
+        date.setText("Joined "+strDate);
 
-        fab = view.findViewById(R.id.floatingActionButton2);
+        username.setText(ParseUser.getCurrentUser().getUsername());
 
+        ParseFile image = (ParseFile) ParseUser.getCurrentUser().get("image");
+        if (image != null) {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions
+                    .transforms(new CenterCrop(), new RoundedCorners(400)).format(DecodeFormat.PREFER_ARGB_8888);
+            Glide.with(getContext())
+                    .load(image.getUrl())
+                    .apply(requestOptions).into(profile);
+
+        }
+
+        Glide.with(getContext())
+                .load("https://cdn.pixabay.com/photo/2019/07/26/10/04/city-4364408_1280.jpg")
+                 .into(background);
     }
-
 }

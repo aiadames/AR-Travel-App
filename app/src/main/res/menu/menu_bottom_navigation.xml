@@ -22,7 +22,6 @@
     <item
         android:id="@+id/action_passport"
         android:enabled="true"
-
         android:icon="@drawable/diamond_selector"
         android:title="Gems"
         app:showAsAction="always" />
