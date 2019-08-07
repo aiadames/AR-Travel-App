@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8BFFC107"
+    android:background="@color/colorOnSurface"
     tools:context=".MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="352dp"
+        android:layout_width="300dp"
         android:layout_height="67dp"
         android:layout_marginStart="26dp"
         android:layout_marginLeft="26dp"
@@ -18,8 +18,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/rounded_corners"
         android:textColorHint="#FFFFFF"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,18 +27,19 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUsername"
-            android:layout_width="356dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="#00FFFFFF"
-            android:fontFamily="sans-serif-light"
-            android:hint="  Username"
             android:drawablePadding="5dp"
+            android:fontFamily="sans-serif-light"
+            android:hint="Username"
+            android:paddingStart="20dp"
             android:textColor="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
-        android:layout_width="352dp"
+        android:layout_width="300dp"
         android:layout_height="67dp"
         android:layout_marginStart="26dp"
         android:layout_marginLeft="26dp"
@@ -48,8 +48,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/rounded_corners"
         android:textColorHint="#FFFFFF"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,12 +56,13 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
-            android:layout_width="356dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="#00FFFFFF"
-            android:fontFamily="sans-serif-light"
-            android:hint="  Password"
             android:drawablePadding="5dp"
+            android:fontFamily="sans-serif-light"
+            android:hint="Password"
+            android:paddingStart="20dp"
             android:singleLine="false"
             android:textColor="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -135,8 +135,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bContinueNoLogin" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
