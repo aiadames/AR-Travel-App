@@ -1,8 +1,13 @@
 package com.example.artravel.Activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.artravel.Fragments.ShareFragment;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.arGemsAdapter;
 import com.example.artravel.models.Gems;
@@ -11,16 +16,22 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.artravel.R;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
@@ -41,8 +52,15 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.ssaurel.screenshot.Screenshot;
 
+import org.parceler.Parcels;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -53,7 +71,11 @@ public class ARGemViewer extends AppCompatActivity {
     private arGemsAdapter adapter;
     private String modelLink;
     ArFragment fragment;
+    private Button btnShare;
+    private String sharePath;
+    private Bitmap  bitmap;
     private ModelRenderable polyRenderable;
+    private Image image;
 
 
     @Override
@@ -68,10 +90,29 @@ public class ARGemViewer extends AppCompatActivity {
         selected = adapter.getSelected();
         Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
 
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "clicked share", Toast.LENGTH_SHORT).show();
+                //bitmap = Screenshot.getScreenShot(fragment);
+
+                Frame currentFrame = fragment.getArSceneView().getArFrame();
+                try{
+                     image = currentFrame.acquireCameraImage();
+
+                } catch(Exception e){
+
+            }
+
+                bitmap = Screenshot.getScreenShot(image);
+                showEditDialog();
+            }
+        });
+
         fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             int selection;
             selection = adapter.getSelected();
-            Toast.makeText(getApplicationContext(),"selected == "+ selection, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "selected == " + selection, Toast.LENGTH_SHORT).show();
 
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
@@ -104,10 +145,10 @@ public class ARGemViewer extends AppCompatActivity {
 
     private void setModel(AnchorNode anchorNode) {
 
-            TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
-            node.setParent(anchorNode);
-            node.setRenderable(polyRenderable);
-            node.select();
+        TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
+        node.setParent(anchorNode);
+        node.setRenderable(polyRenderable);
+        node.select();
 
             // Scale size of the AR model
             node.getScaleController().setMaxScale(0.6f);
@@ -119,13 +160,11 @@ public class ARGemViewer extends AppCompatActivity {
 
         mGems = new ArrayList<>();
         rvGems = findViewById(R.id.rvSceneForm);
+        btnShare = findViewById(R.id.btnShare);
         adapter = new arGemsAdapter(mGems, this.getApplicationContext());
         rvGems.setAdapter(adapter);
-
         rvGems.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-
         fragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.sceneform_passport_fragment);
-
     }
 
     private void queryGems() {
@@ -155,4 +194,23 @@ public class ARGemViewer extends AppCompatActivity {
             }
         });
     }
+
+    private void showEditDialog() {
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        Bundle bundle = new Bundle();
+        bundle.putByteArray("image",byteArray);
+
+
+
+        FragmentManager fm = getSupportFragmentManager();
+        ShareFragment shareFragment = ShareFragment.newInstance("Some Title");
+        shareFragment.setArguments(bundle);
+        shareFragment.show(fm, "share_confirmation");
+    }
+
+
 }
