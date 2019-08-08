@@ -3,28 +3,23 @@ package com.example.artravel.Activities;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.DialogFragment;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Movie;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.artravel.Fragments.ARImageFragment;
-import com.example.artravel.Fragments.CompletedPathFragment;
-import com.example.artravel.Fragments.DetailedPathFragment;
+import com.example.artravel.Fragments.EarnedGemDialogFragment;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -42,6 +37,7 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.math.Quaternion;
+import com.google.ar.sceneform.math.QuaternionEvaluator;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
@@ -54,11 +50,6 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -189,21 +180,60 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         AnchorNode anchorNode = new AnchorNode(anchor);
         TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
 
-        //set rotation in direction (x,y,z) in degrees 90
-        node.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 0, 1f), 90f));
+//        //set rotation in direction (x,y,z) in degrees 90
+//        node.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 0, 1f), 90f));
 
         node.setParent(anchorNode);
         node.setRenderable(renderable);
         node.select();
 
         // Scale size of the AR model
-        node.getScaleController().setMaxScale(0.05f);
-        node.getScaleController().setMinScale(0.01f);
+        node.getScaleController().setMaxScale(0.08f);
+        node.getScaleController().setMinScale(0.02f);
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
         node.select();
+
+        ObjectAnimator orbitAnimation = createAnimator();
+        orbitAnimation.setTarget(node);
+        // Set the speed of rotation
+        orbitAnimation.setDuration(3500L);
+        orbitAnimation.start();
     }
+
+    private static ObjectAnimator createAnimator() {
+        // Node's setLocalRotation method accepts Quaternions as parameters.
+        // First, set up orientations that will animate a circle.
+        Quaternion orientation1 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 0);
+        Quaternion orientation2 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 120);
+        Quaternion orientation3 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 240);
+        Quaternion orientation4 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 360);
+
+        ObjectAnimator orbitAnimation = new ObjectAnimator();
+        orbitAnimation.setObjectValues(orientation1, orientation2, orientation3, orientation4);
+
+        // Next, give it the localRotation property.
+        orbitAnimation.setPropertyName("localRotation");
+
+        // Use Sceneform's QuaternionEvaluator.
+        orbitAnimation.setEvaluator(new QuaternionEvaluator());
+
+        //  Allow orbitAnimation to repeat forever
+        orbitAnimation.setRepeatCount(ObjectAnimator.INFINITE);
+        orbitAnimation.setRepeatMode(ObjectAnimator.RESTART);
+        orbitAnimation.setInterpolator(new LinearInterpolator());
+        orbitAnimation.setAutoCancel(true);
+
+        return orbitAnimation;
+    }
+
+
+
+
+
+
+    /* BELOW IS QUESTION LOGIC */
 
     // for each button click if the corresponding text answer matches the Stop object answer
     // if so, call helper method correctAnswer to display corresponding changes, else call falseAnswer
@@ -244,6 +274,10 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         updateTextView(userAttemptsLeft);
         if (userAttemptsLeft == 0 || answeredQuestion == true){
             doneAnswering();
+            btnChoice1.setClickable(false);
+            btnChoice2.setClickable(false);
+            btnChoice3.setClickable(false);
+            btnChoice4.setClickable(false);
         }
     }
 
@@ -263,12 +297,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     // values for this run of the fragment such as the user attempts, if question answered, and if gets gem
     private void initializeValues() {
         // Get bundle with stops, path, and current stop
-//        Bundle bundle = this.getArguments();
-//        stop = Parcels.unwrap(bundle.getParcelable("Stop"));
-//        path = Parcels.unwrap(bundle.getParcelable("Path"));
-//        stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
-//        stopIndex = bundle.getInt("Stop Index");
-
         userAttemptsLeft = 3;
         recievesGem = false;
         answeredQuestion = false;
@@ -278,14 +306,21 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     private void doneAnswering(){
         if(answeredQuestion && userAttemptsLeft >=0){
             // launch camera if we implement AR recognition will go here
-            Toast.makeText(this, "congrats, you get a gem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Congrats, you get a gem!", Toast.LENGTH_SHORT).show();
             // add gems to relation of specific user for passport use
             ParseUser user = ParseUser.getCurrentUser();
             ParseRelation<Gems> relation = user.getRelation("collectedGems");
             relation.add(stop.getGem());
             user.saveInBackground();
+
+            DialogFragment earnedGemDialog = new EarnedGemDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Stop", Parcels.wrap(stop));
+            earnedGemDialog.setArguments(bundle);
+            earnedGemDialog.show(getSupportFragmentManager(), "Earned Gem Dialog");
+
         } else{
-            Toast.makeText(this, "sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
         }
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
@@ -312,40 +347,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
             }
         });
-
-//        // send intent
-//        Fragment detailedPathFragment = new DetailedPathFragment();
-//        Fragment doneFragment = new CompletedPathFragment();
-//
-//
-//
-//        // Pass bundle with path
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("Path", Parcels.wrap(path));
-//        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-//        if (stopIndex < stopsList.size() - 1) {
-//            //stopIndex++;
-//            stopsList.remove(stop);
-//            // add gems to relation of specific user for passport use
-//            detailedPathFragment.setArguments(bundle);
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
-//                    .commit();
-//        } else if (stopIndex == stopsList.size() - 1){
-//            // query for started paths relation and remove this path
-//            // query for completed paths relation and add this path
-//            ParseUser user = ParseUser.getCurrentUser();
-//            ParseRelation<Path> startedPaths = user.getRelation("startedPaths");
-//            startedPaths.remove(path);
-//            user.saveInBackground();
-//            ParseRelation<Path> completedPaths = user.getRelation("completedPaths");
-//            completedPaths.add(path);
-//            user.saveInBackground();
-//            doneFragment.setArguments(bundle);
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
-//                    .commit();
-//        }
     }
 
     public void updateTextView(Integer userAttemptsLeft) {
@@ -366,7 +367,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     }
     // change value of attempts by 1
     public void falseAnswer(){
-        Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_LONG).show();
         userAttemptsLeft -= 1;
     }
 

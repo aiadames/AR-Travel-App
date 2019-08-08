@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.MainActivity;
+import com.example.artravel.MyFriendsAdapter;
 import com.example.artravel.PathsAdapter;
 import com.example.artravel.ProgressBar;
 import com.example.artravel.R;
@@ -64,21 +66,27 @@ public class HomeFragment extends Fragment {
 
     protected RecyclerView rvTopPaths;
     protected RecyclerView rvBookmarkedPaths;
+    protected RecyclerView rvMyFriends;
     protected List<Path> tPaths;
     protected TopPathsAdapter tAdapter;
     protected List<Path> bPaths;
     protected TopPathsAdapter bAdapter;
+    protected List<ParseUser> friends;
+    protected MyFriendsAdapter friendsAdapter;
+    protected LinearLayoutManager fLayoutManager;
     protected LinearLayoutManager bLayoutManager;
     protected LinearLayoutManager tLayoutManager;
     private final Random random = new Random();
     private ProgressBar progressBar;
+
+    private Button findFriends;
 
     public enum reachedStop {
         STOP1(20),
         STOP2(40),
         STOP3(60),
         STOP4(80),
-        STOP5(98.5);
+        STOP5(98.2);
 
         private final double progress;
 
@@ -100,99 +108,20 @@ public class HomeFragment extends Fragment {
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
         cvContinuePath = view.findViewById(R.id.cvContinuePath);
         progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
+        findFriends = view.findViewById(R.id.buttonFriends);
 
 
         // query for top 10 paths based on average
         recyclerViewSetup();
         loadTopPaths();
 
-
-
-
-
-        currentUser = ParseUser.getCurrentUser();
-        // If a user is logged in
-        if (currentUser != null) {
-            tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
-            tvCollectedGems.setVisibility(View.INVISIBLE);
-            tvContinuePath.setVisibility(View.GONE);
-
-            // Query for all of the user's collected gems
-            ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
-            relation.getQuery().findInBackground(new FindCallback<Gems>() {
-                @Override
-                public void done(List<Gems> objects, ParseException e) {
-                    int numCollectedGems = objects.size();
-                    if (numCollectedGems == 0) {
-                        tvCollectedGems.setText("You haven't collected any gems yet. Start a path now!");
-                    } else if (numCollectedGems == 1) {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
-                    } else {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gems so far! Keep it up!");
-                    }
-                    tvCollectedGems.setVisibility(View.VISIBLE);
-                }
-            });
-
-
-            continuePath = null;
-            ParseRelation<Path> pathRelation = currentUser.getRelation("startedPaths");
-            pathRelation.getQuery().findInBackground(new FindCallback<Path>() {
-                @Override
-                public void done(List<Path> objects, ParseException e) {
-                    if (objects.size() > 0) {
-                        continuePath = objects.get(0);
-                        tvContinuePath.setText("Continue with " + continuePath.getPathName() + ", " + currentUser.getUsername());
-                    } else {
-                        tvContinuePath.setText("Get started on a path!");
-                    }
-                    tvContinuePath.setVisibility(View.VISIBLE);
-
-                    if (continuePath != null) {
-                        continuePathStops = createStopsList();
-                        if (currentUser != null) {
-                            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-                            relation.getQuery().findInBackground(new FindCallback<Stop>() {
-                                @Override
-                                public void done(List<Stop> objects, ParseException e) {
-                                    if (e != null) {
-                                        e.printStackTrace();
-                                    } else {
-                                        int stopCount = 0;
-                                        for (int i = 0; i < continuePathStops.size(); i++) {
-                                            for (int j = 0; j < objects.size(); j++) {
-                                                if (continuePathStops.get(i).getObjectId().equals(objects.get(j).getObjectId())) {
-                                                    stopCount++;
-                                                }
-                                            }
-                                        }
-                                        progressBar.setProgress(stopCount * 20);
-                                        progressBar.setVisibility(View.VISIBLE);
-                                    }
-
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }
-
-        tvWelcome = view.findViewById(R.id.tvWelcome);
-        tvCollectedGems = view.findViewById(R.id.tvCollectedGems);
-        tvContinuePath = view.findViewById(R.id.tvContinuePath);
-        cvContinuePath = view.findViewById(R.id.cvContinuePath);
-
-        progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
         if (currentUser != null) {
             recyclerViewSetup2();
             loadBookmarkedPaths();
+            recyclerViewSetup3();
+            loadMyFriends();
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
             tvCollectedGems.setVisibility(View.INVISIBLE);
             tvContinuePath.setVisibility(View.GONE);
@@ -204,7 +133,7 @@ public class HomeFragment extends Fragment {
                 public void done(List<Gems> objects, ParseException e) {
                     int numCollectedGems = objects.size();
                     if (numCollectedGems == 0) {
-                        tvCollectedGems.setText("You haven't collected any gems yet. Start a path now!");
+                        tvCollectedGems.setText("You haven't collected any gems yet. Start a tour now!");
                     } else if (numCollectedGems == 1) {
                         tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
                     } else {
@@ -220,11 +149,11 @@ public class HomeFragment extends Fragment {
             pathRelation.getQuery().findInBackground(new FindCallback<Path>() {
                 @Override
                 public void done(List<Path> objects, ParseException e) {
-                    if (objects.size() > 0) {
+                    if (objects != null && objects.size() > 0) {
                         continuePath = objects.get(0);
-                        tvContinuePath.setText("Continue with " + continuePath.getPathName() + ", " + currentUser.getUsername());
+                        tvContinuePath.setText("Continue with the " + continuePath.getPathName() + " tour, " + currentUser.getUsername());
                     } else {
-                        tvContinuePath.setText("Get started on a path!");
+                        tvContinuePath.setText("Get started on a tour!");
                     }
                     tvContinuePath.setVisibility(View.VISIBLE);
 
@@ -284,12 +213,25 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
+        findFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Fragment searchFriendsFragment = new SearchFriendsFragment();
+                FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, searchFriendsFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Home")
+                        .commit();
+            }
+        });
+
         double[] arr = {reachedStop.STOP1.progress, reachedStop.STOP2.progress, reachedStop.STOP3.progress,
                 reachedStop.STOP4.progress, reachedStop.STOP5.progress};
         progressBar.setGoals(arr);
         progressBar.setIndicatorType(ProgressBar.IndicatorType.Circle);
-        progressBar.setGoalIndicatorThickness(0.5f);
-        progressBar.setGoalIndicatorHeight(30);
+        progressBar.setGoalIndicatorThickness(2);
+        progressBar.setGoalIndicatorHeight(15);
     }
 
 
@@ -336,6 +278,23 @@ public class HomeFragment extends Fragment {
     }
 
 
+    protected void loadMyFriends() {
+        ParseRelation<ParseUser> myFriends = ParseUser.getCurrentUser().getRelation("friends");
+        myFriends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null){
+                    e.printStackTrace();
+                } else {
+                    friends.addAll(objects);
+                    friendsAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
+
 
 
     protected void recyclerViewSetup(){
@@ -356,6 +315,16 @@ public class HomeFragment extends Fragment {
         rvBookmarkedPaths.setLayoutManager(bLayoutManager);
         bAdapter = new TopPathsAdapter(bPaths);
         rvBookmarkedPaths.setAdapter(bAdapter);
+    }
+
+    protected void recyclerViewSetup3(){
+        friends = new ArrayList<>();
+        rvMyFriends = getView().findViewById(R.id.rvMyFriends);
+        rvMyFriends.setHasFixedSize(true);
+        fLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvMyFriends.setLayoutManager(fLayoutManager);
+        friendsAdapter = new MyFriendsAdapter(friends);
+        rvMyFriends.setAdapter(friendsAdapter);
     }
 
 

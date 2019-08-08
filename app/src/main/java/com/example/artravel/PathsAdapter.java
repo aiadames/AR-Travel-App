@@ -56,8 +56,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
     boolean isFiltered;
 
 
-
-
     public class PathsViewHolder extends RecyclerView.ViewHolder {
         private ImageView mPathImage;
         private TextView mPathTitle;
@@ -99,8 +97,6 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                     }
                 }
             });
-
-
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

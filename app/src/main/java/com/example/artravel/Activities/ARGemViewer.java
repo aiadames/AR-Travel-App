@@ -150,6 +150,10 @@ public class ARGemViewer extends AppCompatActivity {
         node.setRenderable(polyRenderable);
         node.select();
 
+            // Scale size of the AR model
+            node.getScaleController().setMaxScale(0.6f);
+            node.getScaleController().setMinScale(0.5f);
+
     }
 
     private void setupView() {

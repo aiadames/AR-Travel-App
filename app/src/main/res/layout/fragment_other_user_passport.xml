@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -28,15 +28,6 @@ android:orientation="vertical" >
                 android:layout_width="match_parent"
                 android:layout_height="175dp">
 
-                <ImageButton
-                    android:id="@+id/imageButton3"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignTop="@+id/ivBackground"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="110dp"
-                    android:layout_marginEnd="11dp"
-                    android:background="@drawable/settingsx" />
 
                 <ImageView
                     android:id="@+id/ivBackground"
@@ -91,45 +82,75 @@ android:orientation="vertical" >
 
                 <TextView
                     android:id="@+id/tvJoinedDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="142dp"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/tvUsername"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="120dp"
+                    android:layout_marginStart="139dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginEnd="149dp"
+                    android:layout_marginTop="52dp"
                     android:fontFamily="@font/proximanova_regular"
+                    android:paddingTop="1dp"
                     android:text="TextView"
                     android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/tvScreenName"
+                    android:layout_width="143dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tvUsername"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="121dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/proximanova_semibold"
+                    android:text="Ariana Adames"
+                    android:textAlignment="viewStart"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="25dp"
+                    android:layout_height="16dp"
+                    android:layout_alignStart="@+id/tvUsername"
+                    android:layout_alignTop="@+id/tvJoinedDate"
+                    android:layout_marginStart="-4dp"
+                    android:layout_marginTop="1dp"
+                    app:srcCompat="@drawable/calendar"
+                    tools:srcCompat="@drawable/calendar" />
 
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="397dp"
+                android:layout_height="23dp"
+                android:layout_alignParentEnd="true"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
+                android:fontFamily="@font/proximanova_bold"
                 android:text="Collected Gems"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_alignParentStart="true"
                 android:background="?android:attr/listDivider" />
 
             <TextView
                 android:id="@+id/tvPrompt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_marginLeft="12dp"
                 android:layout_marginBottom="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:paddingTop="4dp"
                 android:text="TextView"
                 android:textStyle="normal|italic" />
 
@@ -137,27 +158,27 @@ android:orientation="vertical" >
                 android:id="@+id/rvRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
                 android:layout_marginBottom="8dp" />
         </LinearLayout>
     </ScrollView>
 
     <Button
-        android:id="@+id/btnAR"
+        android:id="@+id/btnAddFriend"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorPrimaryTest"
-        android:text="AR Mode"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="324dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:text="add friend!"
+        android:textAllCaps="false"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
