@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.MainActivity;
+import com.example.artravel.MyFriendsAdapter;
 import com.example.artravel.PathsAdapter;
 import com.example.artravel.ProgressBar;
 import com.example.artravel.R;
@@ -64,10 +66,14 @@ public class HomeFragment extends Fragment {
 
     protected RecyclerView rvTopPaths;
     protected RecyclerView rvBookmarkedPaths;
+    protected RecyclerView rvMyFriends;
     protected List<Path> tPaths;
     protected TopPathsAdapter tAdapter;
     protected List<Path> bPaths;
     protected TopPathsAdapter bAdapter;
+    protected List<ParseUser> friends;
+    protected MyFriendsAdapter friendsAdapter;
+    protected LinearLayoutManager fLayoutManager;
     protected LinearLayoutManager bLayoutManager;
     protected LinearLayoutManager tLayoutManager;
     private final Random random = new Random();
@@ -114,6 +120,8 @@ public class HomeFragment extends Fragment {
         if (currentUser != null) {
             recyclerViewSetup2();
             loadBookmarkedPaths();
+            recyclerViewSetup3();
+            loadMyFriends();
             tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
             tvCollectedGems.setVisibility(View.INVISIBLE);
             tvContinuePath.setVisibility(View.GONE);
@@ -270,6 +278,23 @@ public class HomeFragment extends Fragment {
     }
 
 
+    protected void loadMyFriends() {
+        ParseRelation<ParseUser> myFriends = ParseUser.getCurrentUser().getRelation("friends");
+        myFriends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null){
+                    e.printStackTrace();
+                } else {
+                    friends.addAll(objects);
+                    friendsAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
+
 
 
     protected void recyclerViewSetup(){
@@ -290,6 +315,16 @@ public class HomeFragment extends Fragment {
         rvBookmarkedPaths.setLayoutManager(bLayoutManager);
         bAdapter = new TopPathsAdapter(bPaths);
         rvBookmarkedPaths.setAdapter(bAdapter);
+    }
+
+    protected void recyclerViewSetup3(){
+        friends = new ArrayList<>();
+        rvMyFriends = getView().findViewById(R.id.rvMyFriends);
+        rvMyFriends.setHasFixedSize(true);
+        fLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvMyFriends.setLayoutManager(fLayoutManager);
+        friendsAdapter = new MyFriendsAdapter(friends);
+        rvMyFriends.setAdapter(friendsAdapter);
     }
 
 
