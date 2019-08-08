@@ -78,7 +78,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvContinuePath"
                 android:layout_width="370dp"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -92,7 +92,8 @@
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:id="@+id/tvContinuePath"
@@ -110,11 +111,10 @@
                     <com.example.artravel.ProgressBar
                         android:id="@+id/progressBar"
                         android:layout_width="300dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="12dp"
                         android:layout_gravity="center_horizontal"
+                        android:visibility="gone"
                         app:barThickness="4dp"
-                        app:goalIndicatorHeight="16dp"
-                        app:goalIndicatorThickness="4dp"
                         app:goalReachedColor="@color/colorPrimaryTest"
                         app:indicatorType="square"
                         app:unfilledSectionColor="@color/common_google_signin_btn_text_dark_focused" />
