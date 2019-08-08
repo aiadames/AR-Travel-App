@@ -73,6 +73,8 @@ public class HomeFragment extends Fragment {
     private final Random random = new Random();
     private ProgressBar progressBar;
 
+    private Button findFriends;
+
     public enum reachedStop {
         STOP1(20),
         STOP2(40),
@@ -100,6 +102,7 @@ public class HomeFragment extends Fragment {
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
         cvContinuePath = view.findViewById(R.id.cvContinuePath);
         progressBar = view.findViewById(R.id.progressBar);
+        findFriends = view.findViewById(R.id.buttonFriends);
 
 
         // query for top 10 paths based on average
@@ -269,6 +272,19 @@ public class HomeFragment extends Fragment {
                     fragmentManager.beginTransaction().replace(R.id.flContainer, pathsFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Home")
                             .commit();
                 }
+            }
+        });
+
+
+
+        findFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Fragment searchFriendsFragment = new SearchFriendsFragment();
+                FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContainer, searchFriendsFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Home")
+                        .commit();
             }
         });
 
