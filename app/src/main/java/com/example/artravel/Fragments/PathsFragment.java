@@ -284,6 +284,31 @@ public class PathsFragment extends Fragment {
                     }
                 });
 
+                ParseRelation<Path> bookmarkedPaths = ParseUser.getCurrentUser().getRelation("bookmarkedPaths");
+                bookmarkedPaths.getQuery().findInBackground(new FindCallback<Path>() {
+                    @Override
+                    public void done(List<Path> objects4, ParseException e) {
+                        if (e != null){
+                            e.printStackTrace();
+                        } else {
+                            for (int x = 0; x < objects.size(); x++) {
+                                for (int i = 0; i < objects4.size(); i++) {
+                                    if (objects4.get(i).getObjectId().equals(objects.get(x).getObjectId())) {
+                                        objects.get(x).setPathBookmarked();
+                                    }
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
+
+
+
+
+
+
 
                 for (Path path: objects){
                     for(int i = 0; i<path.getPathTheme().size();i++){
