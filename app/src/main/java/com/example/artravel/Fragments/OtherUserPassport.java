@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,6 +33,7 @@ import com.example.artravel.Activities.ARGemViewer;
 import com.example.artravel.GemsAdapter;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
+import com.example.artravel.models.Path;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -61,8 +63,9 @@ public class OtherUserPassport extends Fragment {
     private TextView gemCount;
     private TextView date;
     private ImageButton imageButton;
-    private Button button;
+    private Button addFriend;
     private ParseUser user;
+    private boolean isFriend = false;
 
     private static final String TAG = "PassportFragment";
 
@@ -83,18 +86,11 @@ public class OtherUserPassport extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initalizeUser();
+        checkIfFriend();
         getActivity().setTitle("Passport");
         setupView(view);
         queryGems();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Ar = new Intent(getActivity(), ARGemViewer.class);
-                startActivity(Ar);
-                //Toast. makeText(getContext(), "Ar frag launch",Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
     }
@@ -146,8 +142,10 @@ public class OtherUserPassport extends Fragment {
         background = view.findViewById(R.id.ivBackground);
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
-        button = view.findViewById(R.id.btnAR);
+        addFriend = view.findViewById(R.id.btnAddFriend);
         date = view.findViewById(R.id.tvJoinedDate);
+
+        changeFriendButton();
 
 
         Date temp = (user.getCreatedAt());
@@ -171,12 +169,68 @@ public class OtherUserPassport extends Fragment {
         Glide.with(getContext())
                 .load("https://cdn.pixabay.com/photo/2019/07/26/10/04/city-4364408_1280.jpg")
                 .into(background);
+
+
+        addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ParseRelation<ParseUser> friends = currentUser.getRelation("friends");
+                if (!isFriend) {
+                    isFriend = true;
+                    friends.add(user);
+                    currentUser.saveInBackground();
+                    changeFriendButton();
+
+                } else {
+                    isFriend = false;
+                    friends.remove(user);
+                    currentUser.saveInBackground();
+                    changeFriendButton();
+                }
+            }
+        });
+
     }
+
+
 
 
     public void initalizeUser(){
         Bundle bundle = this.getArguments();
         user = Parcels.unwrap(bundle.getParcelable("User"));
+    }
+
+
+    public void checkIfFriend(){
+        ParseRelation<ParseUser> friends = ParseUser.getCurrentUser().getRelation("friends");
+        friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null){
+                    e.printStackTrace();
+                } else {
+                    for (ParseUser friend: objects){
+                        if (friend.getObjectId().equalsIgnoreCase(user.getObjectId())){
+                            isFriend = true;
+                            changeFriendButton();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+    public void changeFriendButton(){
+        if (isFriend == true) {
+            addFriend.setText("friended");
+            addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
+        } else {
+            addFriend.setText("Add Friend");
+            addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
+        }
+
     }
 
 

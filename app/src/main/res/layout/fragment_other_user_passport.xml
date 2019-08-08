@@ -96,15 +96,15 @@
                     android:textStyle="italic" />
 
                 <Button
-                    android:id="@+id/button2"
-                    android:layout_width="82dp"
-                    android:layout_height="36dp"
+                    android:id="@+id/btnAddFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="41dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="133dp"
-                    android:layout_marginEnd="22dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="124dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:text="add friend!"
                     android:textAllCaps="false" />
 
@@ -146,22 +146,5 @@
                 android:layout_marginBottom="8dp" />
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/btnAR"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="AR Mode"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
