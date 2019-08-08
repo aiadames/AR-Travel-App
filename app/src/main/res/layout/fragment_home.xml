@@ -116,7 +116,6 @@
                         android:visibility="gone"
                         app:barThickness="4dp"
                         app:goalReachedColor="@color/colorPrimaryTest"
-                        app:indicatorType="square"
                         app:unfilledSectionColor="@color/common_google_signin_btn_text_dark_focused" />
                 </LinearLayout>
 
@@ -173,9 +172,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/textView3"
                     android:scrollbars="horizontal" />
-
-
-
             </LinearLayout>
 
 
