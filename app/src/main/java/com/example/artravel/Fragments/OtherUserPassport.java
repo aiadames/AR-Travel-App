@@ -63,6 +63,7 @@ public class OtherUserPassport extends Fragment {
     private TextView gemCount;
     private TextView date;
     private ImageButton imageButton;
+    private TextView tvScreenName;
     private Button addFriend;
     private ParseUser user;
     private boolean isFriend = false;
@@ -118,7 +119,7 @@ public class OtherUserPassport extends Fragment {
                     return;
                 }
                 mGems.addAll(userGems);
-                gemCount.setText(("You've collected " + mGems.size() + " gems this week"));
+                gemCount.setText((user.get("firstName") + " collected " + mGems.size() + " gems this week"));
 
                 // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
@@ -128,10 +129,7 @@ public class OtherUserPassport extends Fragment {
     }
 
 
-
-
     private void setupView(View view) {
-
         mGems = new ArrayList<>();
         rvGems = view.findViewById(R.id.rvRecyclerView);
         adapter = new GemsAdapter(mGems, getContext());
@@ -144,6 +142,7 @@ public class OtherUserPassport extends Fragment {
         gemCount = view.findViewById(R.id.tvPrompt);
         addFriend = view.findViewById(R.id.btnAddFriend);
         date = view.findViewById(R.id.tvJoinedDate);
+        tvScreenName = view.findViewById(R.id.tvScreenName);
 
         changeFriendButton();
 
@@ -153,7 +152,8 @@ public class OtherUserPassport extends Fragment {
         String strDate = dateFormat.format(temp);
         date.setText("Joined "+strDate);
 
-        username.setText(user.getUsername());
+        username.setText(user.get("firstName") + " " + user.get("lastName"));
+        tvScreenName.setText("@"+ user.getUsername());
 
         ParseFile image = (ParseFile) user.get("image");
         if (image != null) {
@@ -227,7 +227,7 @@ public class OtherUserPassport extends Fragment {
             addFriend.setText("friended");
             addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
         } else {
-            addFriend.setText("Add Friend");
+            addFriend.setText("add friend");
             addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
         }
 

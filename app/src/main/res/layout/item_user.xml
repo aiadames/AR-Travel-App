@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/ivUserProfilePic"
-        android:layout_width="123dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,21 +19,39 @@
     <TextView
         android:id="@+id/tvUserScreenName"
         android:layout_width="248dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:fontFamily="@font/proximanova_semibold"
+        android:textColor="@color/appBlack"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivUserProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvUserFriends"
-        android:layout_width="137dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="111dp"
-        android:text="15 friends"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/tvUserName"
+        android:layout_width="239dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="42dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:text="Ariana Adames"
+        android:textColor="@color/appBlack"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/ivUserProfilePic"
-        app:layout_constraintTop_toBottomOf="@+id/tvUserScreenName" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="59dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="8dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_report" />
 </androidx.constraintlayout.widget.ConstraintLayout>

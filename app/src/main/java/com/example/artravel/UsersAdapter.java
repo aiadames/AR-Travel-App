@@ -24,12 +24,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.Fragments.OtherUserPassport;
 import com.example.artravel.Fragments.PassportFragment;
 import com.example.artravel.models.Path;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
@@ -39,18 +42,20 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> implements Filterable {
 
     private List<ParseUser> mUsersList;
     private List<ParseUser> mUsersListFull;
     public Context context;
+    public int friendCount = 0;
 
 
     public class UsersViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivUserProfilePicture;
         private TextView tvUserScreenName;
-        private TextView tvUserFriends;
+        private TextView tvUserName;
 
 
 
@@ -58,8 +63,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             super(itemView);
             ivUserProfilePicture = itemView.findViewById(R.id.ivUserProfilePic);
             tvUserScreenName = itemView.findViewById(R.id.tvUserScreenName);
-            tvUserFriends = itemView.findViewById(R.id.tvUserFriends);
-
+            tvUserName = itemView.findViewById(R.id.tvUserName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,17 +84,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         }
 
 
-
-
-
         public void bind(ParseUser user){
-            tvUserScreenName.setText(user.getUsername());
-            tvUserFriends.setText("10 friends");
+            Random rand = new Random();
+            int value = rand.nextInt(999);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CircleCrop()).format(DecodeFormat.PREFER_ARGB_8888);
+            tvUserScreenName.setText("@"+user.getUsername());
+            tvUserName.setText(user.get("firstName") + " "+ user.get("lastName"));
             if (user.get("image") != null){
-                Glide.with(context).load(((ParseFile)(user.get("image"))).getUrl()).into(ivUserProfilePicture);
+                Glide.with(context).load(((ParseFile)(user.get("image"))).getUrl()).apply(requestOptions).into(ivUserProfilePicture);
             } else{
                 ivUserProfilePicture.setImageResource(R.drawable.ic_person_icon);
             }
+
+
 
         }
     }
@@ -162,6 +169,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             notifyDataSetChanged();
         }
     };
+
+
+
+
 
 }
 

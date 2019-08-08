@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical">
 
 
@@ -12,13 +13,13 @@
         android:layout_width="414dp"
         android:layout_height="123dp"
         android:layout_marginBottom="2dp"
-        android:background="#3E5FB6BE"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/rvPaths"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="#3E5FB6BE" />
+        tools:srcCompat="#FFFFFF" />
 
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/floatingSearchView"
