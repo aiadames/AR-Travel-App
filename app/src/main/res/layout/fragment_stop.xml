@@ -40,16 +40,32 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/gem_button_icon"
-            android:tint="@android:color/holo_blue_light"
+            android:backgroundTint="@color/cardview_light_background"
             android:clickable="true"
             android:focusable="true"
-            app:fabCustomSize="40dp"
-            android:backgroundTint="@color/cardview_light_background"
+            android:onClick="@{()->stopViewModel.onClickStopZoom()}"
+            android:src="@drawable/gem_button_icon"
+            android:tint="@color/colorPrimaryTest"
             app:backgroundTint="@android:color/darker_gray"
+            app:fabCustomSize="40dp"
             app:layout_anchor="@id/map"
-            app:layout_anchorGravity="top|end"
-            android:onClick="@{()->stopViewModel.onClickStopZoom()}"/>
+            app:layout_anchorGravity="top|end" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnMapType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="108dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/cardview_light_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_map_type_icon"
+            android:tint="#635fbe"
+            app:backgroundTint="@android:color/darker_gray"
+            app:fabCustomSize="40dp"
+            app:layout_anchor="@id/map"
+            app:layout_anchorGravity="top|end" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

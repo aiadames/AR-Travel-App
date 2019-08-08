@@ -8,13 +8,10 @@
     android:isScrollContainer="true"
     android:orientation="vertical">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="0dp"
-        android:paddingTop="10dp"
         android:scrollbarStyle="outsideOverlay">
 
         <LinearLayout
@@ -24,17 +21,22 @@
             android:isScrollContainer="true"
             android:orientation="vertical">
 
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="370dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="@color/cardview_light_background"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="4dp">
+                android:background="#3E5FB6BE"
+                android:orientation="vertical">
+
+                <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="370dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="10dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:layout_marginEnd="10dp"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--app:cardBackgroundColor="@color/cardview_light_background"-->
+                <!--app:cardCornerRadius="0dp"-->
+                <!--app:cardElevation="4dp">-->
 
                 <LinearLayout
                     android:layout_width="390dp"
@@ -46,11 +48,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Welcome!"
                         android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                        android:textColor="#383C3F"
+                        android:textSize="30sp" />
 
                     <ImageView
                         android:id="@+id/ivTreasure"
@@ -68,58 +72,59 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/proximanova_semibold"
-                        android:text="You haven't collected any gems. Start a path now!"
+                        android:text="You haven't collected any gems. Start a tour now!"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                <!--</androidx.cardview.widget.CardView>-->
 
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvContinuePath"
-                android:layout_width="370dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="@color/cardview_light_background"
-                app:cardCornerRadius="0dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvContinuePath"
+                    android:layout_width="370dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp">
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardBackgroundColor="@color/cardview_light_background"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="4dp">
 
-                    <TextView
-                        android:id="@+id/tvContinuePath"
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
 
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/proximanova_semibold"
-                        android:paddingTop="5dp"
-                        android:text="Get started on a path!"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        <TextView
+                            android:id="@+id/tvContinuePath"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
 
-                    <com.example.artravel.ProgressBar
-                        android:id="@+id/progressBar"
-                        android:layout_width="300dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="center_horizontal"
-                        android:visibility="gone"
-                        app:barThickness="4dp"
-                        app:goalReachedColor="@color/colorPrimaryTest"
-                        app:unfilledSectionColor="@color/common_google_signin_btn_text_dark_focused" />
-                </LinearLayout>
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/proximanova_semibold"
+                            android:paddingTop="5dp"
+                            android:text="Get started on a tour!"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            </androidx.cardview.widget.CardView>
+                        <com.example.artravel.ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="300dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center_horizontal"
+                            android:visibility="gone"
+                            app:barThickness="4dp"
+                            app:goalReachedColor="@color/colorPrimaryTest"
+                            app:unfilledSectionColor="@color/common_google_signin_btn_text_dark_focused" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
 
             <LinearLayout
@@ -136,7 +141,7 @@
                     android:fontFamily="@font/proximanova_bold"
                     android:includeFontPadding="true"
                     android:paddingTop="10dp"
-                    android:text="  Top Rated Paths"
+                    android:text="  Top Rated Tours"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -163,8 +168,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proximanova_bold"
                     android:paddingTop="8dp"
-                    android:text="  Bookmarked Paths"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:text="  Bookmarked Tours"
                     android:textSize="18sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -177,12 +181,63 @@
             </LinearLayout>
 
 
-            <Button
-                android:id="@+id/buttonFriends"
+            <View
+                android:id="@+id/divider2"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:text="find friends!"
-                android:textAllCaps="false" />
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:id="@+id/llFriends"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvFriends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:paddingTop="8dp"
+                        android:text="  My Friends"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <Button
+                        android:id="@+id/buttonFriends"
+                        android:layout_width="129dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="148dp"
+                        android:layout_marginTop="6dp"
+                        android:paddingLeft="16dp"
+                        android:text="find friends!"
+                        android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tvFriends"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMyFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tvFriends"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:scrollbars="horizontal" />
+
+
+            </LinearLayout>
 
 
         </LinearLayout>

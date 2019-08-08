@@ -12,11 +12,11 @@
     <RelativeLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="170dp"
         android:background="@android:color/white"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="150dp"
+        app:behavior_peekHeight="170dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <TextView
@@ -25,7 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:textSize="20sp"
             android:text="@{stopViewModel.stopName}" />
 
 
@@ -34,7 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvStopName"
+            android:fontFamily="@font/proximanova_regular"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="3dp"
+            android:textSize="16sp"
             android:text="@{stopViewModel.stopDetails}" />
 
         <TextView
@@ -42,16 +47,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="3dp"
             android:layout_below="@id/tvStopDistance"
             android:text="@{stopViewModel.pathName}"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="16sp"
             android:textStyle="italic" />
 
         <TextView
             android:id="@+id/tvStopDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:layout_below="@id/tvStopDetails"
+            android:fontFamily="@font/proximanova_regular"
             android:layout_marginStart="15dp"
+            android:textSize="16sp"
             android:text="Loading distance ..." />
 
         <Button
@@ -60,9 +71,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPathName"
             android:layout_centerHorizontal="true"
-
             android:layout_marginLeft="30dp"
-            android:text="Stop Info" />
+            android:fontFamily="@font/proximanova_regular"
+            android:text="I arrived!"
+            android:textSize="18sp"
+            android:textAllCaps="false"/>
 
     </RelativeLayout>
 </layout>
