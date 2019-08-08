@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_gravity="center" android:orientation="vertical"  >
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="350dp">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="292dp"
+            app:srcCompat="@drawable/augmented_images_earth"
+            tools:srcCompat="@drawable/augmented_images_earth" />
+
+        <Button
+            android:id="@+id/btnShareConfirm"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="1dp"
+            android:backgroundTint="@color/offWhite"
+            android:elevation="0dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="SHARE"
+            android:textColor="@color/appBlack" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginBottom="1dp"
+            android:backgroundTint="@color/offWhite"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="CANCEL"
+            android:textColor="@color/appBlack" />
+    </RelativeLayout>
+
+</RelativeLayout>

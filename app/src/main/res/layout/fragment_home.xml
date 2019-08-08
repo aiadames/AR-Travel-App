@@ -27,16 +27,6 @@
                 android:background="#3E5FB6BE"
                 android:orientation="vertical">
 
-                <!--<androidx.cardview.widget.CardView-->
-                <!--android:layout_width="370dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="10dp"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:layout_marginEnd="10dp"-->
-                <!--android:layout_marginBottom="10dp"-->
-                <!--app:cardBackgroundColor="@color/cardview_light_background"-->
-                <!--app:cardCornerRadius="0dp"-->
-                <!--app:cardElevation="4dp">-->
 
                 <LinearLayout
                     android:layout_width="390dp"
@@ -76,7 +66,6 @@
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
                 </LinearLayout>
-                <!--</androidx.cardview.widget.CardView>-->
 
 
                 <androidx.cardview.widget.CardView

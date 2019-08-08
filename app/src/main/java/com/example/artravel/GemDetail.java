@@ -62,8 +62,6 @@ public class GemDetail extends AppCompatActivity {
         DetailViewModel detailViewModel = new DetailViewModel(currentGem);
         binding.setDetailViewModel(detailViewModel);
 
-
-
         transformationSystem = new TransformationSystem(getResources().getDisplayMetrics(), new FootprintSelectionVisualizer());
 
         sceneView = findViewById(R.id.detail_scene_view);
@@ -90,6 +88,7 @@ public class GemDetail extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 
@@ -110,15 +109,18 @@ public class GemDetail extends AppCompatActivity {
                     node.setRenderable(renderable);
                     node.getRotationController().setEnabled(true);
                     node.getScaleController().setEnabled(true);
+
                     node.getTranslationController().setEnabled(false);
                     node.setLocalScale(new Vector3(3f,3f,3f));
                     node.setLocalPosition(new Vector3(0f, -1f, -2f));
+
                     //node.setParent(scene);
                    sceneView.getScene().onAddChild(node);
                    transformationSystem.selectNode(node);
             Toast.makeText(getApplicationContext(), "successfully built model", Toast.LENGTH_SHORT).show();
             ObjectAnimator orbitAnimation = createAnimator();
             orbitAnimation.setTarget(node);
+            // Set the speed of rotation
             orbitAnimation.setDuration(3500L);
             orbitAnimation.start();
 
@@ -181,8 +183,5 @@ public class GemDetail extends AppCompatActivity {
 
         return orbitAnimation;
     }
-
-
-
 }
 
