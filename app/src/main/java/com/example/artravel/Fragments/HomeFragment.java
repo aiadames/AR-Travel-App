@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
         STOP2(40),
         STOP3(60),
         STOP4(80),
-        STOP5(98.5);
+        STOP5(98.2);
 
         private final double progress;
 
@@ -100,15 +100,11 @@ public class HomeFragment extends Fragment {
         tvContinuePath = view.findViewById(R.id.tvContinuePath);
         cvContinuePath = view.findViewById(R.id.cvContinuePath);
         progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
 
 
         // query for top 10 paths based on average
         recyclerViewSetup();
         loadTopPaths();
-
-
-
 
 
         currentUser = ParseUser.getCurrentUser();
@@ -169,6 +165,7 @@ public class HomeFragment extends Fragment {
                                         }
                                         progressBar.setProgress(stopCount * 20);
                                         progressBar.setVisibility(View.VISIBLE);
+                                        setMargins(progressBar, 0, 30, 0, 50);
                                     }
 
                                 }
@@ -178,15 +175,6 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
-
-        tvWelcome = view.findViewById(R.id.tvWelcome);
-        tvCollectedGems = view.findViewById(R.id.tvCollectedGems);
-        tvContinuePath = view.findViewById(R.id.tvContinuePath);
-        cvContinuePath = view.findViewById(R.id.cvContinuePath);
-
-        progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
@@ -288,8 +276,8 @@ public class HomeFragment extends Fragment {
                 reachedStop.STOP4.progress, reachedStop.STOP5.progress};
         progressBar.setGoals(arr);
         progressBar.setIndicatorType(ProgressBar.IndicatorType.Circle);
-        progressBar.setGoalIndicatorThickness(0.5f);
-        progressBar.setGoalIndicatorHeight(30);
+        progressBar.setGoalIndicatorThickness(2);
+        progressBar.setGoalIndicatorHeight(15);
     }
 
 
