@@ -20,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void displaySplashScreen() {
-        long splashDuration = 1500L;
+        long splashDuration = 1000L;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
