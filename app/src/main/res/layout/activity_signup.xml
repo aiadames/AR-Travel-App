@@ -2,87 +2,142 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signupLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8BFFC107"
+    android:background="@drawable/gradient_list"
     tools:context=".Activities.SignupActivity">
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout4"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+        android:layout_width="352dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corners"
+        android:textColorHint="#FFFFFF"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/offWhite">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="password" />
+            android:layout_width="356dp"
+            android:layout_height="match_parent"
+            android:alpha=".8"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableStart="@drawable/ic_lock_icon"
+            android:drawableLeft="@drawable/ic_lock_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/offWhite"
+            android:fontFamily="@font/proximanova_light"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingRight="20dp"
+            android:singleLine="false"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/offWhite"
+            android:textSize="22sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_width="352dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/rounded_corners"
+        android:textColorHint="#FFFFFF"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="username" />
+            android:layout_width="356dp"
+            android:layout_height="match_parent"
+            android:alpha=".8"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableLeft="@drawable/ic_person_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/offWhite"
+            android:fontFamily="@font/proximanova_light"
+            android:hint="Username"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/offWhite"
+            android:textSize="22sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/bSignUp"
-        android:layout_width="192dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="84dp"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:alpha=".7"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#00FFFFFF"
-        android:fontFamily="sans-serif-light"
-        android:text="sign up"
+        android:backgroundTint="@color/offWhite"
+        android:fontFamily="@font/proximanova_regular"
+        android:shadowColor="#FD000000"
+        android:shadowRadius="0.0"
+        android:text="Sign up"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/com_facebook_blue"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout5" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout5"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
+        android:layout_width="352dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corners"
+        android:textColorHint="#FFFFFF"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        app:layout_constraintStart_toStartOf="@id/textInputLayout3"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout4">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="e-mail" />
+            android:layout_width="356dp"
+            android:layout_height="match_parent"
+            android:alpha=".8"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableStart="@drawable/ic_email_icon"
+            android:drawableLeft="@drawable/ic_email_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/offWhite"
+            android:fontFamily="@font/proximanova_light"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:paddingStart="8dp"
+            android:singleLine="false"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/offWhite"
+            android:textSize="22sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvCreateAccount"
         android:layout_width="235dp"
         android:layout_height="33dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="166dp"
-        android:layout_marginRight="166dp"
-        android:text="Create an account:"
+        android:fontFamily="@font/proximanova_bold"
+        android:text="Create an account"
+        android:textColor="@color/offWhite"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
