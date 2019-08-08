@@ -263,12 +263,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     // values for this run of the fragment such as the user attempts, if question answered, and if gets gem
     private void initializeValues() {
         // Get bundle with stops, path, and current stop
-//        Bundle bundle = this.getArguments();
-//        stop = Parcels.unwrap(bundle.getParcelable("Stop"));
-//        path = Parcels.unwrap(bundle.getParcelable("Path"));
-//        stopsList = Parcels.unwrap(bundle.getParcelable("Stops Array"));
-//        stopIndex = bundle.getInt("Stop Index");
-
         userAttemptsLeft = 3;
         recievesGem = false;
         answeredQuestion = false;
@@ -278,14 +272,14 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     private void doneAnswering(){
         if(answeredQuestion && userAttemptsLeft >=0){
             // launch camera if we implement AR recognition will go here
-            Toast.makeText(this, "congrats, you get a gem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Congrats, you get a gem!", Toast.LENGTH_SHORT).show();
             // add gems to relation of specific user for passport use
             ParseUser user = ParseUser.getCurrentUser();
             ParseRelation<Gems> relation = user.getRelation("collectedGems");
             relation.add(stop.getGem());
             user.saveInBackground();
         } else{
-            Toast.makeText(this, "sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
         }
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
@@ -312,40 +306,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
             }
         });
-
-//        // send intent
-//        Fragment detailedPathFragment = new DetailedPathFragment();
-//        Fragment doneFragment = new CompletedPathFragment();
-//
-//
-//
-//        // Pass bundle with path
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("Path", Parcels.wrap(path));
-//        bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
-//        if (stopIndex < stopsList.size() - 1) {
-//            //stopIndex++;
-//            stopsList.remove(stop);
-//            // add gems to relation of specific user for passport use
-//            detailedPathFragment.setArguments(bundle);
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            fragmentManager.beginTransaction().replace(R.id.flContainer, detailedPathFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
-//                    .commit();
-//        } else if (stopIndex == stopsList.size() - 1){
-//            // query for started paths relation and remove this path
-//            // query for completed paths relation and add this path
-//            ParseUser user = ParseUser.getCurrentUser();
-//            ParseRelation<Path> startedPaths = user.getRelation("startedPaths");
-//            startedPaths.remove(path);
-//            user.saveInBackground();
-//            ParseRelation<Path> completedPaths = user.getRelation("completedPaths");
-//            completedPaths.add(path);
-//            user.saveInBackground();
-//            doneFragment.setArguments(bundle);
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            fragmentManager.beginTransaction().replace(R.id.flContainer, doneFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack("Stop")
-//                    .commit();
-//        }
     }
 
     public void updateTextView(Integer userAttemptsLeft) {
@@ -366,7 +326,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     }
     // change value of attempts by 1
     public void falseAnswer(){
-        Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_LONG).show();
         userAttemptsLeft -= 1;
     }
 

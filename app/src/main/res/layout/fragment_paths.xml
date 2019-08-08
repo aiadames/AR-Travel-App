@@ -12,13 +12,13 @@
         android:layout_width="414dp"
         android:layout_height="123dp"
         android:layout_marginBottom="2dp"
-        android:background="#4B49A39C"
+        android:background="#3E5FB6BE"
         app:layout_constraintBottom_toTopOf="@+id/rvPaths"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="#3B67C2D1" />
+        tools:srcCompat="#3E5FB6BE" />
 
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/floatingSearchView"
