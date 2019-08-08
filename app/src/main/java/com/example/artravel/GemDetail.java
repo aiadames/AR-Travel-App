@@ -66,7 +66,7 @@ public class GemDetail extends AppCompatActivity {
 
         sceneView = findViewById(R.id.detail_scene_view);
 
-        renderOcject();
+        renderObject();
 
 //TODO
         // need to go back and sed if statements to appropriately size models and position camera
@@ -92,7 +92,7 @@ public class GemDetail extends AppCompatActivity {
     }
 
 
-    private void renderOcject() {
+    private void renderObject() {
 
 
 
@@ -118,6 +118,12 @@ public class GemDetail extends AppCompatActivity {
                    sceneView.getScene().onAddChild(node);
                    transformationSystem.selectNode(node);
             Toast.makeText(getApplicationContext(), "successfully built model", Toast.LENGTH_SHORT).show();
+            ObjectAnimator orbitAnimation = createAnimator();
+            orbitAnimation.setTarget(node);
+            // Set the speed of rotation
+            orbitAnimation.setDuration(3500L);
+            orbitAnimation.start();
+
 
         })
                        // tigerRenderable -> onRenderableLoaded(tigerRenderable)
@@ -177,7 +183,5 @@ public class GemDetail extends AppCompatActivity {
 
         return orbitAnimation;
     }
-
-
 }
 

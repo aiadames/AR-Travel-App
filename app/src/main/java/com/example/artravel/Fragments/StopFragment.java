@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -35,6 +36,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.artravel.Activities.MapsWindowAdapter;
 import com.example.artravel.Activities.StreetViewActivity;
 import com.example.artravel.DetailedPathViewModel;
+import com.example.artravel.MainActivity;
 import com.example.artravel.R;
 import com.example.artravel.StopViewModel;
 import com.example.artravel.databinding.FragmentDetailedPathBinding;
@@ -109,6 +111,7 @@ public class StopFragment extends Fragment implements View.OnClickListener {
 
     private TextView tvStopDistance;
     private Button btnStopInfo;
+    private FloatingActionButton btnMapType;
     private FloatingActionButton btnStreetView;
 
     private double distanceToStop;
@@ -143,6 +146,7 @@ public class StopFragment extends Fragment implements View.OnClickListener {
         tvStopDistance = view.findViewById(R.id.tvStopDistance);
         btnStopInfo = view.findViewById(R.id.btnStopInfo);
         btnStreetView = view.findViewById(R.id.btnStreetView);
+        btnMapType = view.findViewById(R.id.btnMapType);
 
         ParseGeoPoint stopLocation = getLocationOfStop(currentStop);
         stopLatitude = stopLocation.getLatitude();
@@ -154,6 +158,7 @@ public class StopFragment extends Fragment implements View.OnClickListener {
 
         btnStopInfo.setOnClickListener(this);
         btnStreetView.setOnClickListener(this);
+        btnMapType.setOnClickListener(this);
     }
 
     @Override
@@ -169,7 +174,29 @@ public class StopFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra("Stop Longitude", stopLongitude);
                 startActivity(intent);
                 break;
-
+            case R.id.btnMapType:
+                PopupMenu popup = new PopupMenu(getActivity(), btnMapType);
+                popup.getMenuInflater()
+                        .inflate(R.menu.stop_fragment_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.standardMap:
+                                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                                return true;
+                            case R.id.satelliteMap:
+                                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                                return true;
+                            case R.id.hybridMap:
+                                map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
+                popup.show();
             default:
                 break;
         }
@@ -301,38 +328,6 @@ public class StopFragment extends Fragment implements View.OnClickListener {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    /*
-     * Method that inflates the XML layout file for the stop fragment menu, which allows the user
-     * to view settings for the map type.
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.stop_fragment_menu, menu);
-    }
-
-    /*
-     * Method that is called when an item is selected from the menu in the stop fragment.
-     * The switch statement is used to identify which menu item was selected.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.standardMap:
-                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                return true;
-            case R.id.satelliteMap:
-                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                return true;
-            case R.id.hybridMap:
-                map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                return true;
-            default:
-                return true;
-        }
     }
 
 
