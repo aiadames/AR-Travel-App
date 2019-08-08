@@ -106,76 +106,6 @@ public class HomeFragment extends Fragment {
         recyclerViewSetup();
         loadTopPaths();
 
-
-        currentUser = ParseUser.getCurrentUser();
-        // If a user is logged in
-        if (currentUser != null) {
-            tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
-            tvCollectedGems.setVisibility(View.INVISIBLE);
-            tvContinuePath.setVisibility(View.GONE);
-
-            // Query for all of the user's collected gems
-            ParseRelation<Gems> relation = currentUser.getRelation("collectedGems");
-            relation.getQuery().findInBackground(new FindCallback<Gems>() {
-                @Override
-                public void done(List<Gems> objects, ParseException e) {
-                    int numCollectedGems = objects.size();
-                    if (numCollectedGems == 0) {
-                        tvCollectedGems.setText("You haven't collected any gems yet. Start a path now!");
-                    } else if (numCollectedGems == 1) {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
-                    } else {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gems so far! Keep it up!");
-                    }
-                    tvCollectedGems.setVisibility(View.VISIBLE);
-                }
-            });
-
-
-            continuePath = null;
-            ParseRelation<Path> pathRelation = currentUser.getRelation("startedPaths");
-            pathRelation.getQuery().findInBackground(new FindCallback<Path>() {
-                @Override
-                public void done(List<Path> objects, ParseException e) {
-                    if (objects.size() > 0) {
-                        continuePath = objects.get(0);
-                        tvContinuePath.setText("Continue with " + continuePath.getPathName() + ", " + currentUser.getUsername());
-                    } else {
-                        tvContinuePath.setText("Get started on a path!");
-                    }
-                    tvContinuePath.setVisibility(View.VISIBLE);
-
-                    if (continuePath != null) {
-                        continuePathStops = createStopsList();
-                        if (currentUser != null) {
-                            ParseRelation<Stop> relation = currentUser.getRelation("visitedStops");
-                            relation.getQuery().findInBackground(new FindCallback<Stop>() {
-                                @Override
-                                public void done(List<Stop> objects, ParseException e) {
-                                    if (e != null) {
-                                        e.printStackTrace();
-                                    } else {
-                                        int stopCount = 0;
-                                        for (int i = 0; i < continuePathStops.size(); i++) {
-                                            for (int j = 0; j < objects.size(); j++) {
-                                                if (continuePathStops.get(i).getObjectId().equals(objects.get(j).getObjectId())) {
-                                                    stopCount++;
-                                                }
-                                            }
-                                        }
-                                        progressBar.setProgress(stopCount * 20);
-                                        progressBar.setVisibility(View.VISIBLE);
-                                        setMargins(progressBar, 0, 30, 0, 50);
-                                    }
-
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         // If a user is logged in
         if (currentUser != null) {
@@ -192,7 +122,7 @@ public class HomeFragment extends Fragment {
                 public void done(List<Gems> objects, ParseException e) {
                     int numCollectedGems = objects.size();
                     if (numCollectedGems == 0) {
-                        tvCollectedGems.setText("You haven't collected any gems yet. Start a path now!");
+                        tvCollectedGems.setText("You haven't collected any gems yet. Start a tour now!");
                     } else if (numCollectedGems == 1) {
                         tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
                     } else {
@@ -208,11 +138,11 @@ public class HomeFragment extends Fragment {
             pathRelation.getQuery().findInBackground(new FindCallback<Path>() {
                 @Override
                 public void done(List<Path> objects, ParseException e) {
-                    if (objects.size() > 0) {
+                    if (objects != null && objects.size() > 0) {
                         continuePath = objects.get(0);
-                        tvContinuePath.setText("Continue with " + continuePath.getPathName() + ", " + currentUser.getUsername());
+                        tvContinuePath.setText("Continue with the " + continuePath.getPathName() + " tour, " + currentUser.getUsername());
                     } else {
-                        tvContinuePath.setText("Get started on a path!");
+                        tvContinuePath.setText("Get started on a tour!");
                     }
                     tvContinuePath.setVisibility(View.VISIBLE);
 
