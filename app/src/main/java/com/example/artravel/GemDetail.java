@@ -1,5 +1,6 @@
 package com.example.artravel;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.SceneView;
 import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.math.Quaternion;
+import com.google.ar.sceneform.math.QuaternionEvaluator;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
@@ -59,8 +62,6 @@ public class GemDetail extends AppCompatActivity {
         DetailViewModel detailViewModel = new DetailViewModel(currentGem);
         binding.setDetailViewModel(detailViewModel);
 
-
-
         transformationSystem = new TransformationSystem(getResources().getDisplayMetrics(), new FootprintSelectionVisualizer());
 
         sceneView = findViewById(R.id.detail_scene_view);
@@ -87,6 +88,7 @@ public class GemDetail extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 
@@ -107,9 +109,11 @@ public class GemDetail extends AppCompatActivity {
                     node.setRenderable(renderable);
                     node.getRotationController().setEnabled(true);
                     node.getScaleController().setEnabled(true);
+
                     node.getTranslationController().setEnabled(false);
                     node.setLocalScale(new Vector3(3f,3f,3f));
                     node.setLocalPosition(new Vector3(0f, -1f, -2f));
+
                     //node.setParent(scene);
                    sceneView.getScene().onAddChild(node);
                    transformationSystem.selectNode(node);
@@ -148,6 +152,31 @@ public class GemDetail extends AppCompatActivity {
         sceneView.destroy();
     }
 
+    private static ObjectAnimator createAnimator() {
+        // Node's setLocalRotation method accepts Quaternions as parameters.
+        // First, set up orientations that will animate a circle.
+        Quaternion orientation1 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 0);
+        Quaternion orientation2 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 120);
+        Quaternion orientation3 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 240);
+        Quaternion orientation4 = Quaternion.axisAngle(new Vector3(0.0f, 1.0f, 0.0f), 360);
+
+        ObjectAnimator orbitAnimation = new ObjectAnimator();
+        orbitAnimation.setObjectValues(orientation1, orientation2, orientation3, orientation4);
+
+        // Next, give it the localRotation property.
+        orbitAnimation.setPropertyName("localRotation");
+
+        // Use Sceneform's QuaternionEvaluator.
+        orbitAnimation.setEvaluator(new QuaternionEvaluator());
+
+        //  Allow orbitAnimation to repeat forever
+        orbitAnimation.setRepeatCount(ObjectAnimator.INFINITE);
+        orbitAnimation.setRepeatMode(ObjectAnimator.RESTART);
+        orbitAnimation.setInterpolator(new LinearInterpolator());
+        orbitAnimation.setAutoCancel(true);
+
+        return orbitAnimation;
+    }
 
 
 }
