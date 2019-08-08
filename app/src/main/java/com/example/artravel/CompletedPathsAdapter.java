@@ -19,6 +19,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Fragments.DetailedPathFragment;
 import com.example.artravel.models.Path;
 import com.parse.FindCallback;
@@ -82,8 +86,11 @@ public class CompletedPathsAdapter extends RecyclerView.Adapter<CompletedPathsAd
             mPathDescription.setText(myPath.getPathDescription());
             mPathTitle.setText(myPath.getPathName());
             ParseFile pathImage = myPath.getPathImage();
+
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(4)).format(DecodeFormat.PREFER_ARGB_8888).override(200,125);
             if (pathImage != null) {
-                Glide.with(context).load(pathImage.getUrl()).into(mPathImage);
+                Glide.with(context).load(pathImage.getUrl()).apply(requestOptions).into(mPathImage);
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }

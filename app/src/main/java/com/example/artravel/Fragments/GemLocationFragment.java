@@ -2,6 +2,7 @@ package com.example.artravel.Fragments;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -17,10 +18,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.artravel.Activities.ARImageActivity;
 import com.example.artravel.ProgressBar;
 import com.example.artravel.R;
@@ -64,6 +70,8 @@ public class GemLocationFragment extends Fragment {
     private TextView tvGemLocationClue;
     private ImageView ivGemLocationImage;
     private Button btnQuestion;
+    private TextView tvClueHeader;
+    private TextView tvClueStop;
 
     private Stop stop;
 
@@ -92,6 +100,7 @@ public class GemLocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setUpBackground(view);
 
         getActivity().setTitle("Gem Location");
 
@@ -105,6 +114,9 @@ public class GemLocationFragment extends Fragment {
         tvGemLocationClue = view.findViewById(R.id.tvGemLocationClue);
         ivGemLocationImage = view.findViewById(R.id.ivGemLocationImage);
         btnQuestion = view.findViewById(R.id.btnQuestion);
+        tvClueHeader = view.findViewById(R.id.tvClueHeader);
+        tvClueStop = view.findViewById(R.id.tvClueStop);
+        tvClueStop.setText("Stop: " + stop.getStopName());
 
         Gems currentGem = stop.getGem();
         try {
@@ -119,10 +131,14 @@ public class GemLocationFragment extends Fragment {
 
         GemLocationFragmentPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
 
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(5)).format(DecodeFormat.PREFER_ARGB_8888).override(320,300);
         ParseFile image = currentGem.getGemLocationImage();
         if (image != null) {
             Glide.with(this)
                     .load(image.getUrl())
+                    .apply(requestOptions)
                     .into(ivGemLocationImage);
         }
 
@@ -198,5 +214,16 @@ public class GemLocationFragment extends Fragment {
     public void onPause() {
         super.onPause();
         getFusedLocationProviderClient(getContext()).removeLocationUpdates(mLocationCallback);
+    }
+
+
+
+
+    public void setUpBackground(View view){
+        ConstraintLayout constraintLayout = view.findViewById(R.id.layout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
     }
 }

@@ -7,6 +7,19 @@
     android:orientation="vertical">
 
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="414dp"
+        android:layout_height="123dp"
+        android:layout_marginBottom="2dp"
+        android:background="#4B49A39C"
+        app:layout_constraintBottom_toTopOf="@+id/rvPaths"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="#3B67C2D1" />
+
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/floatingSearchView"
         android:layout_width="377dp"
@@ -33,7 +46,9 @@
         android:layout_height="72dp"
         android:layout_marginBottom="536dp"
         android:paddingStart="0dp"
+        android:paddingLeft="2dp"
         android:paddingTop="20dp"
+        android:paddingRight="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -54,8 +69,6 @@
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
-                    app:chipStrokeWidth=".5dp"
-                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -72,13 +85,13 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_chip_nature"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp" />
+                    app:chipStartPadding="6dp"
+                    app:chipStrokeColor="#A7A7A7"
+                    app:chipStrokeWidth=".5dp" />
 
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
-                    app:chipStrokeWidth=".5dp"
-                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -95,12 +108,12 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_history"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp" />
+                    app:chipStartPadding="6dp"
+                    app:chipStrokeColor="#A7A7A7"
+                    app:chipStrokeWidth=".5dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
-                    app:chipStrokeWidth=".5dp"
-                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -117,12 +130,12 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_landmark"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp" />
+                    app:chipStartPadding="6dp"
+                    app:chipStrokeColor="#A7A7A7"
+                    app:chipStrokeWidth=".5dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
-                    app:chipStrokeWidth=".5dp"
-                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -133,18 +146,18 @@
                     android:paddingStart="0dp"
                     android:paddingTop="1dp"
                     android:text="Local"
-                    app:chipCornerRadius="4dp"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:checkedIconEnabled="false"
+                    app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_local"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp" />
+                    app:chipStartPadding="6dp"
+                    app:chipStrokeColor="#A7A7A7"
+                    app:chipStrokeWidth=".5dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
-                    app:chipStrokeWidth=".5dp"
-                    app:chipStrokeColor="#A7A7A7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -161,7 +174,9 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_food"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp" />
+                    app:chipStartPadding="6dp"
+                    app:chipStrokeColor="#A7A7A7"
+                    app:chipStrokeWidth=".5dp" />
 
 
             </com.google.android.material.chip.ChipGroup>
@@ -180,7 +195,7 @@
         android:layout_marginBottom="8dp"
         android:background="#FFFFFF"
         android:clipToPadding="true"
-        android:paddingTop="5dp"
+        android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
