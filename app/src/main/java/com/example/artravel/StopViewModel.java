@@ -2,6 +2,7 @@ package com.example.artravel;
 
 import android.location.Location;
 
+import com.example.artravel.Activities.HomeActivity;
 import com.example.artravel.models.Path;
 import com.example.artravel.models.Stop;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -56,5 +57,4 @@ public class StopViewModel {
         LatLng latLng = new LatLng(stopLatitude, stopLongitude);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
     }
-
 }
