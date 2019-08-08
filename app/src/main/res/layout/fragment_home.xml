@@ -145,6 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/llTopPaths"
+                    android:paddingRight="16dp"
                     android:scrollbars="horizontal" />
 
             </LinearLayout>
@@ -171,8 +172,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/textView3"
+                    android:paddingRight="16dp"
                     android:scrollbars="horizontal" />
             </LinearLayout>
+
+
+            <Button
+                android:id="@+id/buttonFriends"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="find friends!"
+                android:textAllCaps="false" />
 
 
         </LinearLayout>
