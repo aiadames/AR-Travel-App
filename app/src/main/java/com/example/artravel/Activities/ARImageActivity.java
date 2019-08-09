@@ -188,7 +188,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         node.select();
 
         // Scale size of the AR model
-        node.getScaleController().setMaxScale(0.08f);
+        node.getScaleController().setMaxScale(0.07f);
         node.getScaleController().setMinScale(0.02f);
         node.setRenderable(renderable);
         node.setParent(anchorNode);
@@ -305,8 +305,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
 
     private void doneAnswering(){
         if(answeredQuestion && userAttemptsLeft >=0){
-            // launch camera if we implement AR recognition will go here
-            Toast.makeText(this, "Congrats, you get a gem!", Toast.LENGTH_SHORT).show();
             // add gems to relation of specific user for passport use
             ParseUser user = ParseUser.getCurrentUser();
             ParseRelation<Gems> relation = user.getRelation("collectedGems");
@@ -320,7 +318,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
             earnedGemDialog.show(getSupportFragmentManager(), "Earned Gem Dialog");
 
         } else{
-            Toast.makeText(this, "Sorry, you don't get a gem!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sorry, you don't get a gem!", Toast.LENGTH_LONG).show();
         }
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
@@ -361,13 +359,12 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
 
     // change value of answered question to true and change button background color to green
     public void correctAnswer(Button button){
-        Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
         button.setBackgroundResource(R.color.green);
         answeredQuestion = true;
     }
     // change value of attempts by 1
     public void falseAnswer(){
-        Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_SHORT).show();
         userAttemptsLeft -= 1;
     }
 

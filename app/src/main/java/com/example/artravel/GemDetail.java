@@ -117,7 +117,7 @@ public class GemDetail extends AppCompatActivity {
                     //node.setParent(scene);
                    sceneView.getScene().onAddChild(node);
                    transformationSystem.selectNode(node);
-            Toast.makeText(getApplicationContext(), "successfully built model", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "successfully built model", Toast.LENGTH_SHORT).show();
             ObjectAnimator orbitAnimation = createAnimator();
             orbitAnimation.setTarget(node);
             // Set the speed of rotation

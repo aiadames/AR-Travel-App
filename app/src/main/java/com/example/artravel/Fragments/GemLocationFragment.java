@@ -167,7 +167,6 @@ public class GemLocationFragment extends Fragment {
         gemLocation.setLatitude(gemLatitude);
         gemLocation.setLongitude(gemLongitude);
         distanceToGem = mCurrentLocation.distanceTo(gemLocation);
-        Toast.makeText(getContext(), "Distance: " + Math.round(distanceToGem), Toast.LENGTH_SHORT).show();
 
         // Switch to stop information fragment when user is within the specified radius of the stop
         if (Math.round(distanceToGem) < GEM_RADIUS) {
