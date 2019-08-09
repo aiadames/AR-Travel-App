@@ -1,17 +1,11 @@
 package com.example.artravel.Fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,26 +35,21 @@ import com.example.artravel.MainActivity;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
-import com.facebook.login.Login;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.parceler.Parcels;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.example.artravel.R.layout.fragment_profile;
 
@@ -81,6 +69,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvEmail;
     private TextView tvUserEmail;
     private TextView tvCompletedPaths;
+    private ImageView ivBackground;
     private Button btnViewCompleted;
 
     private Button btnLogOut;
@@ -114,8 +103,8 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
-
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        ivBackground = view.findViewById(R.id.ivBackground);
 
 
         requestStoragePermission();
@@ -133,6 +122,10 @@ public class ProfileFragment extends Fragment {
             Glide.with(getContext())
                     .load(image.getUrl())
                     .apply(requestOptions).into(ibProfile);
+            Glide.with(getContext())
+                    .load(image.getUrl())
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(20,2)))
+                    .into(ivBackground);
         } else{
             ibProfile.setImageResource(R.drawable.ic_profile);
         }

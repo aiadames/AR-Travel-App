@@ -2,60 +2,87 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/ivProfile"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="50dp"
-        android:background="#00FFFFFF"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/backgroundLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00F5F5F5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.672"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
-        android:fontFamily="@font/proximanova_regular"
-        android:text="Username"
-        android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/tvWelcome"
-        app:layout_constraintTop_toTopOf="parent" />
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:layout_width="62dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="112dp"
+            <ImageView
+                android:id="@+id/ivBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="@drawable/path_bookmark_gradient"
+                android:scaleType="centerCrop"
+                app:srcCompat="@color/black" />
+        </FrameLayout>
 
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/proximanova_semibold"
-        android:text="Hello, "
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/proximanova_semibold"
 
-        app:layout_constraintHorizontal_bias="0.139"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:text="Hello, "
+            android:textColor="@color/offWhite"
+            android:textSize="36sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/frameLayout" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="116dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:text="Username"
+            android:textColor="@color/offWhite"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="@+id/tvWelcome"
+            app:layout_constraintTop_toTopOf="@+id/tvWelcome" />
+
+        <ImageButton
+            android:id="@+id/ivProfile"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="85dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="80dp"
+            android:background="#00FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvWelcome"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/proximanova_bold"
         android:text="username :"
         android:textSize="18sp"
@@ -104,15 +131,15 @@
         android:id="@+id/tvCompletedPaths"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/proximanova_bold"
         android:text="You have completed 60 paths!"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
+        app:layout_constraintHorizontal_bias="0.574"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/backgroundLayout" />
 
 
     <Button
@@ -141,8 +168,8 @@
         android:id="@+id/imageButton"
         android:layout_width="32dp"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toEndOf="@+id/tvUserName"
