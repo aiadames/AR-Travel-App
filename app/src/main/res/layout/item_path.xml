@@ -95,6 +95,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bookmark_filled" />
 
+    <TextView
+        android:id="@+id/tvPathDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:text="1 hour"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivPathImage" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
