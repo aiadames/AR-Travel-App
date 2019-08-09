@@ -26,51 +26,52 @@ android:orientation="vertical" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="175dp">
+                android:layout_height="121dp">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="25dp"
+                    android:layout_height="16dp"
+                    android:layout_alignStart="@+id/tvUsername"
+                    android:layout_alignTop="@+id/tvJoinedDate"
+                    android:layout_marginStart="-4dp"
+                    android:layout_marginTop="1dp"
+                    app:srcCompat="@drawable/calendar"
+                    tools:srcCompat="@drawable/calendar" />
+
+                <TextView
+                    android:id="@+id/tvScreenName"
+                    android:layout_width="143dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tvUsername"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="125dp"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/proximanova_semibold"
+                    android:text="Ariana Adames"
+                    android:textAlignment="viewStart"
+                    android:textSize="16sp" />
 
                 <ImageButton
                     android:id="@+id/imageButton3"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignTop="@+id/ivBackground"
+                    android:layout_width="28dp"
+                    android:layout_height="27dp"
+                    android:layout_alignBottom="@+id/tvUsername"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="110dp"
-                    android:layout_marginEnd="11dp"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="15dp"
                     android:background="@drawable/settingsx" />
 
                 <ImageView
-                    android:id="@+id/ivBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:scaleType="centerCrop"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-                <ImageView
-                    android:id="@+id/ivcircle"
-                    android:layout_width="111dp"
-                    android:layout_height="110dp"
-                    android:layout_below="@+id/ivBackground"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="-35dp"
-                    android:layout_marginEnd="287dp"
-                    android:layout_marginBottom="-45dp"
-                    app:srcCompat="@drawable/circle"
-                    tools:srcCompat="@drawable/circlewht" />
-
-                <ImageView
                     android:id="@+id/ivPassProfile"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_alignStart="@+id/ivBackground"
-                    android:layout_alignTop="@+id/ivBackground"
-                    android:layout_alignBottom="@+id/ivBackground"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="-137dp"
-                    android:layout_marginTop="77dp"
-                    android:layout_marginEnd="137dp"
-                    android:layout_marginBottom="-64dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="16dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
@@ -78,10 +79,12 @@ android:orientation="vertical" >
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="121dp"
+                    android:layout_marginStart="124dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="38dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="58dp"
                     android:fontFamily="@font/proximanova_bold"
                     android:gravity="left"
                     android:text="TextView"
@@ -95,11 +98,9 @@ android:orientation="vertical" >
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/tvUsername"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="120dp"
+                    android:layout_marginStart="143dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginEnd="149dp"
+                    android:layout_marginTop="52dp"
                     android:fontFamily="@font/proximanova_regular"
                     android:text="TextView"
                     android:textStyle="italic" />
