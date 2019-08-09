@@ -56,6 +56,7 @@ public class PassportFragment extends Fragment{
     private ImageView background;
     private TextView username;
     private TextView usernameSub;
+    private TextView screename;
     private TextView gemCount;
     private TextView date;
     private ImageButton imageButton;
@@ -172,19 +173,21 @@ public class PassportFragment extends Fragment{
         rvGems.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         profile = view.findViewById(R.id.ivPassProfile);
-        background = view.findViewById(R.id.ivBackground);
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
         button = view.findViewById(R.id.btnAR);
         date = view.findViewById(R.id.tvJoinedDate);
         imageButton = view.findViewById(R.id.imageButton3);
+        screename = view.findViewById(R.id.tvScreenName);
 
         Date temp = (ParseUser.getCurrentUser().getCreatedAt());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         String strDate = dateFormat.format(temp);
         date.setText("Joined "+strDate);
 
-        username.setText(ParseUser.getCurrentUser().getUsername());
+        ParseUser user = ParseUser.getCurrentUser();
+        username.setText(user.get("firstName") + " " + user.get("lastName"));
+        screename.setText(user.getUsername());
 
         ParseFile image = (ParseFile) ParseUser.getCurrentUser().get("image");
         if (image != null) {
@@ -197,8 +200,5 @@ public class PassportFragment extends Fragment{
 
         }
 
-        Glide.with(getContext())
-                .load("https://cdn.pixabay.com/photo/2019/07/26/10/04/city-4364408_1280.jpg")
-                 .into(background);
     }
 }
