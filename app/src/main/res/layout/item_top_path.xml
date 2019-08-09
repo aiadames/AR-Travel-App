@@ -31,6 +31,7 @@
             android:fontFamily="@font/proximanova_semibold"
             android:text="TextView"
             android:textAlignment="center"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="14sp" />
     </FrameLayout>
 </androidx.cardview.widget.CardView>

@@ -24,7 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#3E5FB6BE"
+                android:background="#F6F5F5"
                 android:orientation="vertical">
 
 
@@ -37,34 +37,28 @@
                         android:id="@+id/tvWelcome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="12dp"
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Welcome!"
-                        android:textAlignment="center"
+                        android:textAlignment="viewStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                         android:textColor="#383C3F"
                         android:textSize="30sp" />
-
-                    <ImageView
-                        android:id="@+id/ivTreasure"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
-                        app:srcCompat="@drawable/treasure" />
 
                     <TextView
                         android:id="@+id/tvCollectedGems"
                         android:layout_width="296dp"
                         android:layout_height="46dp"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="You haven't collected any gems. Start a tour now!"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/appBlack" />
                 </LinearLayout>
 
 
@@ -75,10 +69,10 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     app:cardBackgroundColor="@color/cardview_light_background"
                     app:cardCornerRadius="4dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="1dp">
 
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -148,40 +142,6 @@
 
 
             <LinearLayout
-                android:id="@+id/llBookmarkedPaths"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/proximanova_bold"
-                    android:paddingTop="8dp"
-                    android:text="  Bookmarked Tours"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/appBlack"
-                    android:textSize="20sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvBookmarkedPaths"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/textView3"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:scrollbars="horizontal" />
-            </LinearLayout>
-
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
                 android:id="@+id/llFriends"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -236,6 +196,33 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/llBookmarkedPaths"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:paddingTop="8dp"
+                    android:text="  Bookmarked Tours"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/appBlack"
+                    android:textSize="20sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBookmarkedPaths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView3"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="4dp"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

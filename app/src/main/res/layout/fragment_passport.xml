@@ -53,7 +53,7 @@ android:orientation="vertical" >
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="12dp"
-                    android:layout_marginTop="-35dp"
+                    android:layout_marginTop="-55dp"
                     android:layout_marginEnd="287dp"
                     android:layout_marginBottom="-45dp"
                     app:srcCompat="@drawable/circle"
@@ -68,9 +68,9 @@ android:orientation="vertical" >
                     android:layout_alignBottom="@+id/ivBackground"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="-137dp"
-                    android:layout_marginTop="77dp"
+                    android:layout_marginTop="57dp"
                     android:layout_marginEnd="137dp"
-                    android:layout_marginBottom="-64dp"
+                    android:layout_marginBottom="-44dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
@@ -113,9 +113,10 @@ android:orientation="vertical" >
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
+                android:fontFamily="@font/proximanova_regular"
                 android:text="Collected Gems"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textColor="@color/appBlack"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
             <View

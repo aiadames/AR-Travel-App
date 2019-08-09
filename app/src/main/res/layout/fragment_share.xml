@@ -13,6 +13,7 @@
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="292dp"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/augmented_images_earth"
             tools:srcCompat="@drawable/augmented_images_earth" />
 
