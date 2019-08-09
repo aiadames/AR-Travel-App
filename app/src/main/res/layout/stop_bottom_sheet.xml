@@ -67,15 +67,15 @@
 
         <Button
             android:id="@+id/btnStopInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="193dp"
+            android:layout_height="60dp"
             android:layout_below="@id/tvPathName"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="30dp"
-            android:fontFamily="@font/proximanova_regular"
+            android:fontFamily="@font/proximanova_semibold"
             android:text="I arrived!"
-            android:textSize="18sp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 </layout>

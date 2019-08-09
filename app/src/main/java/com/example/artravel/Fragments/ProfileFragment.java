@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment {
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
 
-        if (!(currentUser.get("firstname") == null)){
+        if (currentUser.get("firstName") != null){
             tvName.setText((String) currentUser.get("firstName"));
         }else {
             tvName.setText("user");

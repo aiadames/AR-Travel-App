@@ -17,7 +17,7 @@ android:orientation="vertical" >
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@ android:orientation="vertical" >
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="12dp"
-                    android:layout_marginTop="-55dp"
+                    android:layout_marginTop="-35dp"
                     android:layout_marginEnd="287dp"
                     android:layout_marginBottom="-45dp"
                     app:srcCompat="@drawable/circle"
@@ -68,9 +68,9 @@ android:orientation="vertical" >
                     android:layout_alignBottom="@+id/ivBackground"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="-137dp"
-                    android:layout_marginTop="57dp"
+                    android:layout_marginTop="77dp"
                     android:layout_marginEnd="137dp"
-                    android:layout_marginBottom="-44dp"
+                    android:layout_marginBottom="-64dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
@@ -113,10 +113,9 @@ android:orientation="vertical" >
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/proximanova_regular"
                 android:text="Collected Gems"
-                android:textColor="@color/appBlack"
-                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <View
@@ -138,27 +137,26 @@ android:orientation="vertical" >
                 android:id="@+id/rvRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="8dp" >
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/btnAR"
+                android:layout_width="193dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/colorPrimaryTest"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="AR Mode"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/btnAR"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorPrimaryTest"
-        android:text="AR Mode"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
