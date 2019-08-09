@@ -187,7 +187,7 @@ public class PassportFragment extends Fragment{
 
         ParseUser user = ParseUser.getCurrentUser();
         username.setText(user.get("firstName") + " " + user.get("lastName"));
-        screename.setText(user.getUsername());
+        screename.setText("@" + user.getUsername());
 
         ParseFile image = (ParseFile) ParseUser.getCurrentUser().get("image");
         if (image != null) {
