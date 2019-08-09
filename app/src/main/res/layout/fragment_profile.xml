@@ -34,32 +34,20 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/tvWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="104dp"
-            android:layout_marginTop="36dp"
-            android:fontFamily="@font/proximanova_semibold"
-
-            android:text="Hello, "
-            android:textColor="@color/offWhite"
-            android:textSize="36sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/frameLayout" />
-
-        <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="116dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/proximanova_regular"
             android:text="Username"
             android:textColor="@color/offWhite"
             android:textSize="36sp"
-            app:layout_constraintStart_toStartOf="@+id/tvWelcome"
-            app:layout_constraintTop_toTopOf="@+id/tvWelcome" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.547"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/ivProfile"
@@ -72,7 +60,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWelcome"
+            app:layout_constraintTop_toBottomOf="@+id/tvName"
             tools:srcCompat="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -133,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/proximanova_bold"
-        android:text="You have completed 60 paths!"
+        android:text="You have completed 0 paths!"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

@@ -60,13 +60,11 @@ public class ProfileFragment extends Fragment {
 
     private ImageButton ibProfile;
     private TextView tvName;
-    private TextView tvWelcome;
     public static final int GET_FROM_GALLERY = 3;
     private ParseUser currentUser;
 
-    private TextView tvUsername;
+
     private TextView tvUserName;
-    private TextView tvEmail;
     private TextView tvUserEmail;
     private TextView tvCompletedPaths;
     private ImageView ivBackground;
@@ -95,11 +93,8 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ibProfile = view.findViewById(R.id.ivProfile);
-        tvWelcome = view.findViewById(R.id.tvWelcome);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvUserName = view.findViewById(R.id.tvUserName);
-        tvUsername = view.findViewById(R.id.tvUsername);
-        tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
         btnLogOut = view.findViewById(R.id.btnLogOut);
@@ -129,8 +124,8 @@ public class ProfileFragment extends Fragment {
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
 
-        if (currentUser.get("firstName") != null){
-            tvName.setText((String) currentUser.get("firstName"));
+        if (currentUser.get("firstName") != null && currentUser.get("lastName") != null){
+            tvName.setText((String) currentUser.get("firstName") + " " + (String) currentUser.get("lastName"));
         }else {
             tvName.setText("user");
         }
