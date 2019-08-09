@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,7 +95,6 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ibProfile = view.findViewById(R.id.ivProfile);
-        tvName = view.findViewById(R.id.tvAddFriends);
         tvWelcome = view.findViewById(R.id.tvWelcome);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvUserName = view.findViewById(R.id.tvUserName);
@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
 
        // requestStoragePermission();
         ibProfile = getView().findViewById(R.id.ivProfile);
-        tvName = getView().findViewById(R.id.tvAddFriends);
+        tvName = getView().findViewById(R.id.tvName);
 
 
 
