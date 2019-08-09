@@ -34,6 +34,7 @@ public class ShareFragment extends DialogFragment {
         private Button cancel;
         private String path;
         private Bitmap bitmap;
+        private String filename;
 
         public ShareFragment() {
         }
@@ -61,7 +62,7 @@ public class ShareFragment extends DialogFragment {
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    share_image(bitmap);
+                    share_image(filename);
                 }
             });
 
@@ -77,31 +78,23 @@ public class ShareFragment extends DialogFragment {
         imageView = view.findViewById(R.id.imageView3);
         share = view.findViewById(R.id.btnShareConfirm);
         cancel = view.findViewById(R.id.btnCancel);
-        byte[] byteArray = getArguments().getByteArray("image");
-        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+        Bundle bundle;
+        bundle = this.getArguments();
+        filename = bundle.getString("filename");
+        bitmap = BitmapFactory.decodeFile(filename);
         imageView.setImageBitmap(bitmap);
 
     }
 
 
-    private void share_image(Bitmap bitmap){
+    private void share_image(String filename){
 
-            Toast.makeText(getContext(), "share method ", Toast.LENGTH_SHORT).show();
-
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/jpeg");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            File f = new File(Environment.getExternalStorageDirectory() + File.separator + "temporary_file.jpg");
-            try {
-                f.createNewFile();
-                FileOutputStream fo = new FileOutputStream(f);
-                fo.write(bytes.toByteArray());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            startActivity(Intent.createChooser(share, "Share Image"));
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, filename);
+        shareIntent.setType("image/*");
+        startActivity(Intent.createChooser(shareIntent, "Share image via:"));
 
 
         }

@@ -13,37 +13,38 @@
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="292dp"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/augmented_images_earth"
             tools:srcCompat="@drawable/augmented_images_earth" />
 
         <Button
             android:id="@+id/btnShareConfirm"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="135dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="22dp"
-            android:layout_marginBottom="1dp"
-            android:backgroundTint="@color/offWhite"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/colorPrimaryTest"
             android:elevation="0dp"
             android:fontFamily="@font/proximanova_semibold"
             android:text="SHARE"
-            android:textColor="@color/appBlack" />
+            android:textColor="@color/offWhite" />
 
         <Button
             android:id="@+id/btnCancel"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="133dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginBottom="1dp"
-            android:backgroundTint="@color/offWhite"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/colorPrimaryTest"
             android:fontFamily="@font/proximanova_semibold"
             android:text="CANCEL"
-            android:textColor="@color/appBlack" />
+            android:textColor="@color/offWhite" />
     </RelativeLayout>
 
 </RelativeLayout>

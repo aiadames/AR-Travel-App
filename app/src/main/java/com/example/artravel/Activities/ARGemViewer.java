@@ -1,68 +1,55 @@
 package com.example.artravel.Activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.artravel.Fragments.ShareFragment;
-import com.example.artravel.GemsAdapter;
 import com.example.artravel.arGemsAdapter;
 import com.example.artravel.models.Gems;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
-import android.os.Parcel;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.PixelCopy;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.artravel.R;
 import com.google.ar.core.Anchor;
-import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
-import com.google.ar.sceneform.Camera;
-import com.google.ar.sceneform.Node;
-import com.google.ar.sceneform.SceneView;
+import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.assets.RenderableSource;
-import com.google.ar.sceneform.math.Quaternion;
-import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.google.ar.sceneform.rendering.Renderable;
-import com.google.ar.sceneform.rendering.RenderableInstance;
 import com.google.ar.sceneform.ux.ArFragment;
-import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.ssaurel.screenshot.Screenshot;
-
-import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class ARGemViewer extends AppCompatActivity {
 
@@ -76,6 +63,7 @@ public class ARGemViewer extends AppCompatActivity {
     private Bitmap  bitmap;
     private ModelRenderable polyRenderable;
     private Image image;
+    private int selected;
 
 
     @Override
@@ -86,48 +74,31 @@ public class ARGemViewer extends AppCompatActivity {
         setupView();
         queryGems();
 
-        int selected;
-        selected = adapter.getSelected();
-        Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
+     selected = adapter.getSelected();
+//        Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
 
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "clicked share", Toast.LENGTH_SHORT).show();
-                //bitmap = Screenshot.getScreenShot(fragment);
+        btnShare.setOnClickListener(view -> takePhoto()) ;
+        fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> fragmentTap(hitResult, plane, motionEvent));
 
-                Frame currentFrame = fragment.getArSceneView().getArFrame();
-                try{
-                     image = currentFrame.acquireCameraImage();
+    }
 
-                } catch(Exception e){
-
-            }
-
-                bitmap = Screenshot.getScreenShot(image);
-                showEditDialog();
-            }
-        });
-
-        fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            int selection;
-            selection = adapter.getSelected();
-            Toast.makeText(getApplicationContext(), "selected == " + selection, Toast.LENGTH_SHORT).show();
+    private void fragmentTap(HitResult hitResult, Plane plane, MotionEvent motionEvent)
+        {
+            selected = adapter.getSelected();
+            Toast.makeText(getApplicationContext(), "selected == " + selected, Toast.LENGTH_SHORT).show();
 
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(fragment.getArSceneView().getScene());
             loadModel();
             setModel(anchorNode);
+            Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
 
-
-            Toast.makeText(this, "selected is equals to " + selection, Toast.LENGTH_SHORT).show();
-        });
 
     }
 
     private void loadModel() {
-        modelLink = adapter.getImageLink();
+        modelLink = adapter.getImageLink(selected);
         ModelRenderable.builder()
                 .setSource(this, RenderableSource.builder().setSource(
                         this,
@@ -195,22 +166,69 @@ public class ARGemViewer extends AppCompatActivity {
         });
     }
 
-    private void showEditDialog() {
+    private void showEditDialog(String filename) {
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
 
         Bundle bundle = new Bundle();
-        bundle.putByteArray("image",byteArray);
-
-
-
+        bundle.putString("filename",filename);
         FragmentManager fm = getSupportFragmentManager();
-        ShareFragment shareFragment = ShareFragment.newInstance("Some Title");
+        ShareFragment shareFragment = ShareFragment.newInstance("Share image");
         shareFragment.setArguments(bundle);
         shareFragment.show(fm, "share_confirmation");
     }
 
+    private String generateFilename() {
+        String date =
+                new SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.getDefault()).format(new Date());
+        return Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES) + File.separator + "Sceneform/" + date + "_screenshot.jpg";
+    }
+
+    private void saveBitmapToDisk(Bitmap bitmap, String filename) throws IOException {
+
+        File out = new File(filename);
+        if (!out.getParentFile().exists()) {
+            out.getParentFile().mkdirs();
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(filename);
+             ByteArrayOutputStream outputData = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputData);
+            outputData.writeTo(outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException ex) {
+            throw new IOException("Failed to save bitmap to disk", ex);
+        }
+    }
+
+    private void takePhoto() {
+        final String filename = generateFilename();
+        ArSceneView view = fragment.getArSceneView();
+
+        // Create a bitmap the size of the scene view.
+        final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        // Create a handler thread to offload the processing of the image.
+        final HandlerThread handlerThread = new HandlerThread("PixelCopier");
+        handlerThread.start();
+        // Make the request to copy.
+        PixelCopy.request(view, bitmap, (copyResult) -> {
+            if (copyResult == PixelCopy.SUCCESS) {
+                try {
+                    saveBitmapToDisk(bitmap, filename);
+                    showEditDialog(filename);
+
+
+                } catch (IOException e) {
+                    Toast toast = Toast.makeText(ARGemViewer.this, e.toString(),
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+            handlerThread.quitSafely();
+        }, new Handler(handlerThread.getLooper()));
+    }
 
 }
