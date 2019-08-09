@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment {
             loadBookmarkedPaths();
             recyclerViewSetup3();
             loadMyFriends();
-            tvWelcome.setText("Welcome back " + currentUser.getUsername() + "!");
+            tvWelcome.setText("Welcome back " + currentUser.getUsername());
             tvCollectedGems.setVisibility(View.INVISIBLE);
             tvContinuePath.setVisibility(View.GONE);
 
@@ -137,7 +137,7 @@ public class HomeFragment extends Fragment {
                     } else if (numCollectedGems == 1) {
                         tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
                     } else {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gems so far! Keep it up!");
+                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gems so far!");
                     }
                     tvCollectedGems.setVisibility(View.VISIBLE);
                 }

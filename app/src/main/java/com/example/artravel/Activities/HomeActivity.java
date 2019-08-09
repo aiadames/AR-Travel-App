@@ -108,10 +108,10 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new HomeFragment();
                         //Toast. makeText(HomeActivity.this, "Compose",Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.action_create:
-                        fragment = new CreateFragment();
-                        //Toast. makeText(HomeActivity.this, "profile",Toast.LENGTH_SHORT).show();
-                        break;
+//                    case R.id.action_create:
+//                        fragment = new CreateFragment();
+//                        //Toast. makeText(HomeActivity.this, "profile",Toast.LENGTH_SHORT).show();
+//                        break;
                     case R.id.action_paths:
                         fragment = new PathsFragment();
                         //Toast. makeText(HomeActivity.this, "paths",Toast.LENGTH_SHORT).show();

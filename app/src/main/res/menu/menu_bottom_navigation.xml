@@ -13,12 +13,12 @@
         android:icon="@drawable/mapselector"
         android:title="Tours"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_create"
-        android:enabled="true"
-        android:icon="@drawable/plussymbol"
-        android:title="Create"
-        app:showAsAction="always" />
+    <!--<item-->
+        <!--android:id="@+id/action_create"-->
+        <!--android:enabled="true"-->
+        <!--android:icon="@drawable/plussymbol"-->
+        <!--android:title="Create"-->
+        <!--app:showAsAction="always" />-->
     <item
         android:id="@+id/action_passport"
         android:enabled="true"
