@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Random;
 
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 import static com.example.artravel.R.layout.fragment_profile;
 
 
@@ -66,6 +68,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvEmail;
     private TextView tvUserEmail;
     private TextView tvCompletedPaths;
+    private ImageView ivBackground;
     private Button btnViewCompleted;
 
     private Button btnLogOut;
@@ -99,8 +102,8 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
-
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        ivBackground = view.findViewById(R.id.ivBackground);
 
 
        // requestStoragePermission();
@@ -118,6 +121,10 @@ public class ProfileFragment extends Fragment {
             Glide.with(getContext())
                     .load(image.getUrl())
                     .apply(requestOptions).into(ibProfile);
+            Glide.with(getContext())
+                    .load(image.getUrl())
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(20,2)))
+                    .into(ivBackground);
         } else{
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
