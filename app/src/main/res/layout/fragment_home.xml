@@ -141,6 +141,40 @@
 
 
             <LinearLayout
+                android:id="@+id/llFriends"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tvFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:paddingTop="4dp"
+                    android:text="  My Friends"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/appBlack"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMyFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tvFriends"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:scrollbars="horizontal" />
+
+
+            <LinearLayout
                 android:id="@+id/llBookmarkedPaths"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -168,64 +202,8 @@
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:id="@+id/llFriends"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tvFriends"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/proximanova_bold"
-                        android:paddingTop="4dp"
-                        android:text="  My Friends"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textColor="@color/appBlack"
-                        android:textSize="20sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <Button
-                        android:id="@+id/buttonFriends"
-                        android:layout_width="129dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="144dp"
-                        android:layout_marginTop="2dp"
-                        android:background="#B7BEB4B4"
-                        android:paddingLeft="16dp"
-                       android:backgroundTint="@color/colorPrimaryTest"
-                        android:text="find friends!"
-                        android:textAllCaps="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tvFriends"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvMyFriends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/tvFriends"
-                    android:paddingTop="8dp"
-                    android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
 
 
             </LinearLayout>

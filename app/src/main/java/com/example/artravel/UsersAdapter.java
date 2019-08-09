@@ -96,9 +96,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             } else{
                 ivUserProfilePicture.setImageResource(R.drawable.ic_person_icon);
             }
-
-
-
         }
     }
 

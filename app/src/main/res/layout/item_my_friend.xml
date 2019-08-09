@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvAddFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
