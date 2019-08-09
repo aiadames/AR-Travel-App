@@ -89,8 +89,7 @@
                     app:chipIcon="@drawable/ic_chip_nature"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp"
-                    app:chipStrokeColor="#A7A7A7"
-                    app:chipStrokeWidth=".5dp" />
+                     />
 
 
                 <com.google.android.material.chip.Chip
@@ -112,8 +111,7 @@
                     app:chipIcon="@drawable/ic_history"
                     app:chipIconVisible="true"
                     app:chipStartPadding="6dp"
-                    app:chipStrokeColor="#A7A7A7"
-                    app:chipStrokeWidth=".5dp" />
+                     />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -133,9 +131,7 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_landmark"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp"
-                    app:chipStrokeColor="#A7A7A7"
-                    app:chipStrokeWidth=".5dp" />
+                    app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -155,9 +151,7 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_local"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp"
-                    app:chipStrokeColor="#A7A7A7"
-                    app:chipStrokeWidth=".5dp" />
+                    app:chipStartPadding="6dp" />
 
                 <com.google.android.material.chip.Chip
                     style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -177,9 +171,7 @@
                     app:chipCornerRadius="4dp"
                     app:chipIcon="@drawable/ic_food"
                     app:chipIconVisible="true"
-                    app:chipStartPadding="6dp"
-                    app:chipStrokeColor="#A7A7A7"
-                    app:chipStrokeWidth=".5dp" />
+                    app:chipStartPadding="6dp" />
 
 
             </com.google.android.material.chip.ChipGroup>
@@ -194,7 +186,7 @@
         android:layout_height="548dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="#FFFFFF"
         android:clipToPadding="true"

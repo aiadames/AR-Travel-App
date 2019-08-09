@@ -137,7 +137,6 @@ public class OtherUserPassport extends Fragment {
         rvGems.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
         profile = view.findViewById(R.id.ivPassProfile);
-        background = view.findViewById(R.id.ivBackground);
         username = view.findViewById(R.id.tvUsername);
         gemCount = view.findViewById(R.id.tvPrompt);
         addFriend = view.findViewById(R.id.btnAddFriend);
@@ -165,10 +164,6 @@ public class OtherUserPassport extends Fragment {
                     .apply(requestOptions).into(profile);
 
         }
-
-        Glide.with(getContext())
-                .load("https://cdn.pixabay.com/photo/2019/07/26/10/04/city-4364408_1280.jpg")
-                .into(background);
 
 
         addFriend.setOnClickListener(new View.OnClickListener() {

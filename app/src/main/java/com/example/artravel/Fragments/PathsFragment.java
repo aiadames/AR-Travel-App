@@ -1,5 +1,6 @@
 package com.example.artravel.Fragments;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -331,18 +332,25 @@ public class PathsFragment extends Fragment {
         selectedChips = new ArrayList<>();
         for (int i = 0; i < filters.getChildCount(); i++) {
             Chip chip = (Chip)filters.getChildAt(i);
+            chip.setChipBackgroundColorResource(R.color.chipUnclicked);
+            chip.setTextColor(getResources().getColor(R.color.chipTextUnclicked));
+            chip.setChipIconTint(ColorStateList.valueOf(getResources().getColor(R.color.chipTextUnclicked)));
             // Set the chip checked change listener
             chip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(chip.isChecked()){
                         Log.d("chip", "clicked!");
-                        chip.setChipBackgroundColorResource(R.color.grey);
+                        chip.setChipBackgroundColorResource(R.color.chipClicked);
+                        chip.setTextColor(getResources().getColor(R.color.chipTextClicked));
+                        chip.setChipIconTint(ColorStateList.valueOf(getResources().getColor(R.color.chipTextClicked)));
                         selectedChips.add(chip.getText().toString());
                         Log.d("chip", "size of list (1) : "+ selectedChips.size());
                     } else if (! chip.isChecked()){
                         Log.d("chip", "unclicked!");
-                        chip.setChipBackgroundColorResource(R.color.colorOnSurface);
+                        chip.setChipBackgroundColorResource(R.color.chipUnclicked);
+                        chip.setTextColor(getResources().getColor(R.color.chipTextUnclicked));
+                        chip.setChipIconTint(ColorStateList.valueOf(getResources().getColor(R.color.chipTextUnclicked)));
                         if (selectedChips.contains(chip.getText().toString())){
                             Log.d("chip", "is in list");
                             selectedChips.remove(chip.getText().toString());

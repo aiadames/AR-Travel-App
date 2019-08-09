@@ -39,6 +39,7 @@ public class SearchFriendsFragment extends Fragment {
     protected LinearLayoutManager mLayoutManager;
     protected UsersAdapter mAdapter;
     public FloatingSearchView mSearchView;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Nullable
     @Override
@@ -73,6 +74,19 @@ public class SearchFriendsFragment extends Fragment {
         mRecyclerViewUsers.setLayoutManager(mLayoutManager);
         mAdapter = new UsersAdapter(mUsers,mUsersFull);
         mRecyclerViewUsers.setAdapter(mAdapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                if (mAdapter.getFilter() == null) {
+                    loadEndless();
+                } else{
+                    Log.d("Filter On", "Filter is on, do not query for more paths");
+                }
+            }
+        };
+        mRecyclerViewUsers.addOnScrollListener(scrollListener);
 
 
     }
@@ -81,7 +95,6 @@ public class SearchFriendsFragment extends Fragment {
         ParseUser current = ParseUser.getCurrentUser();
         // query to Parse backend for the top 20 paths to load into mPaths and mPathsFull, notify adapter that data has been updated
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.setLimit(5);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
@@ -97,4 +110,26 @@ public class SearchFriendsFragment extends Fragment {
             }
         });
     }
+
+    public void loadEndless() {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereLessThan("createdAt", mUsers.get(mUsers.size() - 1).getCreatedAt());
+        query.addDescendingOrder(Path.KEY_CREATED_AT);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    mUsers.addAll(objects);
+                    mUsersFull.addAll(objects);
+                    mAdapter.notifyDataSetChanged();
+                    scrollListener.resetState();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+
 }

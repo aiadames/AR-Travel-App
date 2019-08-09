@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -34,6 +35,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     public int selection = -1;
     public CardView cardView;
     public String imageLink;
+    public int position;
     public RecyclerView recyclerView;
 
     public arGemsAdapter(List<Gems> gemsListNew, Context context) {
@@ -68,7 +70,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
             vibrator.vibrate(15);
 
 
-            int position = getAdapterPosition();
+            position = getAdapterPosition();
             selection = position;
            // gemImage.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         }
@@ -100,8 +102,8 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
 
     }
 
-    public String getImageLink(){
-        Gems currentGem = gemsList.get(getSelected());
+    public String getImageLink(int selection){
+        Gems currentGem = gemsList.get(selection);
 
        imageLink= currentGem.getModel();
        return imageLink;
