@@ -183,5 +183,6 @@ public class GemDetail extends AppCompatActivity {
 
         return orbitAnimation;
     }
+
 }
 
