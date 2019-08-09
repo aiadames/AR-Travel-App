@@ -148,40 +148,6 @@
 
 
             <LinearLayout
-                android:id="@+id/llBookmarkedPaths"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/proximanova_bold"
-                    android:paddingTop="8dp"
-                    android:text="  Bookmarked Tours"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/appBlack"
-                    android:textSize="20sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvBookmarkedPaths"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/textView3"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:scrollbars="horizontal" />
-            </LinearLayout>
-
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
                 android:id="@+id/llFriends"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -232,6 +198,38 @@
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
                     android:scrollbars="horizontal" />
+
+
+            <LinearLayout
+                android:id="@+id/llBookmarkedPaths"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:paddingTop="8dp"
+                    android:text="  Bookmarked Tours"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/appBlack"
+                    android:textSize="20sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBookmarkedPaths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView3"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="4dp"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
+
+
+
+
 
 
             </LinearLayout>
