@@ -105,10 +105,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         btnChoice2 = findViewById(R.id.btnChoice2);
         btnChoice3 = findViewById(R.id.btnChoice3);
         btnChoice4 = findViewById(R.id.btnChoice4);
-        tvChoice1 = findViewById(R.id.tvChoice1);
-        tvChoice2 = findViewById(R.id.tvChoice2);
-        tvChoice3 = findViewById(R.id.tvChoice3);
-        tvChoice4 = findViewById(R.id.tvChoice4);
         tvUserAttemptsLeft = findViewById(R.id.tvAttemptsLeft);
         bottomSheet = findViewById(R.id.question_bottom_sheet);
         fabReturn = findViewById(R.id.fabReturn);
@@ -240,28 +236,28 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnChoice1:
-                if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice1);
                 } else {
                     falseAnswer();
                 }
                 break;
             case R.id.btnChoice2:
-                if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice2);
                 } else {
                     falseAnswer();
                 }
                 break;
             case R.id.btnChoice3:
-                if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice3);
                 } else {
                     falseAnswer();
                 }
                 break;
             case R.id.btnChoice4:
-                if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice4);
                 } else {
                     falseAnswer();
@@ -286,10 +282,10 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     private void initializeViews() {
         stopQuestion.setText(stop.getStopQuestion());
         tvUserAttemptsLeft.setText("Attempts Left: " + userAttemptsLeft.toString());
-        tvChoice1.setText(stop.getStopMultipleChoice().get(0));
-        tvChoice2.setText(stop.getStopMultipleChoice().get(1));
-        tvChoice3.setText(stop.getStopMultipleChoice().get(2));
-        tvChoice4.setText(stop.getStopMultipleChoice().get(3));
+        btnChoice1.setText(stop.getStopMultipleChoice().get(0));
+        btnChoice2.setText(stop.getStopMultipleChoice().get(1));
+        btnChoice3.setText(stop.getStopMultipleChoice().get(2));
+        btnChoice4.setText(stop.getStopMultipleChoice().get(3));
         fabReturn.hide();
     }
 

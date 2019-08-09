@@ -163,12 +163,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMyFriends"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/tvFriends"
+                    android:paddingStart="4dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
                     android:scrollbars="horizontal" />
