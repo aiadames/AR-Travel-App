@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requestStoragePermission();
+
         ibProfile = view.findViewById(R.id.ivProfile);
         tvName = view.findViewById(R.id.tvAddFriends);
         tvWelcome = view.findViewById(R.id.tvWelcome);
@@ -103,7 +103,7 @@ public class ProfileFragment extends Fragment {
         btnLogOut = view.findViewById(R.id.btnLogOut);
 
 
-        requestStoragePermission();
+       // requestStoragePermission();
         ibProfile = getView().findViewById(R.id.ivProfile);
         tvName = getView().findViewById(R.id.tvAddFriends);
 
@@ -152,6 +152,7 @@ public class ProfileFragment extends Fragment {
         ibProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                requestStoragePermission();
                 showFileChooser();
             }
         });
