@@ -1,17 +1,11 @@
 package com.example.artravel.Fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,23 +34,16 @@ import com.example.artravel.MainActivity;
 import com.example.artravel.Manifest;
 import com.example.artravel.R;
 import com.example.artravel.models.Path;
-import com.facebook.login.Login;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.parceler.Parcels;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
@@ -106,7 +91,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         requestStoragePermission();
         ibProfile = view.findViewById(R.id.ivProfile);
-        tvName = view.findViewById(R.id.tvName);
+        tvName = view.findViewById(R.id.tvAddFriends);
         tvWelcome = view.findViewById(R.id.tvWelcome);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvUserName = view.findViewById(R.id.tvUserName);
@@ -120,7 +105,7 @@ public class ProfileFragment extends Fragment {
 
         requestStoragePermission();
         ibProfile = getView().findViewById(R.id.ivProfile);
-        tvName = getView().findViewById(R.id.tvName);
+        tvName = getView().findViewById(R.id.tvAddFriends);
 
 
 
