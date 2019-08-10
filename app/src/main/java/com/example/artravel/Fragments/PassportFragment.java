@@ -181,9 +181,9 @@ public class PassportFragment extends Fragment{
         screename = view.findViewById(R.id.tvScreenName);
 
         Date temp = (ParseUser.getCurrentUser().getCreatedAt());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         String strDate = dateFormat.format(temp);
-        date.setText("Joined "+strDate);
+        date.setText("Joined "+ strDate);
 
         ParseUser user = ParseUser.getCurrentUser();
         username.setText(user.get("firstName") + " " + user.get("lastName"));

@@ -136,6 +136,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="112dp"
         android:layout_marginTop="12dp"
+        android:fontFamily="@font/proximanova_semibold"
         android:text="View completed paths"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,22 +148,11 @@
         android:layout_height="60dp"
         android:layout_marginStart="112dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/proximanova_semibold"
         android:text="Logout "
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUserEmail" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="32dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="#00FFFFFF"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/tvUserName"
-        app:layout_constraintTop_toBottomOf="@+id/btnViewCompleted"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
