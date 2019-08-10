@@ -314,6 +314,9 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
             DialogFragment earnedGemDialog = new EarnedGemDialogFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("Stop", Parcels.wrap(stop));
+            bundle.putParcelable("Path", Parcels.wrap(path));
+            bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+            bundle.putInt("Stop Index", stopIndex);
             earnedGemDialog.setArguments(bundle);
             earnedGemDialog.show(getSupportFragmentManager(), "Earned Gem Dialog");
 
