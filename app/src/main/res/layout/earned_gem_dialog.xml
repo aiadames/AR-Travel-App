@@ -19,9 +19,9 @@
         android:id="@+id/tvGemEarned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/proximanova_regular"
         android:text="You earned a gem!"
         android:textAlignment="center"
@@ -36,13 +36,15 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/ic_landmark" />
 
-    <TextView
-        android:id="@+id/tvReturn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tap the arrow to continue."
+    <Button
+        android:id="@+id/btnDialogContinue"
+        android:layout_width="193dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
-        android:textAlignment="center" />
+        android:backgroundTint="@color/colorPrimaryTest"
+        android:text="Continue Path"
+        android:textAllCaps="false" />
 
 </LinearLayout>

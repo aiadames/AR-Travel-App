@@ -48,7 +48,7 @@
         android:fontFamily="@font/proximanova_semibold"
         android:text="Answer Question"
         android:textAllCaps="false"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
