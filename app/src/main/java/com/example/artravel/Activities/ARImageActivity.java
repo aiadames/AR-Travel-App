@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.artravel.Fragments.ARImageFragment;
 import com.example.artravel.Fragments.EarnedGemDialogFragment;
+import com.example.artravel.Fragments.WrongAnswerDialogFragment;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -321,7 +322,14 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
             earnedGemDialog.show(getSupportFragmentManager(), "Earned Gem Dialog");
 
         } else{
-            Toast.makeText(this, "Sorry, you don't get a gem!", Toast.LENGTH_LONG).show();
+            DialogFragment wrongAnswerDialog = new WrongAnswerDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Stop", Parcels.wrap(stop));
+            bundle.putParcelable("Path", Parcels.wrap(path));
+            bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+            bundle.putInt("Stop Index", stopIndex);
+            wrongAnswerDialog.setArguments(bundle);
+            wrongAnswerDialog.show(getSupportFragmentManager(), "Wrong Answer Dialog");
         }
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)
