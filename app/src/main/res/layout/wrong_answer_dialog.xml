@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvSorry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/proximanova_semibold"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryTest"
+        android:textSize="24sp"
+        android:text="Sorry!" />
+
+    <TextView
+        android:id="@+id/tvNoMoreAttempts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:text="You ran out of attempts to answer the question." />
+
+    <TextView
+        android:id="@+id/tvCorrectAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:text="The correct answer is " />
+
+    <Button
+        android:id="@+id/btnWrongAnswerContinue"
+        android:layout_width="193dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/colorPrimaryTest"
+        android:text="Continue Path"
+        android:textAllCaps="false" />
+</LinearLayout>

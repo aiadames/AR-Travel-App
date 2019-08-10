@@ -46,6 +46,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="36dp"
         android:fontFamily="@font/proximanova_semibold"
+        android:padding="5dp"
         android:text="Answer Question"
         android:textAllCaps="false"
         android:textSize="18sp"
