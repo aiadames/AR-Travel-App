@@ -65,9 +65,10 @@ public class OtherUserPassport extends Fragment {
     private ImageButton imageButton;
     private TextView tvScreenName;
     private TextView tvCollectedGemss;
-    private Button addFriend;
+    private ImageButton addFriend;
     private ParseUser user;
     private boolean isFriend = false;
+
 
     private static final String TAG = "PassportFragment";
 
@@ -120,7 +121,6 @@ public class OtherUserPassport extends Fragment {
                     return;
                 }
                 mGems.addAll(userGems);
-                gemCount.setText((user.get("firstName") + " collected " + mGems.size() + " gems this week"));
 
                 // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
@@ -139,7 +139,6 @@ public class OtherUserPassport extends Fragment {
 
         profile = view.findViewById(R.id.ivPassProfile);
         username = view.findViewById(R.id.tvUsername);
-        gemCount = view.findViewById(R.id.tvPrompt);
         addFriend = view.findViewById(R.id.btnAddFriend);
         date = view.findViewById(R.id.tvJoinedDate);
         tvScreenName = view.findViewById(R.id.tvScreenName);
@@ -222,11 +221,9 @@ public class OtherUserPassport extends Fragment {
 
     public void changeFriendButton(){
         if (isFriend == true) {
-            addFriend.setText("friended");
-            addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
+            addFriend.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.friends));
         } else {
-            addFriend.setText("add friend");
-            addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
+            addFriend.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.add_friend));
         }
 
     }
