@@ -75,7 +75,7 @@
                     android:layout_margin="4dp"
                     android:layout_marginBottom="8dp"
                     android:clickable="true"
-                    android:fontFamily="serif-monospace"
+                    android:fontFamily="@font/proximanova_regular"
                     android:padding="12dp"
                     android:paddingStart="0dp"
                     android:paddingTop="1dp"

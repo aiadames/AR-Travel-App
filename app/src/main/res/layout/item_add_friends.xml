@@ -21,6 +21,7 @@
         android:textAlignment="center"
         android:textColor="@color/appBlack"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ibAdd" />
@@ -32,6 +33,7 @@
         android:layout_marginTop="4dp"
         android:background="#00FFFFFF"
         android:scaleType="centerCrop"
+        android:tint="#313131"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.846"
         app:layout_constraintStart_toStartOf="parent"

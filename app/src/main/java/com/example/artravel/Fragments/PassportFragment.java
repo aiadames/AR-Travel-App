@@ -133,7 +133,6 @@ public class PassportFragment extends Fragment{
                     return;
                 }
                 mGems.addAll(userGems);
-                gemCount.setText(("You've collected " + mGems.size() + " gems this week"));
 
                // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
@@ -174,7 +173,6 @@ public class PassportFragment extends Fragment{
 
         profile = view.findViewById(R.id.ivPassProfile);
         username = view.findViewById(R.id.tvUsername);
-        gemCount = view.findViewById(R.id.tvPrompt);
         button = view.findViewById(R.id.btnAR);
         date = view.findViewById(R.id.tvJoinedDate);
         imageButton = view.findViewById(R.id.imageButton3);

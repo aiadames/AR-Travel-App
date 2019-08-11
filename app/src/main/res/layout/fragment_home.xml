@@ -51,7 +51,7 @@
                         android:layout_width="296dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="You haven't collected any gems. Start a tour now!"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/llTopPaths"
                     android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
+                    />
 
             </LinearLayout>
 
@@ -168,10 +168,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/tvFriends"
-                    android:paddingStart="4dp"
+                    android:paddingStart="0dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
+                     />
 
 
             <LinearLayout
@@ -198,7 +198,7 @@
                     android:layout_alignStart="@+id/textView3"
                     android:paddingRight="16dp"
                     android:paddingBottom="4dp"
-                    android:scrollbars="horizontal" />
+                     />
             </LinearLayout>
 
 
