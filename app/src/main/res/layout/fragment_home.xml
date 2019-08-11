@@ -116,7 +116,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/llTopPaths"
@@ -135,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/llTopPaths"
                     android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
+                     />
 
             </LinearLayout>
 
@@ -171,7 +170,7 @@
                     android:layout_alignStart="@+id/tvFriends"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
+                     />
 
 
             <LinearLayout
@@ -198,7 +197,7 @@
                     android:layout_alignStart="@+id/textView3"
                     android:paddingRight="16dp"
                     android:paddingBottom="4dp"
-                    android:scrollbars="horizontal" />
+                     />
             </LinearLayout>
 
 

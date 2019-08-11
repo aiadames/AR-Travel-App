@@ -64,6 +64,7 @@ public class OtherUserPassport extends Fragment {
     private TextView date;
     private ImageButton imageButton;
     private TextView tvScreenName;
+    private TextView tvCollectedGemss;
     private Button addFriend;
     private ParseUser user;
     private boolean isFriend = false;
@@ -142,17 +143,19 @@ public class OtherUserPassport extends Fragment {
         addFriend = view.findViewById(R.id.btnAddFriend);
         date = view.findViewById(R.id.tvJoinedDate);
         tvScreenName = view.findViewById(R.id.tvScreenName);
+        tvCollectedGemss = view.findViewById(R.id.tvCollectedGems);
 
         changeFriendButton();
 
 
-        Date temp = (user.getCreatedAt());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        Date temp = user.getCreatedAt();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         String strDate = dateFormat.format(temp);
-        date.setText("Joined "+strDate);
+        date.setText("Joined "+ strDate);
 
         username.setText(user.get("firstName") + " " + user.get("lastName"));
         tvScreenName.setText("@"+ user.getUsername());
+        tvCollectedGemss.setText(user.get("firstName")+"'s Collected Gems");
 
         ParseFile image = (ParseFile) user.get("image");
         if (image != null) {

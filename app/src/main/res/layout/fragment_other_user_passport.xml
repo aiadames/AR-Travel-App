@@ -26,7 +26,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="112dp">
+                android:layout_height="129dp"
+                android:background="@drawable/profile_gradient">
 
 
                 <ImageView
@@ -51,13 +52,13 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="124dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="21dp"
+                    android:layout_marginTop="28dp"
                     android:layout_marginBottom="58dp"
                     android:fontFamily="@font/proximanova_bold"
                     android:gravity="left"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/appBlack"
+                    android:textColor="@color/offWhite"
                     android:textSize="24sp" />
 
                 <TextView
@@ -70,8 +71,9 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="52dp"
                     android:fontFamily="@font/proximanova_regular"
-                    android:paddingTop="1dp"
+                    android:paddingTop="2dp"
                     android:text="TextView"
+                    android:textColor="@color/offWhite"
                     android:textStyle="italic" />
 
                 <TextView
@@ -82,10 +84,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="125dp"
                     android:layout_marginTop="24dp"
-                    android:fontFamily="@font/proximanova_semibold"
+                    android:fontFamily="@font/proximanova_regular"
                     android:text="Ariana Adames"
                     android:textAlignment="viewStart"
-                    android:textSize="16sp" />
+                    android:textColor="@color/offWhite"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -95,13 +99,14 @@
                     android:layout_alignTop="@+id/tvJoinedDate"
                     android:layout_marginStart="-4dp"
                     android:layout_marginTop="1dp"
+                    android:tint="@color/offWhite"
                     app:srcCompat="@drawable/calendar"
                     tools:srcCompat="@drawable/calendar" />
 
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvCollectedGems"
                 android:layout_width="397dp"
                 android:layout_height="23dp"
                 android:layout_alignParentEnd="true"
@@ -151,7 +156,7 @@
         android:layout_height="32dp"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="46dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/proximanova_regular"
         android:text="add friend!"

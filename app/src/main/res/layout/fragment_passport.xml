@@ -26,7 +26,8 @@ android:orientation="vertical" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="121dp">
+                android:layout_height="129dp"
+                android:background="@drawable/profile_gradient">
 
                 <ImageView
                     android:id="@+id/imageView4"
@@ -36,6 +37,7 @@ android:orientation="vertical" >
                     android:layout_alignTop="@+id/tvJoinedDate"
                     android:layout_marginStart="-4dp"
                     android:layout_marginTop="1dp"
+                    android:tint="@color/offWhite"
                     app:srcCompat="@drawable/calendar"
                     tools:srcCompat="@drawable/calendar" />
 
@@ -46,23 +48,27 @@ android:orientation="vertical" >
                     android:layout_alignTop="@+id/tvUsername"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="125dp"
-                    android:layout_marginTop="28dp"
-                    android:fontFamily="@font/proximanova_semibold"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/proximanova_regular"
                     android:text="Ariana Adames"
                     android:textAlignment="viewStart"
-                    android:textSize="16sp" />
+                    android:textColor="@color/offWhite"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/imageButton3"
-                    android:layout_width="28dp"
-                    android:layout_height="27dp"
-                    android:layout_alignBottom="@+id/tvUsername"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/settingsx" />
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_marginBottom="72dp"
+                    android:background="@drawable/settingsx"
+                    android:backgroundTint="@color/offWhite"
+                    android:tint="@color/appBlack" />
 
                 <ImageView
                     android:id="@+id/ivPassProfile"
@@ -83,13 +89,13 @@ android:orientation="vertical" >
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="124dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="28dp"
                     android:layout_marginBottom="58dp"
                     android:fontFamily="@font/proximanova_bold"
                     android:gravity="left"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/appBlack"
+                    android:textColor="@color/offWhite"
                     android:textSize="24sp" />
 
                 <TextView
@@ -102,37 +108,25 @@ android:orientation="vertical" >
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="52dp"
                     android:fontFamily="@font/proximanova_regular"
+                    android:paddingTop="2dp"
                     android:text="TextView"
+                    android:textColor="@color/offWhite"
                     android:textStyle="italic" />
 
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvCollectedGems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:text="Collected Gems"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:fontFamily="@font/proximanova_bold"
+                android:text="My Collected Gems"
+                android:textColor="@color/appBlack"
+                android:textSize="20sp"
                 android:textStyle="bold" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <TextView
-                android:id="@+id/tvPrompt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="TextView"
-                android:textStyle="normal|italic" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRecyclerView"
