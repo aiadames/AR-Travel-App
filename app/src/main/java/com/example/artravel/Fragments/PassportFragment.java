@@ -115,7 +115,7 @@ public class PassportFragment extends Fragment{
        // postQuery.include(Gems.KEY_USER);
         ParseUser user = ParseUser.getCurrentUser();
         if (user == null){
-            Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
+           //Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
         }
         else
         {
