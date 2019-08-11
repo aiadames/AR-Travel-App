@@ -59,18 +59,17 @@
             android:text="@{stopInfoViewModel.stopInfoParagraph}"
             android:textSize="16sp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabGemLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="40dp"
-            android:backgroundTint="@color/colorPrimaryTest"
-            android:clickable="true"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/right_arrow" />
+        <Button
+            android:id="@+id/btnReadClue"
+            android:layout_width="193dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/tvInfoParagraph"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Read Clue"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 </layout>

@@ -39,6 +39,7 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,9 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
         private TextView mPathTitle;
         private TextView mPathDescription;
         private TextView mPathProgress;
+        private TextView tvPathDuration;
         public ImageButton mPathBookmark;
+
 
 
         public PathsViewHolder(View itemView) {
@@ -72,6 +75,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             constraintLayout = itemView.findViewById(R.id.constraintLayout);
             mPathProgress = itemView.findViewById(R.id.tvPathProgress);
             mPathBookmark = itemView.findViewById(R.id.ibBookmark);
+            tvPathDuration = itemView.findViewById(R.id.tvPathDuration);
 
 
             mPathBookmark.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +163,7 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
                 mPathBookmark.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.bookmark));
             }
 
+            bindPathDuration(myPath, tvPathDuration);
         }
     }
 
@@ -232,4 +237,31 @@ public class PathsAdapter extends RecyclerView.Adapter<PathsAdapter.PathsViewHol
             notifyDataSetChanged();
         }
     };
+
+
+    private void bindPathDuration(Path myPath, TextView tvPathDuration) {
+        String minutes = myPath.getPathDuration();
+        Duration duration = Duration.ofMinutes(Long.parseLong(minutes));
+        long hours = duration.toHours();
+        long mins = duration.minusHours(hours).toMinutes();
+        if (hours < 1) {
+            if (mins == 1) {
+                tvPathDuration.setText("1 minute");
+            } else {
+                tvPathDuration.setText(mins + " minutes");
+            }
+        } else if (hours == 1) {
+            if (mins == 1) {
+                tvPathDuration.setText("1 hour 1 minute");
+            } else {
+                tvPathDuration.setText("1 hour " + mins + " minutes");
+            }
+        } else {
+            if (mins == 1) {
+                tvPathDuration.setText(hours + " hours" + " 1 minute");
+            } else {
+                tvPathDuration.setText(hours + " hours " + mins + " minutes");
+            }
+        }
+    }
 }

@@ -115,7 +115,7 @@ public class PassportFragment extends Fragment{
        // postQuery.include(Gems.KEY_USER);
         ParseUser user = ParseUser.getCurrentUser();
         if (user == null){
-            Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
+           //Toast.makeText(getContext(), "user null", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -179,9 +179,9 @@ public class PassportFragment extends Fragment{
         screename = view.findViewById(R.id.tvScreenName);
 
         Date temp = (ParseUser.getCurrentUser().getCreatedAt());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         String strDate = dateFormat.format(temp);
-        date.setText("Joined "+strDate);
+        date.setText("Joined "+ strDate);
 
         ParseUser user = ParseUser.getCurrentUser();
         username.setText(user.get("firstName") + " " + user.get("lastName"));
