@@ -70,7 +70,7 @@ public class GemsAdapter extends RecyclerView.Adapter<GemsAdapter.GemsViewHolder
             if (position != RecyclerView.NO_POSITION) {
                 // get the movie at the position, this won't work if the class is static
                 Gems gem = gemsList.get(position);
-                Toast.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
+                //.makeText(context, gem.getObjectId(), Toast.LENGTH_SHORT).show();
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("Gems", Parcels.wrap(gem));

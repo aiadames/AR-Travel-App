@@ -129,7 +129,7 @@ public class ProfileFragment extends Fragment {
         }else {
             tvName.setText("user");
         }
-        tvUserName.setText("@"+currentUser.getUsername());
+        tvUserName.setText(currentUser.getUsername());
         tvUserEmail.setText(currentUser.getEmail());
 
         // query through relation of completed paths for a user and display how many they have completed as size of returned objects
@@ -176,7 +176,6 @@ public class ProfileFragment extends Fragment {
                 Log.d("logout", "logout");
                 Intent logout = new Intent(getActivity(), MainActivity.class);
                 startActivity(logout);
-                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
             }
         });
     }

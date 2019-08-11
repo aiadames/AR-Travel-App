@@ -29,9 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:src="@drawable/street_view"
+            android:tint="@color/colorPrimaryTest"
             android:clickable="true"
             android:focusable="true"
-            android:backgroundTint="@android:color/black"
+            android:backgroundTint="#ECECEC"
             app:layout_anchor="@+id/stopBottomSheet"
             app:layout_anchorGravity="top|end" />
 

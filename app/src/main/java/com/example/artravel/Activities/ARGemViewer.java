@@ -85,14 +85,14 @@ public class ARGemViewer extends AppCompatActivity {
     private void fragmentTap(HitResult hitResult, Plane plane, MotionEvent motionEvent)
         {
             selected = adapter.getSelected();
-            Toast.makeText(getApplicationContext(), "selected == " + selected, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "selected == " + selected, Toast.LENGTH_SHORT).show();
 
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(fragment.getArSceneView().getScene());
             loadModel();
             setModel(anchorNode);
-            Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
 
 
     }
@@ -142,10 +142,10 @@ public class ARGemViewer extends AppCompatActivity {
 
 
         ParseUser user = ParseUser.getCurrentUser();
-        if (user == null) {
-            Toast.makeText(this.getApplicationContext(), "user null", Toast.LENGTH_SHORT).show();
-        } else
-            Toast.makeText(this.getApplicationContext(), "user " + user.getUsername() + " is not null", Toast.LENGTH_SHORT).show();
+//        if (user == null) {
+//            Toast.makeText(this.getApplicationContext(), "user null", Toast.LENGTH_SHORT).show();
+//        } else
+//            Toast.makeText(this.getApplicationContext(), "user " + user.getUsername() + " is not null", Toast.LENGTH_SHORT).show();
 
         ParseRelation<Gems> relation;
         relation = user.getRelation("collectedGems");
