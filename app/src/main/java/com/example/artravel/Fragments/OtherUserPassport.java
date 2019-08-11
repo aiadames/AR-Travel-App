@@ -89,8 +89,8 @@ public class OtherUserPassport extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initalizeUser();
-        checkIfFriend();
         getActivity().setTitle("Passport");
+        checkIfFriend();
         setupView(view);
         queryGems();
 
@@ -144,8 +144,6 @@ public class OtherUserPassport extends Fragment {
         tvScreenName = view.findViewById(R.id.tvScreenName);
         tvCollectedGemss = view.findViewById(R.id.tvCollectedGems);
 
-        changeFriendButton();
-
 
         Date temp = user.getCreatedAt();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -155,6 +153,7 @@ public class OtherUserPassport extends Fragment {
         username.setText(user.get("firstName") + " " + user.get("lastName"));
         tvScreenName.setText("@"+ user.getUsername());
         tvCollectedGemss.setText(user.get("firstName")+"'s Collected Gems");
+
 
         ParseFile image = (ParseFile) user.get("image");
         if (image != null) {
@@ -210,6 +209,8 @@ public class OtherUserPassport extends Fragment {
                     for (ParseUser friend: objects){
                         if (friend.getObjectId().equalsIgnoreCase(user.getObjectId())){
                             isFriend = true;
+                            changeFriendButton();
+                        } else{
                             changeFriendButton();
                         }
                     }
