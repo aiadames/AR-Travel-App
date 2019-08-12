@@ -65,16 +65,10 @@ public class ARGemViewer extends AppCompatActivity {
     ArFragment fragment;
     private Button btnShare;
     private Button btnBack;
-    private String sharePath;
-    private Bitmap  bitmap;
-   // private ModelRenderable polyRenderable;
-    private Image image;
     private int setSelected;
-    private boolean check = false;
     private Vibrator vibrator;
     private SnapHelper snapHelper;
     private int padding;
-    private int idle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,36 +92,33 @@ public class ARGemViewer extends AppCompatActivity {
         adapter.setOnItemClickListener(new arGemsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                int temp;
                 Toast.makeText(ARGemViewer.this, rvGems.getChildAdapterPosition(view) + " was clicked!", Toast.LENGTH_SHORT).show();
                 vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
                 vibrator.vibrate(15);
+                temp=setSelected;
                 setSelected = rvGems.getChildAdapterPosition(view);
-                rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected);
-               idle = rvGems.SCROLL_STATE_IDLE;
+                if(setSelected>temp)
+                rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected-1);
+                else
+                    rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected);
 
             }
         });
         fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> fragmentTap(hitResult, plane, motionEvent));
     }
 
-//    public void scrollView(int pos){
-//    rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null, pos);
-//}
     private void fragmentTap(HitResult hitResult, Plane plane, MotionEvent motionEvent)
         {
             vibrator = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
             vibrator.vibrate(15);
             ModelRenderable getPolyRenderable2;
-
-            //rvGems.getLayoutManager().smoothScrollToPosition(rvGems,null, 5);
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(fragment.getArSceneView().getScene());
             loadModel(anchorNode);
 
            // Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
-
-
     }
 
     private void loadModel(AnchorNode node) {
@@ -218,7 +209,6 @@ public class ARGemViewer extends AppCompatActivity {
 
     private void showEditDialog(String filename) {
 
-
         Bundle bundle = new Bundle();
         bundle.putString("filename",filename);
         FragmentManager fm = getSupportFragmentManager();
@@ -255,11 +245,11 @@ public class ARGemViewer extends AppCompatActivity {
         final String filename = generateFilename();
         ArSceneView view = fragment.getArSceneView();
 
-        // Create a bitmap the size of the scene view.
+        // making a bitmap
         final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
                 Bitmap.Config.ARGB_8888);
 
-        // Create a handler thread to offload the processing of the image.
+        // Create a handler thread to process image
         final HandlerThread handlerThread = new HandlerThread("PixelCopier");
         handlerThread.start();
         // Make the request to copy.

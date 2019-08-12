@@ -106,7 +106,6 @@ public class PassportFragment extends Fragment{
             }
         });
 
-
     }
 
     private void queryGems() {

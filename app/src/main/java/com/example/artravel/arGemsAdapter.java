@@ -25,10 +25,6 @@ import java.util.List;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
-//this adapter is the same as the one used in passport with a few changes
-//the onclick listener puts the object into sceneform
-//the xml file for the gem cardview is different
-
 public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHolder> {
     private List<Gems> gemsList;
     public Context context;
@@ -62,10 +58,10 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
             cardView = itemView.findViewById(R.id.cardViewGem);
             itemView.setOnClickListener(this);
 
+            //handle on click in the parent method instead of the adapter
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Triggers click upwards to the adapter on click
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
@@ -87,7 +83,6 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
                         .into(gemImage);
             }
         }
-
 
         @Override
         public void onClick(View view) {
@@ -130,7 +125,6 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
        return imageLink;
 
     }
-
 
 
 }
