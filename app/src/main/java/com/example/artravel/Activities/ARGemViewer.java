@@ -15,14 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.PixelCopy;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -59,12 +64,11 @@ public class ARGemViewer extends AppCompatActivity {
     private String modelLink;
     ArFragment fragment;
     private Button btnShare;
-    private String sharePath;
-    private Bitmap  bitmap;
-    private ModelRenderable polyRenderable;
-    private Image image;
-    private int selected;
-
+    private Button btnBack;
+    private int setSelected;
+    private Vibrator vibrator;
+    private SnapHelper snapHelper;
+    private int padding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,37 +78,56 @@ public class ARGemViewer extends AppCompatActivity {
         setupView();
         queryGems();
 
-     selected = adapter.getSelected();
+        setSelected = 4;
 //        Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
 
-        btnShare.setOnClickListener(view -> takePhoto()) ;
-        fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> fragmentTap(hitResult, plane, motionEvent));
+        btnShare.setOnClickListener(view -> takePhoto());
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ARGemViewer.super.onBackPressed();
+            }
+        });
 
+        adapter.setOnItemClickListener(new arGemsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                int temp;
+                //Toast.makeText(ARGemViewer.this, rvGems.getChildAdapterPosition(view) + " was clicked!", Toast.LENGTH_SHORT).show();
+                vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
+                vibrator.vibrate(15);
+                temp=setSelected;
+                setSelected = rvGems.getChildAdapterPosition(view);
+                rvGems.getLayoutManager().smoothScrollToPosition(rvGems,null, setSelected);
+
+            }
+        });
+        fragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> fragmentTap(hitResult, plane, motionEvent));
     }
 
     private void fragmentTap(HitResult hitResult, Plane plane, MotionEvent motionEvent)
         {
-            selected = adapter.getSelected();
-            //Toast.makeText(getApplicationContext(), "selected == " + selected, Toast.LENGTH_SHORT).show();
-
+            vibrator = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
+            vibrator.vibrate(15);
+            ModelRenderable getPolyRenderable2;
             Anchor anchor = hitResult.createAnchor();
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(fragment.getArSceneView().getScene());
-            loadModel();
-            setModel(anchorNode);
-            //Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
+            loadModel(anchorNode);
 
-
+           // Toast.makeText(this, "selected is equals to " + selected, Toast.LENGTH_SHORT).show();
     }
 
-    private void loadModel() {
-        modelLink = adapter.getImageLink(selected);
+    private void loadModel(AnchorNode node) {
+        //Toast.makeText(this, "selected inside of load model " + selected, Toast.LENGTH_SHORT).show();
+        modelLink = adapter.getImageLink(setSelected);
         ModelRenderable.builder()
                 .setSource(this, RenderableSource.builder().setSource(
                         this,
                         Uri.parse(modelLink),
                         RenderableSource.SourceType.GLTF2).build())
-                .build().thenAccept(modelRenderable -> polyRenderable = modelRenderable)
+                .build()
+                .thenAccept(modelRenderable ->setModel(node,  modelRenderable))
                 .exceptionally(
                         throwable -> {
                             Toast.makeText(this, "cant load model", Toast.LENGTH_SHORT).show();
@@ -114,7 +137,10 @@ public class ARGemViewer extends AppCompatActivity {
     }
 
 
-    private void setModel(AnchorNode anchorNode) {
+    void setModel(AnchorNode anchorNode, ModelRenderable x) {
+        ModelRenderable polyRenderable;
+        polyRenderable = x.makeCopy();
+
 
         TransformableNode node = new TransformableNode(fragment.getTransformationSystem());
         node.setParent(anchorNode);
@@ -124,17 +150,29 @@ public class ARGemViewer extends AppCompatActivity {
             // Scale size of the AR model
             node.getScaleController().setMaxScale(0.6f);
             node.getScaleController().setMinScale(0.5f);
-
     }
+
+
 
     private void setupView() {
 
         mGems = new ArrayList<>();
         rvGems = findViewById(R.id.rvSceneForm);
         btnShare = findViewById(R.id.btnShare);
+        btnBack = findViewById(R.id.btnBack);
         adapter = new arGemsAdapter(mGems, this.getApplicationContext());
         rvGems.setAdapter(adapter);
         rvGems.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(rvGems);
+        padding = 1080/2;
+        rvGems.setPadding(padding, 0, padding, 0);
+        rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected);
+
+
+        //getLayoutManager().smoothScrollToPosition(rvGems, null, pos);
+
+
         fragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.sceneform_passport_fragment);
     }
 
@@ -167,7 +205,6 @@ public class ARGemViewer extends AppCompatActivity {
     }
 
     private void showEditDialog(String filename) {
-
 
         Bundle bundle = new Bundle();
         bundle.putString("filename",filename);
@@ -205,11 +242,11 @@ public class ARGemViewer extends AppCompatActivity {
         final String filename = generateFilename();
         ArSceneView view = fragment.getArSceneView();
 
-        // Create a bitmap the size of the scene view.
+        // making a bitmap
         final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
                 Bitmap.Config.ARGB_8888);
 
-        // Create a handler thread to offload the processing of the image.
+        // Create a handler thread to process image
         final HandlerThread handlerThread = new HandlerThread("PixelCopier");
         handlerThread.start();
         // Make the request to copy.

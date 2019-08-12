@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,50 +30,51 @@ import java.io.IOException;
 import java.util.Date;
 
 public class ShareFragment extends DialogFragment {
-        private ImageView imageView;
-        private Button share;
-        private Button cancel;
-        private String path;
-        private Bitmap bitmap;
-        private String filename;
+    private ImageView imageView;
+    private Button share;
+    private Button cancel;
+    private String path;
+    private Bitmap bitmap;
+    private String filename;
 
-        public ShareFragment() {
-        }
+    public ShareFragment() {
+    }
 
-        public static ShareFragment newInstance(String title) {
-            ShareFragment frag = new ShareFragment();
-            Bundle args = new Bundle();
-            args.putString("title", title);
-            frag.setArguments(args);
-            return frag;
-        }
+    public static ShareFragment newInstance(String title) {
+        ShareFragment frag = new ShareFragment();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        frag.setArguments(args);
+        return frag;
+    }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_share, container);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_share, container);
 
-        }
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
+    }
 
-            setupView(view);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-            share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    share_image(filename);
-                }
-            });
+        setupView(view);
 
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getDialog().dismiss();
-                }
-            });
-        }
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                share_image(filename);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDialog().dismiss();
+            }
+        });
+    }
 
     private void setupView(View view) {
         imageView = view.findViewById(R.id.imageView3);
@@ -88,15 +90,18 @@ public class ShareFragment extends DialogFragment {
     }
 
 
-    private void share_image(String filename){
+    private void share_image(String filename) {
 
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, filename);
-        shareIntent.setType("image/*");
-        startActivity(Intent.createChooser(shareIntent, "Share image via:"));
+        String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(),
+                bitmap, "Image", null);
 
+        Uri uri = Uri.parse(path);
 
-        }
-
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.putExtra(Intent.EXTRA_TEXT, "Checkout Hidden Gems");
+        getContext().startActivity(Intent.createChooser(share, "Share Your Gems!"));
     }
+
+}
