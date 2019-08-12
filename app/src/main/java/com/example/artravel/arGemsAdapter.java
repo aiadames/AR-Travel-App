@@ -8,6 +8,7 @@ import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.artravel.Activities.ARGemViewer;
 import com.example.artravel.models.Gems;
 import com.parse.ParseFile;
 
@@ -36,21 +38,42 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     public CardView cardView;
     public String imageLink;
     public int position;
-    public RecyclerView recyclerView;
+    private OnItemClickListener listener;
 
     public arGemsAdapter(List<Gems> gemsListNew, Context context) {
         gemsList = gemsListNew;
         this.context= context;
     }
 
-    public class GemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+    public class GemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
-        public GemsViewHolder(View itemView) {
+        public GemsViewHolder(final View itemView) {
             super(itemView);
             gemImage = itemView.findViewById(R.id.ivArGemImage);
             cardView = itemView.findViewById(R.id.cardViewGem);
             itemView.setOnClickListener(this);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Triggers click upwards to the adapter on click
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
 
         }
 
@@ -65,14 +88,10 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
             }
         }
 
+
+        @Override
         public void onClick(View view) {
-            vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
-            vibrator.vibrate(15);
 
-
-            position = getAdapterPosition();
-            selection = position;
-           // gemImage.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         }
     }
     @Override
@@ -97,6 +116,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     }
 
     public int getSelected(){
+       // Toast.makeText(recyclerView.getContext(), "selected inside of get selected" + selection, Toast.LENGTH_SHORT).show();
         return( selection!= -1)? selection:0;
 
 
@@ -104,7 +124,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
 
     public String getImageLink(int selection){
         Gems currentGem = gemsList.get(selection);
-
+//        Toast.makeText(recyclerView.getContext(), "selected inside of get image link " + selection, Toast.LENGTH_SHORT).show();
        imageLink= currentGem.getModel();
        return imageLink;
 

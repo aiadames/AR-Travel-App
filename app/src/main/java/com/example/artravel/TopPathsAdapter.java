@@ -63,10 +63,12 @@ public class TopPathsAdapter extends RecyclerView.Adapter<TopPathsAdapter.TopPat
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transforms(new CenterCrop()).format(DecodeFormat.PREFER_ARGB_8888).override(150,110);
             ParseFile pathImage = myPath.getPathImage();
+
             if (pathImage != null) {
                 Glide.with(context)
                         .load(pathImage.getUrl())
-                        .apply(requestOptions).into(mPathImage);
+                        .apply(requestOptions)
+                        .into(mPathImage);
             } else {
                 mPathImage.setImageResource(R.drawable.ic_path_placeholder);
             }

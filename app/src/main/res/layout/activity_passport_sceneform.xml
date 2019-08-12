@@ -16,7 +16,8 @@
         android:id="@+id/rvSceneForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:clipToPadding="false" />
 
     <Button
         android:id="@+id/btnShare"
@@ -28,6 +29,25 @@
         android:backgroundTint="@color/colorPrimaryTest"
         android:fontFamily="@font/proximanova_bold"
         android:text="@string/com_facebook_share_button_text" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="8dp"
+        android:background="@color/colorPrimaryTest"
+        android:backgroundTint="@color/colorPrimaryTest"
+        android:fontFamily="@font/proximanova_bold"
+        android:text="back" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="90dp"
+        app:srcCompat="@drawable/arrow3" />
 
 
 </FrameLayout>

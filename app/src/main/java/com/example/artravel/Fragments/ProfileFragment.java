@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +48,6 @@ import java.util.List;
 import java.util.Random;
 
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
 import static com.example.artravel.R.layout.fragment_profile;
 
 
@@ -69,7 +66,6 @@ public class ProfileFragment extends Fragment {
     private TextView tvEmail;
     private TextView tvUserEmail;
     private TextView tvCompletedPaths;
-    private ImageView ivBackground;
     private Button btnViewCompleted;
 
     private Button btnLogOut;
@@ -93,8 +89,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        requestStoragePermission();
         ibProfile = view.findViewById(R.id.ivProfile);
+        tvName = view.findViewById(R.id.tvAddFriends);
         tvWelcome = view.findViewById(R.id.tvWelcome);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvUserName = view.findViewById(R.id.tvUserName);
@@ -102,13 +99,13 @@ public class ProfileFragment extends Fragment {
         tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
+
         btnLogOut = view.findViewById(R.id.btnLogOut);
-        ivBackground = view.findViewById(R.id.ivBackground);
 
 
-       // requestStoragePermission();
+        requestStoragePermission();
         ibProfile = getView().findViewById(R.id.ivProfile);
-        tvName = getView().findViewById(R.id.tvName);
+        tvName = getView().findViewById(R.id.tvAddFriends);
 
 
 
@@ -121,10 +118,6 @@ public class ProfileFragment extends Fragment {
             Glide.with(getContext())
                     .load(image.getUrl())
                     .apply(requestOptions).into(ibProfile);
-            Glide.with(getContext())
-                    .load(image.getUrl())
-                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(20,2)))
-                    .into(ivBackground);
         } else{
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
@@ -159,7 +152,6 @@ public class ProfileFragment extends Fragment {
         ibProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestStoragePermission();
                 showFileChooser();
             }
         });
