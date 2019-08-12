@@ -24,19 +24,19 @@
 
     <TextView
         android:id="@+id/tvGemLocationClue"
-        android:layout_width="285dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="338dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/proximanova_semibold"
         android:lineSpacingExtra="0sp"
         android:text="Look for the green and white Seattle poster to answer the question and discover the gem."
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/offWhite"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivGemLocationImage" />
 
@@ -44,14 +44,15 @@
         android:id="@+id/btnQuestion"
         android:layout_width="193dp"
         android:layout_height="60dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/proximanova_semibold"
         android:padding="5dp"
-        android:text="Answer Question"
+        android:text="Get Gem"
         android:textAllCaps="false"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGemLocationClue" />
 
@@ -96,18 +97,12 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="15dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="158dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivGemLocationImage"
-        app:layout_constraintVertical_bias="0.636"
         app:srcCompat="@drawable/search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

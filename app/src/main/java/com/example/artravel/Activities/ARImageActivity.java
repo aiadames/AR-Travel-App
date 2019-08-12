@@ -185,8 +185,8 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         node.select();
 
         // Scale size of the AR model
-        node.getScaleController().setMaxScale(0.07f);
-        node.getScaleController().setMinScale(0.03f);
+        node.getScaleController().setMaxScale(0.12f);
+        node.getScaleController().setMinScale(0.09f);
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
@@ -366,13 +366,15 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
 
     // change value of answered question to true and change button background color to green
     public void correctAnswer(Button button){
-        button.setBackgroundResource(R.color.green);
+        button.setBackgroundColor(getResources().getColor(R.color.green));
         answeredQuestion = true;
     }
     // change value of attempts by 1
     public void falseAnswer(){
-        Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_SHORT).show();
         userAttemptsLeft -= 1;
+        if (userAttemptsLeft != 0){
+            Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
