@@ -130,15 +130,17 @@ public class HomeFragment extends Fragment {
             relation.getQuery().findInBackground(new FindCallback<Gems>() {
                 @Override
                 public void done(List<Gems> objects, ParseException e) {
-                    int numCollectedGems = objects.size();
-                    if (numCollectedGems == 0) {
-                        tvCollectedGems.setText("You haven't collected any gems yet. Start a tour now!");
-                    } else if (numCollectedGems == 1) {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
-                    } else {
-                        tvCollectedGems.setText("You have collected " + numCollectedGems + " gems so far!");
+                    if (objects != null) {
+                        int numCollectedGems = objects.size();
+                        if (numCollectedGems == 0) {
+                            tvCollectedGems.setText("You haven't collected any gems yet. Start a tour now!");
+                        } else if (numCollectedGems == 1) {
+                            tvCollectedGems.setText("You have collected " + numCollectedGems + " gem so far!");
+                        } else {
+                            tvCollectedGems.setText("You have collected " + numCollectedGems + " gems so far!");
+                        }
+                        tvCollectedGems.setVisibility(View.VISIBLE);
                     }
-                    tvCollectedGems.setVisibility(View.VISIBLE);
                 }
             });
 

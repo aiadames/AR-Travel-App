@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvCongratsTitle"
+        android:id="@+id/tvSorry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/proximanova_semibold"
-        android:text="Congratulations!"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryTest"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:text="Sorry!" />
 
     <TextView
-        android:id="@+id/tvGemEarned"
+        android:id="@+id/tvNoMoreAttempts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/proximanova_regular"
-        android:text="You earned a gem!"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:text="You ran out of attempts to answer the question." />
 
-    <ImageView
-        android:id="@+id/ivEarnedGem"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <TextView
+        android:id="@+id/tvCorrectAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_landmark" />
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:text="The correct answer is " />
 
     <Button
-        android:id="@+id/btnDialogContinue"
+        android:id="@+id/btnWrongAnswerContinue"
         android:layout_width="193dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
@@ -46,5 +48,4 @@
         android:backgroundTint="@color/colorPrimaryTest"
         android:text="Continue Path"
         android:textAllCaps="false" />
-
 </LinearLayout>

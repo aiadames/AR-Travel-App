@@ -44,7 +44,7 @@ public class StopInfoFragment extends Fragment {
     private Path path;
     private ArrayList<Stop> stopsList;
     private int stopIndex;
-    private FloatingActionButton fabGemlocation;
+    private Button btnReadClue;
 
     /*
      * Method that creates the view for the StopInfoFragment. It handles the bundle that is
@@ -69,10 +69,10 @@ public class StopInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(stop.getStopName());
-        fabGemlocation = view.findViewById(R.id.fabGemLocation);
+        btnReadClue = view.findViewById(R.id.btnReadClue);
 
         // On click method for gem location button
-        fabGemlocation.setOnClickListener(new View.OnClickListener() {
+        btnReadClue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switchToGemLocationFragment();

@@ -37,7 +37,7 @@
                         android:id="@+id/tvWelcome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="13dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="30dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Welcome!"
@@ -50,7 +50,7 @@
                         android:id="@+id/tvCollectedGems"
                         android:layout_width="296dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="13dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/proximanova_semibold"
@@ -69,7 +69,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    app:cardBackgroundColor="@color/cardview_light_background"
+                    app:cardBackgroundColor="@color/offWhite"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="1dp">
 
@@ -116,7 +116,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/llTopPaths"
@@ -135,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/llTopPaths"
                     android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
+                     />
 
             </LinearLayout>
 
@@ -171,7 +170,7 @@
                     android:layout_alignStart="@+id/tvFriends"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:scrollbars="horizontal" />
+                     />
 
 
             <LinearLayout
@@ -198,7 +197,7 @@
                     android:layout_alignStart="@+id/textView3"
                     android:paddingRight="16dp"
                     android:paddingBottom="4dp"
-                    android:scrollbars="horizontal" />
+                     />
             </LinearLayout>
 
 

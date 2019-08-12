@@ -22,6 +22,7 @@ public class Path extends ParseObject {
     private static final String KEY_PATH_ALL_RATINGS = "pathRatings";
     private static final String KEY_PATH_GEM = "pathGem";
     private static final String KEY_PATH_THEME = "pathTheme";
+    private static final String KEY_PATH_DURATION = "pathDuration";
 
 
     private boolean pathStarted = false;
@@ -64,6 +65,10 @@ public class Path extends ParseObject {
 
     public ParseFile getPathImage() {
         return getParseFile(KEY_PATH_IMAGE);
+    }
+
+    public String getPathDuration() {
+        return getString(KEY_PATH_DURATION);
     }
 
     public ArrayList<Double> getPathRatings() {
@@ -179,17 +184,20 @@ public class Path extends ParseObject {
     public Float getPathRatingAvg(){
         ArrayList<Double> myRatingsList = getPathRatings();
         double sum = 0.0;
-        for (int i = 0; i < getPathRatings().size(); i++){
-            Object num = myRatingsList.get(i);
-            double myFloat;
-            if (num.getClass().equals(Integer.class)){
-                myFloat = (double)((Integer)num);
-            } else {
-                myFloat = (double)(num);
+        if (myRatingsList != null) {
+            for (int i = 0; i < getPathRatings().size(); i++) {
+                Object num = myRatingsList.get(i);
+                double myFloat;
+                if (num.getClass().equals(Integer.class)) {
+                    myFloat = (double) ((Integer) num);
+                } else {
+                    myFloat = (double) (num);
+                }
+                sum = (sum + myFloat);
             }
-            sum = (sum + myFloat);
+            return (float) (sum / myRatingsList.size());
         }
-        return (float)(sum/myRatingsList.size());
+        return 0f;
     }
 
 

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.artravel.Fragments.ARImageFragment;
 import com.example.artravel.Fragments.EarnedGemDialogFragment;
+import com.example.artravel.Fragments.WrongAnswerDialogFragment;
 import com.example.artravel.R;
 import com.example.artravel.models.Gems;
 import com.example.artravel.models.Path;
@@ -105,10 +106,6 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
         btnChoice2 = findViewById(R.id.btnChoice2);
         btnChoice3 = findViewById(R.id.btnChoice3);
         btnChoice4 = findViewById(R.id.btnChoice4);
-        tvChoice1 = findViewById(R.id.tvChoice1);
-        tvChoice2 = findViewById(R.id.tvChoice2);
-        tvChoice3 = findViewById(R.id.tvChoice3);
-        tvChoice4 = findViewById(R.id.tvChoice4);
         tvUserAttemptsLeft = findViewById(R.id.tvAttemptsLeft);
         bottomSheet = findViewById(R.id.question_bottom_sheet);
         fabReturn = findViewById(R.id.fabReturn);
@@ -189,7 +186,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
 
         // Scale size of the AR model
         node.getScaleController().setMaxScale(0.07f);
-        node.getScaleController().setMinScale(0.02f);
+        node.getScaleController().setMinScale(0.03f);
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
@@ -240,28 +237,28 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnChoice1:
-                if (tvChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice1.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice1);
                 } else {
                     falseAnswer();
                 }
                 break;
             case R.id.btnChoice2:
-                if (tvChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice2.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice2);
                 } else {
                     falseAnswer();
                 }
                 break;
             case R.id.btnChoice3:
-                if (tvChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice3.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice3);
                 } else {
                     falseAnswer();
                 }
                 break;
             case R.id.btnChoice4:
-                if (tvChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
+                if (btnChoice4.getText().toString().equalsIgnoreCase(stopAnswer)) {
                     correctAnswer(btnChoice4);
                 } else {
                     falseAnswer();
@@ -286,10 +283,10 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
     private void initializeViews() {
         stopQuestion.setText(stop.getStopQuestion());
         tvUserAttemptsLeft.setText("Attempts Left: " + userAttemptsLeft.toString());
-        tvChoice1.setText(stop.getStopMultipleChoice().get(0));
-        tvChoice2.setText(stop.getStopMultipleChoice().get(1));
-        tvChoice3.setText(stop.getStopMultipleChoice().get(2));
-        tvChoice4.setText(stop.getStopMultipleChoice().get(3));
+        btnChoice1.setText(stop.getStopMultipleChoice().get(0));
+        btnChoice2.setText(stop.getStopMultipleChoice().get(1));
+        btnChoice3.setText(stop.getStopMultipleChoice().get(2));
+        btnChoice4.setText(stop.getStopMultipleChoice().get(3));
         fabReturn.hide();
     }
 
@@ -314,11 +311,21 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
             DialogFragment earnedGemDialog = new EarnedGemDialogFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("Stop", Parcels.wrap(stop));
+            bundle.putParcelable("Path", Parcels.wrap(path));
+            bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+            bundle.putInt("Stop Index", stopIndex);
             earnedGemDialog.setArguments(bundle);
             earnedGemDialog.show(getSupportFragmentManager(), "Earned Gem Dialog");
 
         } else{
-            Toast.makeText(this, "Sorry, you don't get a gem!", Toast.LENGTH_LONG).show();
+            DialogFragment wrongAnswerDialog = new WrongAnswerDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Stop", Parcels.wrap(stop));
+            bundle.putParcelable("Path", Parcels.wrap(path));
+            bundle.putParcelable("Stops Array", Parcels.wrap(stopsList));
+            bundle.putInt("Stop Index", stopIndex);
+            wrongAnswerDialog.setArguments(bundle);
+            wrongAnswerDialog.show(getSupportFragmentManager(), "Wrong Answer Dialog");
         }
 
         // reset values for next time fragment is launched? (need to map out lifecycle of this fragment)

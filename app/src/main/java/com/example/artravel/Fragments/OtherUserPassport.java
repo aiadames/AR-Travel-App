@@ -64,9 +64,11 @@ public class OtherUserPassport extends Fragment {
     private TextView date;
     private ImageButton imageButton;
     private TextView tvScreenName;
-    private Button addFriend;
+    private TextView tvCollectedGemss;
+    private ImageButton addFriend;
     private ParseUser user;
     private boolean isFriend = false;
+
 
     private static final String TAG = "PassportFragment";
 
@@ -87,8 +89,8 @@ public class OtherUserPassport extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initalizeUser();
-        checkIfFriend();
         getActivity().setTitle("Passport");
+        checkIfFriend();
         setupView(view);
         queryGems();
 
@@ -119,7 +121,6 @@ public class OtherUserPassport extends Fragment {
                     return;
                 }
                 mGems.addAll(userGems);
-                gemCount.setText((user.get("firstName") + " collected " + mGems.size() + " gems this week"));
 
                 // Toast.makeText(getContext(), numCollected + " gems collected", Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
@@ -138,21 +139,21 @@ public class OtherUserPassport extends Fragment {
 
         profile = view.findViewById(R.id.ivPassProfile);
         username = view.findViewById(R.id.tvUsername);
-        gemCount = view.findViewById(R.id.tvPrompt);
         addFriend = view.findViewById(R.id.btnAddFriend);
         date = view.findViewById(R.id.tvJoinedDate);
         tvScreenName = view.findViewById(R.id.tvScreenName);
+        tvCollectedGemss = view.findViewById(R.id.tvCollectedGems);
 
-        changeFriendButton();
 
-
-        Date temp = (user.getCreatedAt());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        Date temp = user.getCreatedAt();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         String strDate = dateFormat.format(temp);
-        date.setText("Joined "+strDate);
+        date.setText("Joined "+ strDate);
 
         username.setText(user.get("firstName") + " " + user.get("lastName"));
         tvScreenName.setText("@"+ user.getUsername());
+        tvCollectedGemss.setText(user.get("firstName")+"'s Collected Gems");
+
 
         ParseFile image = (ParseFile) user.get("image");
         if (image != null) {
@@ -209,6 +210,8 @@ public class OtherUserPassport extends Fragment {
                         if (friend.getObjectId().equalsIgnoreCase(user.getObjectId())){
                             isFriend = true;
                             changeFriendButton();
+                        } else{
+                            changeFriendButton();
                         }
                     }
                 }
@@ -219,11 +222,9 @@ public class OtherUserPassport extends Fragment {
 
     public void changeFriendButton(){
         if (isFriend == true) {
-            addFriend.setText("friended");
-            addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
+            addFriend.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.friends));
         } else {
-            addFriend.setText("add friend");
-            addFriend.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
+            addFriend.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.add_friend));
         }
 
     }

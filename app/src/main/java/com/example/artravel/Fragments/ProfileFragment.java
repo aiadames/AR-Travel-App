@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,8 @@ import java.util.List;
 import java.util.Random;
 
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 import static com.example.artravel.R.layout.fragment_profile;
 
 
@@ -57,15 +60,14 @@ public class ProfileFragment extends Fragment {
 
     private ImageButton ibProfile;
     private TextView tvName;
-    private TextView tvWelcome;
     public static final int GET_FROM_GALLERY = 3;
     private ParseUser currentUser;
 
-    private TextView tvUsername;
+
     private TextView tvUserName;
-    private TextView tvEmail;
     private TextView tvUserEmail;
     private TextView tvCompletedPaths;
+    private ImageView ivBackground;
     private Button btnViewCompleted;
 
     private Button btnLogOut;
@@ -89,23 +91,19 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requestStoragePermission();
+
         ibProfile = view.findViewById(R.id.ivProfile);
-        tvName = view.findViewById(R.id.tvAddFriends);
-        tvWelcome = view.findViewById(R.id.tvWelcome);
         tvUserEmail = view.findViewById(R.id.tvUserEmail);
         tvUserName = view.findViewById(R.id.tvUserName);
-        tvUsername = view.findViewById(R.id.tvUsername);
-        tvEmail = view.findViewById(R.id.tvEmail);
         tvCompletedPaths = view.findViewById(R.id.tvCompletedPaths);
         btnViewCompleted = view.findViewById(R.id.btnViewCompleted);
-
         btnLogOut = view.findViewById(R.id.btnLogOut);
+        ivBackground = view.findViewById(R.id.ivBackground);
 
 
-        requestStoragePermission();
+       // requestStoragePermission();
         ibProfile = getView().findViewById(R.id.ivProfile);
-        tvName = getView().findViewById(R.id.tvAddFriends);
+        tvName = getView().findViewById(R.id.tvName);
 
 
 
@@ -118,16 +116,20 @@ public class ProfileFragment extends Fragment {
             Glide.with(getContext())
                     .load(image.getUrl())
                     .apply(requestOptions).into(ibProfile);
+            Glide.with(getContext())
+                    .load(image.getUrl())
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(20,2)))
+                    .into(ivBackground);
         } else{
             ibProfile.setImageResource(R.drawable.ic_profile);
         }
 
-        if (currentUser.get("firstName") != null){
-            tvName.setText((String) currentUser.get("firstName"));
+        if (currentUser.get("firstName") != null && currentUser.get("lastName") != null){
+            tvName.setText((String) currentUser.get("firstName") + " " + (String) currentUser.get("lastName"));
         }else {
             tvName.setText("user");
         }
-        tvUserName.setText("@"+currentUser.getUsername());
+        tvUserName.setText(currentUser.getUsername());
         tvUserEmail.setText(currentUser.getEmail());
 
         // query through relation of completed paths for a user and display how many they have completed as size of returned objects
@@ -152,6 +154,7 @@ public class ProfileFragment extends Fragment {
         ibProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                requestStoragePermission();
                 showFileChooser();
             }
         });
@@ -173,7 +176,6 @@ public class ProfileFragment extends Fragment {
                 Log.d("logout", "logout");
                 Intent logout = new Intent(getActivity(), MainActivity.class);
                 startActivity(logout);
-                Toast.makeText(getContext(), "Logout",Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -26,21 +26,20 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="112dp">
+                android:layout_height="129dp"
+                android:background="@drawable/profile_gradient">
 
 
                 <ImageView
                     android:id="@+id/ivPassProfile"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_alignBottom="@+id/ivBackground"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="19dp"
+                    android:layout_marginStart="11dp"
                     android:layout_marginLeft="24dp"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginEnd="312dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="-46dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
@@ -49,15 +48,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="125dp"
+                    android:layout_marginStart="124dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="67dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginBottom="58dp"
                     android:fontFamily="@font/proximanova_bold"
                     android:gravity="left"
                     android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/appBlack"
+                    android:textColor="@color/offWhite"
                     android:textSize="24sp" />
 
                 <TextView
@@ -70,8 +71,9 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="52dp"
                     android:fontFamily="@font/proximanova_regular"
-                    android:paddingTop="1dp"
+                    android:paddingTop="2dp"
                     android:text="TextView"
+                    android:textColor="@color/offWhite"
                     android:textStyle="italic" />
 
                 <TextView
@@ -82,10 +84,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="125dp"
                     android:layout_marginTop="24dp"
-                    android:fontFamily="@font/proximanova_semibold"
+                    android:fontFamily="@font/proximanova_regular"
                     android:text="Ariana Adames"
                     android:textAlignment="viewStart"
-                    android:textSize="16sp" />
+                    android:textColor="@color/offWhite"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -95,13 +99,14 @@
                     android:layout_alignTop="@+id/tvJoinedDate"
                     android:layout_marginStart="-4dp"
                     android:layout_marginTop="1dp"
+                    android:tint="@color/offWhite"
                     app:srcCompat="@drawable/calendar"
                     tools:srcCompat="@drawable/calendar" />
 
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvCollectedGems"
                 android:layout_width="397dp"
                 android:layout_height="23dp"
                 android:layout_alignParentEnd="true"
@@ -110,30 +115,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/proximanova_bold"
+                android:paddingStart="0dp"
                 android:text="Collected Gems"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/black"
+                android:textColor="@color/appBlack"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentStart="true"
-                android:background="?android:attr/listDivider" />
-
-            <TextView
-                android:id="@+id/tvPrompt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="12dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/proximanova_regular"
-                android:paddingTop="4dp"
-                android:text="TextView"
-                android:textStyle="normal|italic" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRecyclerView"
@@ -141,25 +128,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:paddingTop="8dp" />
         </LinearLayout>
     </ScrollView>
 
-    <Button
+    <ImageButton
         android:id="@+id/btnAddFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="324dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
+        android:background="#00FFFFFF"
         android:fontFamily="@font/proximanova_regular"
+        android:scaleType="centerInside"
         android:text="add friend!"
         android:textAllCaps="false"
         android:textSize="10sp"
+        android:tint="@color/offWhite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/friends" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
