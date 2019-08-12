@@ -181,6 +181,7 @@ public class ARGemViewer extends AppCompatActivity {
         rvGems.setPadding(padding, 0, padding, 0);
         rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected);
 
+
         //getLayoutManager().smoothScrollToPosition(rvGems, null, pos);
 
 

@@ -108,6 +108,7 @@ public class arGemsAdapter extends RecyclerView.Adapter<arGemsAdapter.GemsViewHo
     public void onBindViewHolder(@NonNull GemsViewHolder holder, int position) {
         Gems currentGem = gemsList.get(position);
         holder.bind(currentGem);
+        holder.setIsRecyclable(false);
     }
 
     @Override
