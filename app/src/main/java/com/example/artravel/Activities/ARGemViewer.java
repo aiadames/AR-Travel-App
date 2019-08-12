@@ -93,15 +93,12 @@ public class ARGemViewer extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 int temp;
-                Toast.makeText(ARGemViewer.this, rvGems.getChildAdapterPosition(view) + " was clicked!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ARGemViewer.this, rvGems.getChildAdapterPosition(view) + " was clicked!", Toast.LENGTH_SHORT).show();
                 vibrator = (Vibrator) view.getContext().getSystemService(VIBRATOR_SERVICE);
                 vibrator.vibrate(15);
                 temp=setSelected;
                 setSelected = rvGems.getChildAdapterPosition(view);
-                if(setSelected>temp)
-                rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected-1);
-                else
-                    rvGems.getLayoutManager().smoothScrollToPosition(rvGems, null,setSelected);
+                rvGems.getLayoutManager().smoothScrollToPosition(rvGems,null, setSelected);
 
             }
         });
