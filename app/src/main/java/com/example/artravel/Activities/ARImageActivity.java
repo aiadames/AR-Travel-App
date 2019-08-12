@@ -190,7 +190,7 @@ public class ARImageActivity extends AppCompatActivity implements View.OnClickLi
 
         // Scale size of the AR model
         node.getScaleController().setMaxScale(0.07f);
-        node.getScaleController().setMinScale(0.02f);
+        node.getScaleController().setMinScale(0.03f);
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
